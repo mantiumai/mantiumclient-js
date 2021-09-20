@@ -4,6 +4,7 @@
   "description": "JavaScript client for the Mantium AI API.",
   "main": "build/index.js",
   "scripts": {
+    "build": "babel ./src -d ./lib",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -21,5 +22,9 @@
   "bugs": {
     "url": "https://github.com/mantiumai/mantiumclient-js/issues"
   },
-  "homepage": "https://github.com/mantiumai/mantiumclient-js#readme"
+  "homepage": "https://github.com/mantiumai/mantiumclient-js#readme",
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.7.0"
+  }
 }
