@@ -13,11 +13,19 @@
   },
   "keywords": [
     "Mantium",
+    "MantiumAPI",
     "OpenAI",
+    "OpenaiApi",
     "Cohere",
     "Ai21",
     "node",
-    "javascript"
+    "javascript",
+    "GPT",
+    "Eleuther",
+    "NLP",
+    "GPT-3",
+    "GPT3",
+    "GPT-J"
   ],
   "author": "MantiumAi",
   "contributors": [
@@ -37,9 +45,7 @@
     "eslint": "^7.32.0"
   },
   "dependencies": {
-    "axios": "^0.21.4",
     "dotenv": "^10.0.0",
-    "node-fetch": "^3.0.0",
     "request": "^2.88.2"
   }
 }
