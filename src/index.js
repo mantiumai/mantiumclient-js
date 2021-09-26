@@ -1,186 +1,163 @@
-"use strict";
 
-const config   = require('./config/config');
-const msg      = require('./config/error-message');
-const request  = require('request');
-class MantiumAI {
+// Auth
+const Login = require("./methods/auth/Login");
+const Logout = require("./methods/auth/Logout");
+const ResetPassword = require("./methods/auth/ResetPassword");
 
-  constructor(api_key, ai_provider) {
-    this._api_key = api_key;
-    this._ai_provider = ai_provider;
-  }
+// Ai methods
+const ListMethods = require("./methods/ai_methods/ListMethods");
 
-  /**
-   * @param {any} _key
-   */
-  set setApiKey(_key) {
-    this._api_key = _key;
-  }
+// Ai Engines
+const GetAllAiEngines = require("./methods/ai_engines/GetAllAiEngines");
+const GetAiEnginesByProvider = require("./methods/ai_engines/GetAiEnginesByProvider");
+const GetAiEngineByName = require("./methods/ai_engines/GetAiEngineByName");
 
-  /**
-   * @return {string} bearer_id as key
-   */
-  get getApiKey() {
-    return this._api_key;
-  }
+const Headers = require("./methods/Headers");
+module.exports = {
+  api_key: null,
+  ai_provider: 'mantium',
+  organization: null,
 
-  /**
-   * @param {any} _key
-   */
-   set setProvider(_provider) {
-    this._ai_provider = _provider;
-  }
-
-  /**
-   * @return {string} bearer_id as key
-   */
-  get getProvider() {
-    return this._ai_provider || 'mantium';
-  }
-
-  /**
-   * Returns Object as response in the API call.
-   *
-   * @param {boolean} useAuthorization to tell is API with token.
-   * @param {string} URL URL that use for fetch.
-   * @param {string} method GET, POST, PUT, PATCH, DELETE, if not pass it consider as GET
-   * @param {object} opts the param in key,pair values pass in header for POST method
-   * @param {object} queryParam the param in key,pair values pass to create a query parm
-   * @return {object} AI Api response.
-   */
-  _sendRequest(
-    useAuthorization = false,
-    getApiKey,
-    url,
-    method = "GET",
-    opts = {},
-    queryParam = {}) {
-    let camelToUnderscore = (key) => {
-        let result = key.replace(/([A-Z])/g, " $1");
-        return result.split(' ').join('_').toLowerCase();
-    }
-
-    const queryString = queryParam
-      ? Object.keys(queryParam).map(key => key + '=' + queryParam[key]).join('&')
-      : '';
-
-    const data = {};
-
-    for (const key in opts) {
-        data[camelToUnderscore(key)] = opts[key];
-    }
-
-    let headers = {
-        "Accept": "application/json",
-        "Content-Type": "application/json",
-    };
-
-    if (useAuthorization && getApiKey) {
-        headers["Authorization"] = `Bearer ${getApiKey}`;
-    }
-
-    let options = {
-        method,
-        headers,
-        url: url.concat('?', queryString),
-        body: JSON.stringify(data)
-    };
-
-    /* *
+  Auth: (function () {
+    /**
+    * Summary: Returns Object with bearer_id used for Authorization.
     *
-    * Console.log is testing purpose before build delete it
-    *
-    * */
-    console.log('*************** headers ***************');
-    console.log(headers);
-    console.log('*************** options ***************');
-    console.log(options);
-
-    const apiPromise = new Promise((resolve, reject) => {
-        request(options, function (error, response) {
-        if (error) {
-            reject(error);
-        } else {
-            resolve(JSON.parse(response.body));
-        }
-        });
-    });
-
-    try {
-        return apiPromise;
-    } catch(err) {
-        return err;
+    * @param {object} { username: useremail@somedomain.com , password: p@ssWord! } User's username, password.
+    * @return {object} Obtain access token for a user.
+    */
+    function accessTokenLogin(data) {
+      return Login(new Headers(module.exports.api_key, module.exports.organization), data);
     }
-  }
-  /**
-   * Returns Object as response in the API call.
-   *
-   * @param {string} username User's username.
-   * @param {string} password User's password.
-   * @return {object} Obtain access token for a user.
-   */
-  accessTokenLogin (username, password) {
-    return this._sendRequest(
-      false,
-      this.getApiKey,
-      config.accessTokenLoginURL(),
-      'POST',
-      { username, password }
-    );
-  }
 
-  /**
-   * Returns Object as response in the API call.
-   *
-   * @param {string} email User's username.
-   * Header:Authorization {bearer_id} HTTP Authorization with the bearer_id
-   * @return {object} Triggers a password reset user's password. An email with a link would be sent.
-   */
-   resetPassword (email) {
-    if (!this._api_key) throw new Error(msg.errorMessages().access_token_missing);
-    return this._sendRequest(
-      true,
-      this.getApiKey,
-      config.resetPasswordURL(),
-      'POST',
-      { email }
-    );
-  }
+    /**
+    * Summary: Returns Object as response in the API call.
+    * 
+    * This mehtod required Header `Authorization: Bearer {bearer_id}`, you can obtain `bearer_id` using `.Auth().accessTokenLogin()` method.
+    * 
+    * @return {object} Invalidate a user's Access token (logout).
+    */
+    function revokeToken() {
+      return Logout(new Headers(module.exports.api_key, module.exports.organization));
+    }
 
-  /**
-   * Returns Object as response in the API call.
-   *
-   * Header:Authorization {bearer_id} HTTP Authorization with the bearer_id
-   * @return {object} Invalidate a user's Access token (logout)
-   */
-   revokeToken () {
-    return this._sendRequest(
-      true,
-      this.getApiKey,
-      config.authRevokeTokenURL(),
-      'POST'
-    );
-  }
+    /**
+    * Summary: This method trigger reset password email with a link.
+    * 
+    * This mehtod required Header `Authorization: Bearer {bearer_id}`, you can obtain `bearer_id` using `.Auth().accessTokenLogin()` method.
+    *
+    * @param {object} { email: useremail@somedomain.com } User's email/Login email.
+    * @return {object} Provide information with success message.
+    */
+    function resetPassword(data) {
+      return ResetPassword(new Headers(module.exports.api_key, module.exports.organization), data);
+    }
 
-  /*************** AI Methods ***************/
+    function main() {
+      return {
+        accessTokenLogin: accessTokenLogin,
+        revokeToken: revokeToken,
+        resetPassword: resetPassword
+      };
+    }
+    main.accessTokenLogin = accessTokenLogin;
+    main.revokeToken = revokeToken;
+    main.ResetPassword = ResetPassword;
 
-  /**
-   * Get all of the supported ai_methods for a provider
-   *
-   * Header:Authorization {bearer_id} HTTP Authorization with the bearer_id
-   * @return {object} Get all of the supported ai_methods for a provider
-   */
-   listMethods (queryParam) {
-    return this._sendRequest(
-      true,
-      this.getApiKey,
-      config.aiMethodsURL().concat('/', this._ai_provider),
-      'GET',
-      {},
-      queryParam
-    );
-  }
+    return main;
+  })(),
 
-}
+  AiMethods: (function () {
+    let ai_provider = undefined;
 
-module.exports = MantiumAI;
+    /**
+    * Summary: Get all of the supported ai_methods for a provider.
+    * 
+    * This mehtod required Header `Authorization: Bearer {bearer_id}`, you can obtain `bearer_id` using `.Auth().accessTokenLogin()` method.
+    * @param {object} { page: 1, size: 2 } the query param in the format of key pair.
+    * @return {Method} Provide method list in array format.
+    */
+    function list(queryParam) {
+      return ListMethods(new Headers(module.exports.api_key, module.exports.organization), queryParam, ai_provider);
+    }
+
+    /**
+    * Summary: take provider name to perfom GET AI methods.
+    * 
+    * This mehtod required Header `Authorization: Bearer {bearer_id}`, you can obtain `bearer_id` using `.Auth().accessTokenLogin()` method.
+    * AI Provider name (case sensitive)
+    *
+    * @param {string} Provider some provider like `openai`, `cohere`, `mantium`, `OpenAI`, `Cohere`, `Mantium`
+    * @return {method} This return the method `.listMethods(queryParam)`.
+    */
+    function main(p) {
+      ai_provider = p;
+      return {
+        list: list
+      };
+    }
+    main.list = list;
+
+    return main;
+  })(),
+
+  AiEngines: (function () {
+    let name = undefined;
+
+    /**
+    * Summary: Get all of the configured and available AI engines.
+    * 
+    * This mehtod required Header `Authorization: Bearer {bearer_id}`, you can obtain `bearer_id` using `.Auth().accessTokenLogin()` method.
+    * @param {object} { page: 1, size: 2 } the query param in the format of key pair.
+    * @return {Method} Provide method list in array format.
+    */
+    function all(queryParam) {
+      return GetAllAiEngines(new Headers(module.exports.api_key, module.exports.organization), queryParam);
+    }
+
+    /**
+    * Summary: List all of the AI Engines for a specific AI Provider.
+    * 
+    * This mehtod required Header `Authorization: Bearer {bearer_id}`, you can obtain `bearer_id` using `.Auth().accessTokenLogin()` method.
+    * @param {object} { page: 1, size: 2 } the query param in the format of key pair.
+    * @return {Method} Provide method list in array format.
+    */
+    function byProvider(queryParam) {
+      return GetAiEnginesByProvider(new Headers(module.exports.api_key, module.exports.organization), queryParam, name);
+    }
+
+    /**
+    * Summary: Get the details for a specific AI Engine.
+    * 
+    * This mehtod required Header `Authorization: Bearer {bearer_id}`, you can obtain `bearer_id` using `.Auth().accessTokenLogin()` method.
+    * @param {object} { page: 1, size: 2 } the query param in the format of key pair.
+    * @return {Method} Provide method list in array format.
+    */
+    function byName(queryParam) {
+      return GetAiEngineByName(new Headers(module.exports.api_key, module.exports.organization), queryParam, name);
+    }
+
+    /**
+    * Summary: take provider or engine name to perfom GET AI Engines.
+    * 
+    * This mehtod required Header `Authorization: Bearer {bearer_id}`, you can obtain `bearer_id` using `.Auth().accessTokenLogin()` method.
+    * AI Provider name (case sensitive), Only one parameter is required either `Provider Name` or `Engine`
+    *
+    * @param {string} Provider some provider like `openai`, `cohere`, `mantium`, `OpenAI`, `Cohere`, `Mantium`
+    * @param {string} Engine AI Engine name.
+    * @return {method} This return the method `.listMethods(queryParam)`.
+    */
+    function main(e) {
+      name = e;
+      return {
+        all: all,
+        byProvider: byProvider,
+        byName: byName
+      };
+    }
+    main.all = all;
+    main.byProvider = byProvider;
+    main.byName = byName;
+
+    return main;
+  })(),
+};
