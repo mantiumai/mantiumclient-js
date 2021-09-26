@@ -16,7 +16,7 @@ module.exports = {
   resetPasswordURL() {
     return `${URL}/auth/user/reset/password`;
   },
-  authRevokeTokenURL() {
+  revokeTokenURL() {
     return `${URL}/auth/user/revoke/token`;
   },
 
@@ -32,14 +32,14 @@ module.exports = {
   * Get All Ai Engines
   * https://developer.mantiumai.com/reference#ai-engines
   */
-  aiEnginesURL() {
+  aiEnginesAllURL() {
     return `${URL}/ai/engine/all`;
   },
   aiEnginesByProviderURL() {
-    return `${URL}/ai/engine/get/ai/providers/ai_provider`;
+    return `${URL}/ai/engine/get/ai/providers`;
   },
   aiEnginesByNameURL() {
-    return `${URL}/ai/engine/get/name/name`;
+    return `${URL}/ai/engine/get/name`;
   },
 
 };
