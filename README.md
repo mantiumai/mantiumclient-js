@@ -40,10 +40,10 @@ You need [Node.js](https://nodejs.org/en/) installed on your computer. To instal
 get started with the login and use the API
 
 #### Login
-Obtain access token for a user
-Requirements:
-username: user's username
-password: user's password
+Obtain access token for a user  
+Requirements:  
+username: user's username  
+password: user's password  
 [document link](https://developer.mantiumai.com/reference#access_token_login_v1_auth_login_access_token_post)
 
 ```js
@@ -83,10 +83,10 @@ const mantiumAi = require('mantiumclient-js');
 ```
 
 #### Logout
-Invalidate a user's Access token (logout)
-Requires HTTP Authorization with the bearer_id
-Requirements:
-bearer_id: bearer id
+Invalidate a user's Access token (logout)  
+Requires HTTP Authorization with the bearer_id  
+Requirements:  
+bearer_id: bearer id  
 [document link](https://developer.mantiumai.com/reference#revoke_token_v1_auth_user_revoke_token_post)
 ```js
 onst mantiumAi = require('mantiumclient-js');
@@ -143,10 +143,10 @@ onst mantiumAi = require('mantiumclient-js');
 ```
 
 #### Reset Password
-Triggers a password reset user's password. An email with a link would be sent
-Requires HTTP Authorization with the bearer_id
-Requirements:
-email: user's registered email
+Triggers a password reset user's password. An email with a link would be sent  
+Requires HTTP Authorization with the bearer_id  
+Requirements:  
+email: user's registered email  
 [document link](https://developer.mantiumai.com/reference#reset_password_v1_auth_user_reset_password_post)
 
 ```js
