@@ -11,11 +11,16 @@
     - [Login](#login)
     - [Logout](#logout)
     - [Reset Password](#reset-password)
-## Authentication
-Make an account by visiting [app.mantiumai.com](https://app.mantiumai.com) and selecting register. Enter your email address and create a password. After you verify the email, you'll be able to sign in to the Mantium application. You'll also need your username and password to obtain a token for API use.
-
+  - [AI Methods](#ai-methods)
+    - [List Methods](#list-methods)
+  - [AI Engines](#ai-engines)
+    - [Get All AI Engines](#get-all-ai-engines)
+    - [Get Ai Engines By Provider](#get-ai-engines-by-provider)
+    - [Get Ai Engine By Name](#get-ai-engine-by-name)
 ## Quickstart:
 Read the [getting started guide](https://developer.mantiumai.com/docs) for more information on how to use Mantium.
+## Authentication
+Make an account by visiting [app.mantiumai.com](https://app.mantiumai.com) and selecting register. Enter your email address and create a password. After you verify the email, you'll be able to sign in to the Mantium application. You'll also need your username and password to obtain a token for API use.
 
 ## Installation
 You need [Node.js](https://nodejs.org/en/) installed on your computer. To install JavaScript Library please use following command
@@ -81,6 +86,7 @@ const mantiumAi = require('mantiumclient-js');
   links: {}
 }
 ```
+[Go to Table of Contents](#table-of-contents)
 
 #### Logout
 Invalidate a user's Access token (logout)  
@@ -89,7 +95,7 @@ Requirements:
 bearer_id: bearer id  
 [document link](https://developer.mantiumai.com/reference#revoke_token_v1_auth_user_revoke_token_post)
 ```js
-onst mantiumAi = require('mantiumclient-js');
+const mantiumAi = require('mantiumclient-js');
 
 // This method throw error as we are not passing the Authorization [bearer_id]
 (async () => {
@@ -141,6 +147,7 @@ onst mantiumAi = require('mantiumclient-js');
   links: {}
 }
 ```
+[Go to Table of Contents](#table-of-contents)
 
 #### Reset Password
 Triggers a password reset user's password. An email with a link would be sent  
@@ -175,3 +182,247 @@ email: user's registered email
   links: {}
 }
 ```
+[Go to Table of Contents](#table-of-contents)
+### AI Methods
+Get all of the supported ai_methods for a provider  
+#### List Methods
+
+Require AI Provider name (case sensitive)*  
+[document link](https://developer.mantiumai.com/reference#get_ai_engine_by_name_v1_ai_engine_get_name__name__get)
+
+```js
+const mantiumAi = require('mantiumclient-js');
+
+(async () => {
+  await mantiumAi.Auth().accessTokenLogin({
+    username: 'useremail@somedomain.com',
+    password: 'p@ssWord!'
+  })
+    .then((response) => {
+      // get bearer_id and set to default
+      mantiumAi.api_key = response.data.attributes.bearer_id;
+    });
+  /*
+  * API Key is set on above 
+  * mantiumAi.api_key=`key`
+  * so we can call these method directly now
+  */
+
+  const methodResponse = await mantiumAi.AiMethods('openai').list({ 'page': 1, 'size': 20 }).then((response) => {
+    return response;
+  });
+  console.log('*********** Ai Methods *********');
+  console.log(methodResponse);
+
+})();
+```
+#### Example of a successful completion response
+```js
+{
+  data: [
+    {
+      id: 'type',
+      type: 'object',
+      attributes: {
+        name: 'answers',
+        api_name: 'answers',
+        description: 'Returns answers',
+        shareable: false,
+        ai_provider: { 
+          name: 'OpenAI',
+          description: 'OpenAI -- https://openai.org'
+        },
+        ai_engines: [
+          {
+            name: 'davinci',
+            use_cases: 'some use cases',
+            description: 'Some long description',
+            cost_ranking: 100
+          }
+        ]
+      },
+      relationships: {}
+    }
+  ],
+  included: [],
+  meta: {},
+  links: { total_items: 4, current_page: 1 }
+}
+```
+[Go to Table of Contents](#table-of-contents)
+### AI Engines
+Get available AI engines  
+#### Get All AI Engines
+Get all of the configured and available AI engines  
+
+Query Params  
+`Page` Page number  
+`Size` Page size. If not supplied, returns all the results in a single page for certain APIs.  
+
+```js
+const mantiumAi = require('mantiumclient-js');
+
+(async () => {
+  await mantiumAi.Auth().accessTokenLogin({
+    username: 'useremail@somedomain.com',
+    password: 'p@ssWord!'
+  })
+    .then((response) => {
+      // get bearer_id and set to default
+      mantiumAi.api_key = response.data.attributes.bearer_id;
+    });
+
+  /*
+  * API Key is set on above 
+  * mantiumAi.api_key=`key`
+  * so we can call these method directly now
+  */
+  const methodResponse = await mantiumAi.AiEngines().all({ 'page': 1, 'size': 20 }).then((response) => {
+    return response;
+  });
+  console.log('*********** Ai Methods *********');
+  console.log(methodResponse);
+})();
+```
+
+#### Example of a successful completion response
+```js
+{
+  data: [
+    {
+    id: 'davinci',
+    type: 'ai_engine',
+    attributes: {
+      name: 'davinci',
+      description: 'Some long description',
+      use_cases: 'some use cases',
+      ai_provider: 'OpenAI',
+      cost_ranking: '100'
+    },
+    relationships: {}
+  }],
+  included: [],
+  meta: {},
+  links: { total_items: 17, current_page: 1 }
+}
+```
+[Go to Table of Contents](#table-of-contents)
+
+#### Get AI Engines By Provider
+List all of the AI Engines for a specific AI Provider  
+AI Provider name (case sensitive)  
+
+Query Params  
+`Page` Page number  
+`Size` Page size. If not supplied, returns all the results in a single page for certain APIs.  
+
+```js
+const mantiumAi = require('mantiumclient-js');
+
+(async () => {
+  await mantiumAi.Auth().accessTokenLogin({
+    username: 'useremail@somedomain.com',
+    password: 'p@ssWord!'
+  })
+    .then((response) => {
+      // get bearer_id and set to default
+      mantiumAi.api_key = response.data.attributes.bearer_id;
+    });
+
+  /*
+  * API Key is set on above 
+  * mantiumAi.api_key=`key`
+  * so we can call these method directly now
+  */
+  const providers = ["openai",
+    "cohere",
+    "mantium",
+    "OpenAI",
+    "Cohere",
+    "Mantium"];
+
+  for (let provider of providers) {
+    const methodResponse = await mantiumAi.AiEngines(provider).byProvider({ 'page': 1, 'size': 20 }).then((response) => {
+      return response;
+    });
+    console.log(methodResponse);
+  }
+
+})();
+```
+
+#### Example of a successful completion response
+```js
+// *********** Response for Cohere ***********
+{
+  data: [
+    {
+      id: 'baseline-shrimp',
+      type: 'ai_engine',
+      attributes: {
+        name: 'baseline-shrimp',
+        description: 'Some long description',
+        use_cases: 'some use cases',
+        ai_provider: 'Cohere',
+        cost_ranking: '24'
+      },
+      relationships: {}
+    }
+  ],
+  included: [],
+  meta: {},
+  links: { total_items: 9, current_page: 1 }
+}
+```
+[Go to Table of Contents](#table-of-contents)
+
+#### Get AI Engine By Name
+Get the details for a specific AI Engine  
+
+require: AI Engine name
+```js
+const mantiumAi = require('mantiumclient-js');
+
+(async () => {
+  await mantiumAi.Auth().accessTokenLogin({
+    username: 'useremail@somedomain.com',
+    password: 'p@ssWord!'
+  })
+    .then((response) => {
+      // get bearer_id and set to default
+      mantiumAi.api_key = response.data.attributes.bearer_id;
+    });
+  /*
+  * API Key is set on above 
+  * mantiumAi.api_key=`key`
+  * so we can call these method directly now
+  */
+  const methodResponse = await mantiumAi.AiEngines('ada').byName().then((response) => {
+    return response;
+  });
+
+})();
+```
+
+#### Example of a successful completion response
+```js
+*********** Response for ada ***********
+{
+  data: {
+    id: 'ada',
+    type: 'ai_engine',
+    attributes: {
+      name: 'ada',
+      description: 'Some long description',
+      use_cases: 'some use cases',
+      ai_provider: 'OpenAI',
+      cost_ranking: '70'
+    },
+    relationships: {}
+  },
+  included: [],
+  meta: {},
+  links: {}
+}
+```
+[Go to Table of Contents](#table-of-contents)
