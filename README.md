@@ -110,14 +110,13 @@ const mantiumAi = require('mantiumclient-js');
 // Correct way to do this
 
 (async () => {
-  const loginResponse = await mantiumAi.Auth().accessTokenLogin({
+  await mantiumAi.Auth().accessTokenLogin({
     username: 'useremail@somedomain.com',
     password: 'p@ssWord!'
   })
     .then((response) => {
       // get bearer_id and set to default
       mantiumAi.api_key = response.data.attributes.bearer_id;
-      return response;
     });
   /*
   * API Key is set on above 
@@ -157,6 +156,18 @@ email: user's registered email
 [document link](https://developer.mantiumai.com/reference#reset_password_v1_auth_user_reset_password_post)
 
 ```js
+ const mantiumAi = require('mantiumclient-js');
+
+(async () => {
+  await mantiumAi.Auth().accessTokenLogin({
+    username: 'useremail@somedomain.com',
+    password: 'p@ssWord!'
+  })
+    .then((response) => {
+      // get bearer_id and set to default
+      mantiumAi.api_key = response.data.attributes.bearer_id;
+    });
+
   /*
   * API Key is set on above 
   * mantiumAi.api_key=`key`
@@ -167,6 +178,10 @@ email: user's registered email
   }).then((response) => {
     return response;
   });
+  console.log('*********** resetPassword *********');
+  console.log(loginResetResponse);
+
+})();
 ```
 #### Example of a successful completion response
 ```js
@@ -208,11 +223,9 @@ const mantiumAi = require('mantiumclient-js');
   * so we can call these method directly now
   */
 
-  const methodResponse = await mantiumAi.AiMethods('openai').list({ 'page': 1, 'size': 20 }).then((response) => {
-    return response;
+  await mantiumAi.AiMethods('openai').list({ 'page': 1, 'size': 20 }).then((response) => {
+    console.log(response);
   });
-  console.log('*********** Ai Methods *********');
-  console.log(methodResponse);
 
 })();
 ```
@@ -258,6 +271,7 @@ Get all of the configured and available AI engines
 Query Params  
 `Page` Page number  
 `Size` Page size. If not supplied, returns all the results in a single page for certain APIs.  
+[document link](https://developer.mantiumai.com/reference#get_all_ai_engines_v1_ai_engine_all_get)
 
 ```js
 const mantiumAi = require('mantiumclient-js');
@@ -277,11 +291,9 @@ const mantiumAi = require('mantiumclient-js');
   * mantiumAi.api_key=`key`
   * so we can call these method directly now
   */
-  const methodResponse = await mantiumAi.AiEngines().all({ 'page': 1, 'size': 20 }).then((response) => {
-    return response;
+  await mantiumAi.AiEngines().all({ 'page': 1, 'size': 20 }).then((response) => {
+    console.log(response);
   });
-  console.log('*********** Ai Methods *********');
-  console.log(methodResponse);
 })();
 ```
 
@@ -316,6 +328,7 @@ Query Params
 `Page` Page number  
 `Size` Page size. If not supplied, returns all the results in a single page for certain APIs.  
 
+[document link](https://developer.mantiumai.com/reference#get_ai_engines_by_provider_v1_ai_engine_get_ai_providers__ai_provider__get)  
 ```js
 const mantiumAi = require('mantiumclient-js');
 
@@ -380,6 +393,8 @@ const mantiumAi = require('mantiumclient-js');
 Get the details for a specific AI Engine  
 
 require: AI Engine name
+
+[document link](https://developer.mantiumai.com/reference#get_ai_engine_by_name_v1_ai_engine_get_name__name__get)
 ```js
 const mantiumAi = require('mantiumclient-js');
 
@@ -397,8 +412,8 @@ const mantiumAi = require('mantiumclient-js');
   * mantiumAi.api_key=`key`
   * so we can call these method directly now
   */
-  const methodResponse = await mantiumAi.AiEngines('ada').byName().then((response) => {
-    return response;
+  await mantiumAi.AiEngines('ada').byName().then((response) => {
+    console.log(response);
   });
 
 })();
@@ -406,7 +421,7 @@ const mantiumAi = require('mantiumclient-js');
 
 #### Example of a successful completion response
 ```js
-*********** Response for ada ***********
+// *********** Response for ada ***********
 {
   data: {
     id: 'ada',
