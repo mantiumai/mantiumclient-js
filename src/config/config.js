@@ -1,6 +1,5 @@
 // const DEFAULT_ENGINE = 'Mantium';
-// const ORIGIN = 'https://api.mantiumai.com';
-const ORIGIN = 'http://localhost:8000';
+const ORIGIN = 'https://api.mantiumai.com';
 const API_VERSION = 'v1';
 const URL = `${ORIGIN}/${API_VERSION}`
 
@@ -42,4 +41,11 @@ module.exports = {
     return `${URL}/ai/engine/get/name`;
   },
 
+  /*
+  * Tags
+  * https://developer.mantiumai.com/reference#tags
+  */
+  tagsURL(isOldURL = false) {
+    return `${URL}/tag${isOldURL ? '/id' : ''}`;
+  }
 };
