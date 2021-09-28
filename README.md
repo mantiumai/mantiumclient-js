@@ -467,8 +467,8 @@ const mantiumAi = require('mantiumclient-js');
 
 (async () => {
   await mantiumAi.Auth().accessTokenLogin({
-    username: 'kedman1234@gmail.com',
-    password: 'Suvarna@12'
+    username: 'useremail@somedomain.com',
+    password: 'p@ssWord!'
   })
     .then((response) => {
       // get bearer_id and set to default
@@ -525,8 +525,8 @@ const mantiumAi = require('mantiumclient-js');
 
 (async () => {
   await mantiumAi.Auth().accessTokenLogin({
-    username: 'kedman1234@gmail.com',
-    password: 'Suvarna@12'
+    username: 'useremail@somedomain.com',
+    password: 'p@ssWord!'
   })
     .then((response) => {
       // get bearer_id and set to default
@@ -584,8 +584,8 @@ const mantiumAi = require('mantiumclient-js');
 
 (async () => {
   await mantiumAi.Auth().accessTokenLogin({
-    username: 'kedman1234@gmail.com',
-    password: 'Suvarna@12'
+    username: 'useremail@somedomain.com',
+    password: 'p@ssWord!'
   })
     .then((response) => {
       // get bearer_id and set to default
@@ -634,8 +634,8 @@ Tag Id* (string)* required parameter
 ```js
 (async () => {
   await mantiumAi.Auth().accessTokenLogin({
-    username: 'kedman1234@gmail.com',
-    password: 'Suvarna@12'
+    username: 'useremail@somedomain.com',
+    password: 'p@ssWord!'
   })
     .then((response) => {
       // get bearer_id and set to default
@@ -686,8 +686,8 @@ const mantiumAi = require('mantiumclient-js');
 
 (async () => {
   await mantiumAi.Auth().accessTokenLogin({
-    username: 'kedman1234@gmail.com',
-    password: 'Suvarna@12'
+    username: 'useremail@somedomain.com',
+    password: 'p@ssWord!'
   })
     .then((response) => {
       // get bearer_id and set to default
@@ -748,8 +748,8 @@ const mantiumAi = require('mantiumclient-js');
 
 (async () => {
   await mantiumAi.Auth().accessTokenLogin({
-    username: 'kedman1234@gmail.com',
-    password: 'Suvarna@12'
+    username: 'useremail@somedomain.com',
+    password: 'p@ssWord!'
   })
     .then((response) => {
       // get bearer_id and set to default
