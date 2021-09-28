@@ -12,6 +12,10 @@ const GetAllAiEngines = require("./methods/ai_engines/GetAllAiEngines");
 const GetAiEnginesByProvider = require("./methods/ai_engines/GetAiEnginesByProvider");
 const GetAiEngineByName = require("./methods/ai_engines/GetAiEngineByName");
 
+// Tag
+const Tag = require("./methods/tags/Tag");
+
+
 const Headers = require("./methods/Headers");
 module.exports = {
   api_key: null,
@@ -157,6 +161,101 @@ module.exports = {
     main.all = all;
     main.byProvider = byProvider;
     main.byName = byName;
+
+    return main;
+  })(),
+
+  Tags: (function () {
+
+    /**
+    * Summary: Get all of the tags for your selected organization.
+    * 
+    * This mehtod required Header `Authorization: Bearer {bearer_id}`, you can obtain `bearer_id` using `.Auth().accessTokenLogin()` method.
+    * @param {object} { 'page': 1, 'size': 20 };
+    * 
+    * @return {Method} Provide method list in array format.
+    */
+    function list(data) {
+      return Tag(new Headers(module.exports.api_key, module.exports.organization), { type: 'list', method: 'GET', queryParam: data });
+    }
+
+    /**
+    * Summary: Create a Tag.
+    * 
+    * This mehtod required Header `Authorization: Bearer {bearer_id}`, you can obtain `bearer_id` using `.Auth().accessTokenLogin()` method.
+    * @param {object} { name: 'tag name', description: 'Some description' };
+    * 
+    * @return {Method} Provide method list in array format.
+    */
+    function create(data) {
+      return Tag(new Headers(module.exports.api_key, module.exports.organization), Object.assign({ type: 'item', method: 'POST' }, data));
+    }
+
+    /**
+    * Summary: Update a Tag.
+    * 
+    * This mehtod required Header `Authorization: Bearer {bearer_id}`, you can obtain `bearer_id` using `.Auth().accessTokenLogin()` method.
+    * @param {object} { id: 'tagid', name: 'tag name', description: 'Some description' };
+    * 
+    * @return {Method} Provide method list in array format.
+    */
+    function update(data) {
+      return Tag(new Headers(module.exports.api_key, module.exports.organization), Object.assign({ type: 'item', method: 'PATCH' }, data));
+    }
+
+    /**
+    * Summary: Get details about a specific tag.
+    * 
+    * This mehtod required Header `Authorization: Bearer {bearer_id}`, you can obtain `bearer_id` using `.Auth().accessTokenLogin()` method.
+    * @param {string} id tagid
+    * 
+    * @return {Method} Provide method list in array format.
+    */
+    function retreive(id) {
+      return Tag(new Headers(module.exports.api_key, module.exports.organization), { type: 'item', method: 'GET', id: id });
+    }
+
+    /**
+    * Summary: Get details about a specific tag.
+    * 
+    * This mehtod required Header `Authorization: Bearer {bearer_id}`, you can obtain `bearer_id` using `.Auth().accessTokenLogin()` method.
+    * @param {string} id tagid 
+    * 
+    * @return {Method} Provide method list in array format.
+    */
+    function retreiveId(id) {
+      return Tag(new Headers(module.exports.api_key, module.exports.organization), { type: 'item', method: 'GET', id: id });
+    }
+
+    /**
+    * Summary: Get details about a specific tag.
+    * 
+    * This mehtod required Header `Authorization: Bearer {bearer_id}`, you can obtain `bearer_id` using `.Auth().accessTokenLogin()` method.
+    * @param {string} id tagid
+    * 
+    * @return {Method} Provide method list in array format.
+    */
+    function remove(id) {
+      return Tag(new Headers(module.exports.api_key, module.exports.organization), { type: 'item', method: 'DELETE', id: id });
+    }
+
+    function main() {
+      return {
+        list: list,
+        create: create,
+        update: update,
+        retreive: retreive,
+        retreiveId: retreiveId,
+        remove: remove
+      }
+    }
+
+    main.list = list;
+    main.create = create;
+    main.update = update;
+    main.retreive = retreive;
+    main.retreiveId = retreiveId;
+    main.remove = remove;
 
     return main;
   })(),
