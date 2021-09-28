@@ -17,6 +17,13 @@
     - [Get All AI Engines](#get-all-ai-engines)
     - [Get Ai Engines By Provider](#get-ai-engines-by-provider)
     - [Get Ai Engine By Name](#get-ai-engine-by-name)
+  - [Tags](#tags)
+    - [List Tags](#list-tags)
+    - [Create a Tag](#create-a-tag)
+    - [Get Tag using ID url](#get-tag-using-id-url)
+    - [Get Tag ](#get-tag)
+    - [Update Tag](#update-tag)
+    - [Delete Tag](#delete-tag)
 ## Quickstart:
 Read the [getting started guide](https://developer.mantiumai.com/docs) for more information on how to use Mantium.
 ## Authentication
@@ -432,6 +439,352 @@ const mantiumAi = require('mantiumclient-js');
       use_cases: 'some use cases',
       ai_provider: 'OpenAI',
       cost_ranking: '70'
+    },
+    relationships: {}
+  },
+  included: [],
+  meta: {},
+  links: {}
+}
+```
+[Go to Table of Contents](#table-of-contents)
+
+
+### Tags
+
+#### List Tags
+
+Get all of the tags for your selected organization.  
+
+Query Params  
+`Page` Page number  
+`Size` Page size. If not supplied, returns all the results in a single page for certain APIs.  
+
+[document link](https://developer.mantiumai.com/reference#list_tags_v1_tag__get)
+
+```js
+const mantiumAi = require('mantiumclient-js');
+
+(async () => {
+  await mantiumAi.Auth().accessTokenLogin({
+    username: 'kedman1234@gmail.com',
+    password: 'Suvarna@12'
+  })
+    .then((response) => {
+      // get bearer_id and set to default
+      mantiumAi.api_key = response.data.attributes.bearer_id;
+    });
+
+  /*
+  * API Key is set on above 
+  * mantiumAi.api_key=`key`
+  * so we can call these method directly now
+  */
+  await mantiumAi.Tags().list({ 'page': 1, 'size': 20 }).then((response) => {
+    console.log('*********** Tag list *********');
+    console.log(response);
+  });
+})();
+```
+
+#### Example of a successful completion response
+```js
+{
+  data: [
+    {
+      id: 'some-long-id',
+      type: 'tag',
+      attributes: {
+        tag_id: 'some-long-id',
+        name: 'My Tag',
+        description: 'This is a description',
+        organization_id: 'some-long-id',
+        created_by: 'user-some-long-id',
+        created_at: '2021-09-28T07:33:05.064629+00:00',
+        updated_by: null,
+        updated_at: null
+      },
+      relationships: {}
+    }
+  ],
+  included: [],
+  meta: {},
+  links: { total_items: 1, current_page: 1 }
+}
+```
+[Go to Table of Contents](#table-of-contents)
+
+#### Create a Tag
+
+Name (string) Tag name  
+Description (string) Optional value for tags used to add additional data regarding a tag  
+
+[document link](https://developer.mantiumai.com/reference#post_tag_v1_tag__post)
+```js
+const mantiumAi = require('mantiumclient-js');
+
+(async () => {
+  await mantiumAi.Auth().accessTokenLogin({
+    username: 'kedman1234@gmail.com',
+    password: 'Suvarna@12'
+  })
+    .then((response) => {
+      // get bearer_id and set to default
+      mantiumAi.api_key = response.data.attributes.bearer_id;
+    });
+
+  /*
+  * API Key is set on above 
+  * mantiumAi.api_key=`key`
+  * so we can call these method directly now
+  */
+  await mantiumAi.Tags().create({
+    name: 'tag name 1',
+    description: 'Some description'
+  }).then((response) => {
+    console.log('*********** Tag create *********');
+    console.log(response);
+  });
+})();
+```
+#### Example of a successful completion response
+```js
+{
+  data: {
+    id: 'some-long-id',
+    type: 'tag',
+    attributes: {
+      tag_id: 'some-long-id',
+      name: 'tag name 1',
+      description: 'Some description',
+      organization_id: 'organization-some-long-id',
+      created_by: 'user-some-long-id',
+      created_at: '2021-09-28T08:15:12.797516+00:00',
+      updated_by: null,
+      updated_at: null
+    },
+    relationships: {}
+  },
+  included: [],
+  meta: {},
+  links: {}
+}
+```
+[Go to Table of Contents](#table-of-contents)
+
+#### Get Tag using ID url
+
+Get details about a specific tag.  
+
+Tag Id* (string)* required parameter  
+
+[document link](https://developer.mantiumai.com/reference#get_tag_v1_tag_id__tag_id__get)
+```js
+const mantiumAi = require('mantiumclient-js');
+
+(async () => {
+  await mantiumAi.Auth().accessTokenLogin({
+    username: 'kedman1234@gmail.com',
+    password: 'Suvarna@12'
+  })
+    .then((response) => {
+      // get bearer_id and set to default
+      mantiumAi.api_key = response.data.attributes.bearer_id;
+    });
+
+  /*
+  * API Key is set on above 
+  * mantiumAi.api_key=`key`
+  * so we can call these method directly now
+  */
+  await mantiumAi.Tags().retreiveId('some-long-id').then((response) => {
+    console.log('*********** Tag Retreive by id *********');
+    console.log(response.data);
+  });
+})();
+```
+#### Example of a successful completion response
+```js
+// *********** Tag Retreive by id *********
+{
+  id: 'some-long-id',
+  type: 'tag',
+  attributes: {
+    created_at: '2021-09-28T08:15:12.797516+00:00',
+    updated_at: null,
+    tag_id: 'some-long-id',
+    organization_id: 'organization-some-long-id',
+    name: 'tag name 1',
+    description: 'Some description',
+    created_by: 'user-some-long-id',
+    updated_by: null
+  },
+  relationships: {}
+}
+```
+[Go to Table of Contents](#table-of-contents)
+
+#### Get Tag 
+
+Get details about a specific tag.  
+
+Tag Id* (string)* required parameter  
+
+[document link](https://developer.mantiumai.com/reference#get_tag_v1_tag__tag_id__get)
+```js
+(async () => {
+  await mantiumAi.Auth().accessTokenLogin({
+    username: 'kedman1234@gmail.com',
+    password: 'Suvarna@12'
+  })
+    .then((response) => {
+      // get bearer_id and set to default
+      mantiumAi.api_key = response.data.attributes.bearer_id;
+    });
+
+  /*
+  * API Key is set on above 
+  * mantiumAi.api_key=`key`
+  * so we can call these method directly now
+  */
+  await mantiumAi.Tags().retreive('some-long-id').then((response) => {
+    console.log('*********** Tag Retreive *********');
+    console.log(response.data);
+  });
+})();
+```
+
+#### Example of a successful completion response
+```js
+*********** Tag Retreive *********
+{
+  id: 'some-long-id',
+  type: 'tag',
+  attributes: {
+    created_at: '2021-09-28T08:15:12.797516+00:00',
+    updated_at: null,
+    tag_id: 'some-long-id',
+    organization_id: 'organization-some-long-id',
+    name: 'tag name 1',
+    description: 'Some description',
+    created_by: 'user-some-long-id',
+    updated_by: null
+  },
+  relationships: {}
+}
+```
+[Go to Table of Contents](#table-of-contents)
+
+#### Update Tag
+
+Update details about a specific tag.  
+
+Tag Id* (string)* required parameter  
+[document link](https://developer.mantiumai.com/reference#patch_tag_v1_tag__tag_id__patch)
+```js
+const mantiumAi = require('mantiumclient-js');
+
+(async () => {
+  await mantiumAi.Auth().accessTokenLogin({
+    username: 'kedman1234@gmail.com',
+    password: 'Suvarna@12'
+  })
+    .then((response) => {
+      // get bearer_id and set to default
+      mantiumAi.api_key = response.data.attributes.bearer_id;
+    });
+
+  /*
+  * API Key is set on above 
+  * mantiumAi.api_key=`key`
+  * so we can call these method directly now
+  */
+  await mantiumAi.Tags().update({
+    id: 'some-long-id',
+    name: 'New tag name',
+    description: 'Some long description'
+  }).then((response) => {
+    // save this tag id to edit the same tag
+    tag_id = response.data.attributes.tag_id;
+    console.log('*********** Tag updated *********');
+    console.log(response);
+  });
+})();
+```
+#### Example of a successful completion response
+```js
+// *********** Tag updated *********
+{
+  data: {
+    id: 'some-long-id',
+    type: 'tag',
+    attributes: {
+      created_at: '2021-09-28T08:15:12.797516+00:00',
+      updated_at: '2021-09-28T08:27:19.940023+00:00',
+      tag_id: 'some-long-id',
+      organization_id: 'organization-some-long-id',
+      name: 'New tag name',
+      description: 'Some long description',
+      created_by: 'user-some-long-id',
+      updated_by: 'user-some-long-id'
+    },
+    relationships: {}
+  },
+  included: [],
+  meta: {},
+  links: {}
+}
+```
+[Go to Table of Contents](#table-of-contents)
+
+
+#### Delete Tag
+Delete a specific tag.  
+
+Tag Id* (string)* required parameter  
+[document link](https://developer.mantiumai.com/reference#delete_tag_v1_tag__tag_id__delete)
+```js
+const mantiumAi = require('mantiumclient-js');
+
+(async () => {
+  await mantiumAi.Auth().accessTokenLogin({
+    username: 'kedman1234@gmail.com',
+    password: 'Suvarna@12'
+  })
+    .then((response) => {
+      // get bearer_id and set to default
+      mantiumAi.api_key = response.data.attributes.bearer_id;
+    });
+
+  /*
+  * API Key is set on above 
+  * mantiumAi.api_key=`key`
+  * so we can call these method directly now
+  */
+  await mantiumAi.Tags().remove('some-long-id').then((response) => {
+    // save this tag id to edit the same tag
+    tag_id = response.data.attributes.tag_id;
+    console.log('*********** Tag remove *********');
+    console.log(response);
+  });
+})();
+```
+#### Example of a successful completion response
+```js
+// *********** Tag remove *********
+{
+  data: {
+    id: 'some-long-id',
+    type: 'tag',
+    attributes: {
+      created_at: '2021-09-28T08:15:12.797516+00:00',
+      updated_at: '2021-09-28T08:27:19.940023+00:00',
+      tag_id: 'some-long-id',
+      organization_id: 'organization-some-long-id',
+      name: 'New tag name',
+      description: 'Some long description',
+      created_by: 'user-some-long-id',
+      updated_by: 'user-some-long-id'
     },
     relationships: {}
   },
