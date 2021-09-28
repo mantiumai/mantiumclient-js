@@ -65,7 +65,7 @@ module.exports = {
     }
     main.accessTokenLogin = accessTokenLogin;
     main.revokeToken = revokeToken;
-    main.ResetPassword = ResetPassword;
+    main.resetPassword = resetPassword;
 
     return main;
   })(),
