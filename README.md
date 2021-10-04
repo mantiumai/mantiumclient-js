@@ -27,10 +27,11 @@
 ## Quickstart:
 Read the [getting started guide](https://developer.mantiumai.com/docs) for more information on how to use Mantium.
 ## Authentication
-Make an account by visiting [app.mantiumai.com](https://app.mantiumai.com) and selecting register. Enter your email address and create a password. After you verify the email, you'll be able to sign in to the Mantium application. You'll also need your username and password to obtain a token for API use.
+- Make an account by visiting [app.mantiumai.com](https://app.mantiumai.com) and select Register.
+- Enter your email address and create a password. After you've verified the email, you'll be able to sign in to the Mantium application. You'll also need your username and password to obtain a token for API use.
 
 ## Installation
-You need [Node.js](https://nodejs.org/en/) installed on your computer. To install JavaScript Library please use following command
+Install [Node.js](https://nodejs.org/en/) on your computer. To install JavaScript Library please use the following command.
 
 ```js
   npm install mantiumclient-js
@@ -52,11 +53,11 @@ You need [Node.js](https://nodejs.org/en/) installed on your computer. To instal
 get started with the login and use the API
 
 #### Login
-Obtain access token for a user  
-Requirements:  
-username: user's username  
-password: user's password  
-[document link](https://developer.mantiumai.com/reference#access_token_login_v1_auth_login_access_token_post)
+Obtain access token for a user
+Requirements:
+username: user's username
+password: user's password
+[Document link](https://developer.mantiumai.com/reference#access_token_login_v1_auth_login_access_token_post)
 
 ```js
 const mantiumAi = require('mantiumclient-js');
@@ -96,11 +97,11 @@ const mantiumAi = require('mantiumclient-js');
 [Go to Table of Contents](#table-of-contents)
 
 #### Logout
-Invalidate a user's Access token (logout)  
-Requires HTTP Authorization with the bearer_id  
-Requirements:  
-bearer_id: bearer id  
-[document link](https://developer.mantiumai.com/reference#revoke_token_v1_auth_user_revoke_token_post)
+Invalidate a user's Access token (logout)
+Requires HTTP Authorization with the bearer_id
+Requirements:
+bearer_id: bearer id
+[Document link](https://developer.mantiumai.com/reference#revoke_token_v1_auth_user_revoke_token_post)
 ```js
 const mantiumAi = require('mantiumclient-js');
 
@@ -126,7 +127,7 @@ const mantiumAi = require('mantiumclient-js');
       mantiumAi.api_key = response.data.attributes.bearer_id;
     });
   /*
-  * API Key is set on above 
+  * API Key is set on above
   * mantiumAi.api_key=`key`
   * so we can call these method directly now
   */
@@ -156,11 +157,11 @@ const mantiumAi = require('mantiumclient-js');
 [Go to Table of Contents](#table-of-contents)
 
 #### Reset Password
-Triggers a password reset user's password. An email with a link would be sent  
-Requires HTTP Authorization with the bearer_id  
-Requirements:  
-email: user's registered email  
-[document link](https://developer.mantiumai.com/reference#reset_password_v1_auth_user_reset_password_post)
+Triggers a password reset user's password. An email with a link would be sent
+Requires HTTP Authorization with the bearer_id
+Requirements:
+email: user's registered email
+[Document link](https://developer.mantiumai.com/reference#reset_password_v1_auth_user_reset_password_post)
 
 ```js
  const mantiumAi = require('mantiumclient-js');
@@ -176,7 +177,7 @@ email: user's registered email
     });
 
   /*
-  * API Key is set on above 
+  * API Key is set on above
   * mantiumAi.api_key=`key`
   * so we can call these method directly now
   */
@@ -206,11 +207,11 @@ email: user's registered email
 ```
 [Go to Table of Contents](#table-of-contents)
 ### AI Methods
-Get all of the supported ai_methods for a provider  
+Get all of the supported ai_methods for a provider
 #### List Methods
 
-Require AI Provider name (case sensitive)*  
-[document link](https://developer.mantiumai.com/reference#get_ai_engine_by_name_v1_ai_engine_get_name__name__get)
+Require AI Provider name (case sensitive)*
+[Document link](https://developer.mantiumai.com/reference#get_ai_engine_by_name_v1_ai_engine_get_name__name__get)
 
 ```js
 const mantiumAi = require('mantiumclient-js');
@@ -225,7 +226,7 @@ const mantiumAi = require('mantiumclient-js');
       mantiumAi.api_key = response.data.attributes.bearer_id;
     });
   /*
-  * API Key is set on above 
+  * API Key is set on above
   * mantiumAi.api_key=`key`
   * so we can call these method directly now
   */
@@ -248,7 +249,7 @@ const mantiumAi = require('mantiumclient-js');
         api_name: 'answers',
         description: 'Returns answers',
         shareable: false,
-        ai_provider: { 
+        ai_provider: {
           name: 'OpenAI',
           description: 'OpenAI -- https://openai.org'
         },
@@ -271,14 +272,14 @@ const mantiumAi = require('mantiumclient-js');
 ```
 [Go to Table of Contents](#table-of-contents)
 ### AI Engines
-Get available AI engines  
+Get available AI engines
 #### Get All AI Engines
-Get all of the configured and available AI engines  
+Get all of the configured and available AI engines
 
-Query Params  
-`Page` Page number  
-`Size` Page size. If not supplied, returns all the results in a single page for certain APIs.  
-[document link](https://developer.mantiumai.com/reference#get_all_ai_engines_v1_ai_engine_all_get)
+Query Params
+`Page` Page number
+`Size` Page size. If not supplied, returns all the results in a single page for certain APIs.
+[Document link](https://developer.mantiumai.com/reference#get_all_ai_engines_v1_ai_engine_all_get)
 
 ```js
 const mantiumAi = require('mantiumclient-js');
@@ -294,7 +295,7 @@ const mantiumAi = require('mantiumclient-js');
     });
 
   /*
-  * API Key is set on above 
+  * API Key is set on above
   * mantiumAi.api_key=`key`
   * so we can call these method directly now
   */
@@ -328,14 +329,14 @@ const mantiumAi = require('mantiumclient-js');
 [Go to Table of Contents](#table-of-contents)
 
 #### Get AI Engines By Provider
-List all of the AI Engines for a specific AI Provider  
-AI Provider name (case sensitive)  
+List all of the AI Engines for a specific AI Provider
+AI Provider name (case sensitive)
 
-Query Params  
-`Page` Page number  
-`Size` Page size. If not supplied, returns all the results in a single page for certain APIs.  
+Query Params
+`Page` Page number
+`Size` Page size. If not supplied, returns all the results in a single page for certain APIs.
 
-[document link](https://developer.mantiumai.com/reference#get_ai_engines_by_provider_v1_ai_engine_get_ai_providers__ai_provider__get)  
+[Document link](https://developer.mantiumai.com/reference#get_ai_engines_by_provider_v1_ai_engine_get_ai_providers__ai_provider__get)
 ```js
 const mantiumAi = require('mantiumclient-js');
 
@@ -350,7 +351,7 @@ const mantiumAi = require('mantiumclient-js');
     });
 
   /*
-  * API Key is set on above 
+  * API Key is set on above
   * mantiumAi.api_key=`key`
   * so we can call these method directly now
   */
@@ -397,11 +398,11 @@ const mantiumAi = require('mantiumclient-js');
 [Go to Table of Contents](#table-of-contents)
 
 #### Get AI Engine By Name
-Get the details for a specific AI Engine  
+Get the details for a specific AI Engine
 
 require: AI Engine name
 
-[document link](https://developer.mantiumai.com/reference#get_ai_engine_by_name_v1_ai_engine_get_name__name__get)
+[Document link](https://developer.mantiumai.com/reference#get_ai_engine_by_name_v1_ai_engine_get_name__name__get)
 ```js
 const mantiumAi = require('mantiumclient-js');
 
@@ -415,7 +416,7 @@ const mantiumAi = require('mantiumclient-js');
       mantiumAi.api_key = response.data.attributes.bearer_id;
     });
   /*
-  * API Key is set on above 
+  * API Key is set on above
   * mantiumAi.api_key=`key`
   * so we can call these method directly now
   */
@@ -454,13 +455,13 @@ const mantiumAi = require('mantiumclient-js');
 
 #### List Tags
 
-Get all of the tags for your selected organization.  
+Get all of the tags for your selected organization.
 
-Query Params  
-`Page` Page number  
-`Size` Page size. If not supplied, returns all the results in a single page for certain APIs.  
+Query Params
+`Page` Page number
+`Size` Page size. If not supplied, returns all the results in a single page for certain APIs.
 
-[document link](https://developer.mantiumai.com/reference#list_tags_v1_tag__get)
+[Document link](https://developer.mantiumai.com/reference#list_tags_v1_tag__get)
 
 ```js
 const mantiumAi = require('mantiumclient-js');
@@ -476,7 +477,7 @@ const mantiumAi = require('mantiumclient-js');
     });
 
   /*
-  * API Key is set on above 
+  * API Key is set on above
   * mantiumAi.api_key=`key`
   * so we can call these method directly now
   */
@@ -516,10 +517,10 @@ const mantiumAi = require('mantiumclient-js');
 
 #### Create a Tag
 
-Name (string) Tag name  
-Description (string) Optional value for tags used to add additional data regarding a tag  
+Name (string) Tag name
+Description (string) Optional value for tags used to add additional data regarding a tag
 
-[document link](https://developer.mantiumai.com/reference#post_tag_v1_tag__post)
+[Document link](https://developer.mantiumai.com/reference#post_tag_v1_tag__post)
 ```js
 const mantiumAi = require('mantiumclient-js');
 
@@ -534,7 +535,7 @@ const mantiumAi = require('mantiumclient-js');
     });
 
   /*
-  * API Key is set on above 
+  * API Key is set on above
   * mantiumAi.api_key=`key`
   * so we can call these method directly now
   */
@@ -574,11 +575,11 @@ const mantiumAi = require('mantiumclient-js');
 
 #### Get Tag using ID url
 
-Get details about a specific tag.  
+Get details about a specific tag.
 
-Tag Id* (string)* required parameter  
+Tag Id* (string)* required parameter
 
-[document link](https://developer.mantiumai.com/reference#get_tag_v1_tag_id__tag_id__get)
+[Document link](https://developer.mantiumai.com/reference#get_tag_v1_tag_id__tag_id__get)
 ```js
 const mantiumAi = require('mantiumclient-js');
 
@@ -593,7 +594,7 @@ const mantiumAi = require('mantiumclient-js');
     });
 
   /*
-  * API Key is set on above 
+  * API Key is set on above
   * mantiumAi.api_key=`key`
   * so we can call these method directly now
   */
@@ -624,13 +625,13 @@ const mantiumAi = require('mantiumclient-js');
 ```
 [Go to Table of Contents](#table-of-contents)
 
-#### Get Tag 
+#### Get Tag
 
-Get details about a specific tag.  
+Get details about a specific tag.
 
-Tag Id* (string)* required parameter  
+Tag Id* (string)* required parameter
 
-[document link](https://developer.mantiumai.com/reference#get_tag_v1_tag__tag_id__get)
+[Document link](https://developer.mantiumai.com/reference#get_tag_v1_tag__tag_id__get)
 ```js
 (async () => {
   await mantiumAi.Auth().accessTokenLogin({
@@ -643,7 +644,7 @@ Tag Id* (string)* required parameter
     });
 
   /*
-  * API Key is set on above 
+  * API Key is set on above
   * mantiumAi.api_key=`key`
   * so we can call these method directly now
   */
@@ -677,10 +678,10 @@ Tag Id* (string)* required parameter
 
 #### Update Tag
 
-Update details about a specific tag.  
+Update details about a specific tag.
 
-Tag Id* (string)* required parameter  
-[document link](https://developer.mantiumai.com/reference#patch_tag_v1_tag__tag_id__patch)
+Tag Id* (string)* required parameter
+[Document link](https://developer.mantiumai.com/reference#patch_tag_v1_tag__tag_id__patch)
 ```js
 const mantiumAi = require('mantiumclient-js');
 
@@ -695,7 +696,7 @@ const mantiumAi = require('mantiumclient-js');
     });
 
   /*
-  * API Key is set on above 
+  * API Key is set on above
   * mantiumAi.api_key=`key`
   * so we can call these method directly now
   */
@@ -739,10 +740,10 @@ const mantiumAi = require('mantiumclient-js');
 
 
 #### Delete Tag
-Delete a specific tag.  
+Delete a specific tag.
 
-Tag Id* (string)* required parameter  
-[document link](https://developer.mantiumai.com/reference#delete_tag_v1_tag__tag_id__delete)
+Tag Id* (string)* required parameter
+[Document link](https://developer.mantiumai.com/reference#delete_tag_v1_tag__tag_id__delete)
 ```js
 const mantiumAi = require('mantiumclient-js');
 
@@ -757,7 +758,7 @@ const mantiumAi = require('mantiumclient-js');
     });
 
   /*
-  * API Key is set on above 
+  * API Key is set on above
   * mantiumAi.api_key=`key`
   * so we can call these method directly now
   */
