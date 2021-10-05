@@ -211,7 +211,7 @@ module.exports = {
     *
     * @return {Method} Provide method list in array format.
     */
-    function retreive(id) {
+    function retrieve(id) {
       return Tag(new Headers(module.exports.api_key, module.exports.organization), { type: 'item', method: 'GET', id: id });
     }
 
@@ -223,7 +223,7 @@ module.exports = {
     *
     * @return {Method} Provide method list in array format.
     */
-    function retreiveId(id) {
+    function retrieveId(id) {
       return Tag(new Headers(module.exports.api_key, module.exports.organization), { type: 'item', method: 'GET', id: id });
     }
 
@@ -244,8 +244,8 @@ module.exports = {
         list: list,
         create: create,
         update: update,
-        retreive: retreive,
-        retreiveId: retreiveId,
+        retrieve: retrieve,
+        retrieveId: retrieveId,
         remove: remove
       }
     }
@@ -253,8 +253,8 @@ module.exports = {
     main.list = list;
     main.create = create;
     main.update = update;
-    main.retreive = retreive;
-    main.retreiveId = retreiveId;
+    main.retrieve = retrieve;
+    main.retrieveId = retrieveId;
     main.remove = remove;
 
     return main;

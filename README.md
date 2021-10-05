@@ -598,15 +598,15 @@ const mantiumAi = require('mantiumclient-js');
   * mantiumAi.api_key=`key`
   * so we can call these method directly now
   */
-  await mantiumAi.Tags().retreiveId('some-long-id').then((response) => {
-    console.log('*********** Tag Retreive by id *********');
+  await mantiumAi.Tags().retrieveId('some-long-id').then((response) => {
+    console.log('*********** Tag retrieve by id *********');
     console.log(response.data);
   });
 })();
 ```
 #### Example of a successful completion response
 ```js
-// *********** Tag Retreive by id *********
+// *********** Tag retrieve by id *********
 {
   id: 'some-long-id',
   type: 'tag',
@@ -648,8 +648,8 @@ Tag Id* (string)* required parameter
   * mantiumAi.api_key=`key`
   * so we can call these method directly now
   */
-  await mantiumAi.Tags().retreive('some-long-id').then((response) => {
-    console.log('*********** Tag Retreive *********');
+  await mantiumAi.Tags().retrieve('some-long-id').then((response) => {
+    console.log('*********** Tag retrieve *********');
     console.log(response.data);
   });
 })();
@@ -657,7 +657,7 @@ Tag Id* (string)* required parameter
 
 #### Example of a successful completion response
 ```js
-*********** Tag Retreive *********
+*********** Tag retrieve *********
 {
   id: 'some-long-id',
   type: 'tag',
