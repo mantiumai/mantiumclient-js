@@ -10,7 +10,6 @@
   - [Auth](#auth)
     - [Login](#login)
     - [Logout](#logout)
-    - [Reset Password](#reset-password)
   - [AI Methods](#ai-methods)
     - [List Methods](#list-methods)
   - [AI Engines](#ai-engines)
@@ -156,56 +155,6 @@ const mantiumAi = require('mantiumclient-js');
 ```
 [Go to Table of Contents](#table-of-contents)
 
-#### Reset Password
-Triggers a password reset user's password. An email with a link would be sent
-Requires HTTP Authorization with the bearer_id
-Requirements:
-email: user's registered email
-[Document link](https://developer.mantiumai.com/reference#reset_password_v1_auth_user_reset_password_post)
-
-```js
- const mantiumAi = require('mantiumclient-js');
-
-(async () => {
-  await mantiumAi.Auth().accessTokenLogin({
-    username: 'useremail@somedomain.com',
-    password: 'p@ssWord!'
-  })
-    .then((response) => {
-      // get bearer_id and set to default
-      mantiumAi.api_key = response.data.attributes.bearer_id;
-    });
-
-  /*
-  * API Key is set on above
-  * mantiumAi.api_key=`key`
-  * so we can call these method directly now
-  */
-  const loginResetResponse = await mantiumAi.Auth().resetPassword({
-    email: 'useremail@somedomain.com'
-  }).then((response) => {
-    return response;
-  });
-  console.log('*********** resetPassword *********');
-  console.log(loginResetResponse);
-
-})();
-```
-#### Example of a successful completion response
-```js
-{
-  data: {
-    id: 'some-long-id',
-    type: 'password_reset',
-    attributes: { error: null, message: 'Operation was successful' },
-    relationships: {}
-  },
-  included: [],
-  meta: {},
-  links: {}
-}
-```
-[Go to Table of Contents](#table-of-contents)
 ### AI Methods
 Get all of the supported ai_methods for a provider
 #### List Methods

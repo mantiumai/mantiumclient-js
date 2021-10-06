@@ -59,18 +59,6 @@ module.exports = {
       return Logout(new Headers(module.exports.api_key, module.exports.organization));
     }
 
-    /**
-    * Summary: This method trigger reset password email with a link.
-    *
-    * This method requires Header `Authorization: Bearer {bearer_id}`, you can obtain `bearer_id` using `.Auth().accessTokenLogin()` method.
-    *
-    * @param {object} { email: useremail@somedomain.com } User's email/Login email.
-    * @return {object} Provide information with success message.
-    */
-    function resetPassword(data) {
-      return ResetPassword(new Headers(module.exports.api_key, module.exports.organization), data);
-    }
-
     function main() {
       return {
         accessTokenLogin: accessTokenLogin,
