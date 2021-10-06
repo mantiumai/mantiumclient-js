@@ -1,0 +1,51 @@
+{
+  "name": "mantiumclient-js",
+  "version": "0.0.1",
+  "description": "JavaScript client for the Mantium AI API.",
+  "main": "lib/index.js",
+  "scripts": {
+    "build": "babel ./src -d ./lib",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mantiumai/mantiumclient-js.git"
+  },
+  "keywords": [
+    "Mantium",
+    "MantiumAPI",
+    "OpenAI",
+    "OpenaiApi",
+    "Cohere",
+    "Ai21",
+    "node",
+    "javascript",
+    "GPT",
+    "Eleuther",
+    "NLP",
+    "GPT-3",
+    "GPT3",
+    "GPT-J"
+  ],
+  "author": "MantiumAi",
+  "contributors": [
+    {
+      "name": "Kedar Vijay Kulkarni",
+      "url": "https://github.com/kedarvijaykulkarni"
+    }
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mantiumai/mantiumclient-js/issues"
+  },
+  "homepage": "https://github.com/mantiumai/mantiumclient-js#readme",
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "eslint": "^7.32.0"
+  },
+  "dependencies": {
+    "dotenv": "^10.0.0",
+    "request": "^2.88.2"
+  }
+}
