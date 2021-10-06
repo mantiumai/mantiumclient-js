@@ -1,22 +1,25 @@
-// const DEFAULT_ENGINE = 'Mantium';
-const ORIGIN = 'https://api.mantiumai.com';
-const API_VERSION = 'v1';
-const URL = `${ORIGIN}/${API_VERSION}`
+const index = require('../index');
 
 module.exports = {
+  /*
+  * Construct base URL
+  */
+  baseURL() {
+    return `${index.getOrigin()}/${index.getApiVersion()}`
+  },
 
   /*
   * Auth endpoints
   * https://developer.mantiumai.com/reference#auth
   */
   accessTokenLoginURL() {
-    return `${URL}/auth/login/access/token`;
+    return `${this.baseURL()}/auth/login/access/token`;
   },
   resetPasswordURL() {
-    return `${URL}/auth/user/reset/password`;
+    return `${this.baseURL()}/auth/user/reset/password`;
   },
   revokeTokenURL() {
-    return `${URL}/auth/user/revoke/token`;
+    return `${this.baseURL()}/auth/user/revoke/token`;
   },
 
   /*
@@ -24,7 +27,7 @@ module.exports = {
   * https://developer.mantiumai.com/reference#ai_methods
   */
   aiMethodsURL() {
-    return `${URL}/ai_methods`;
+    return `${this.baseURL()}/ai_methods`;
   },
 
   /*
@@ -32,13 +35,13 @@ module.exports = {
   * https://developer.mantiumai.com/reference#ai-engines
   */
   aiEnginesAllURL() {
-    return `${URL}/ai/engine/all`;
+    return `${this.baseURL()}/ai/engine/all`;
   },
   aiEnginesByProviderURL() {
-    return `${URL}/ai/engine/get/ai/providers`;
+    return `${this.baseURL()}/ai/engine/get/ai/providers`;
   },
   aiEnginesByNameURL() {
-    return `${URL}/ai/engine/get/name`;
+    return `${this.baseURL()}/ai/engine/get/name`;
   },
 
   /*
@@ -46,6 +49,6 @@ module.exports = {
   * https://developer.mantiumai.com/reference#tags
   */
   tagsURL(isOldURL = false) {
-    return `${URL}/tag${isOldURL ? '/id' : ''}`;
+    return `${this.baseURL()}/tag${isOldURL ? '/id' : ''}`;
   }
 };

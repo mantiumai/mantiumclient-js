@@ -1,3 +1,16 @@
+const getOrigin = () => {
+  return module.exports.ORIGIN;
+};
+
+const getApiVersion = () => {
+  return module.exports.API_VERSION;
+};
+
+exports.getOrigin = getOrigin;
+exports.getApiVersion = getApiVersion;
+
+// Class Headers (used to set header)
+const Headers = require("./methods/Headers");
 
 // Auth
 const Login = require("./methods/auth/Login");
@@ -16,8 +29,10 @@ const GetAiEngineByName = require("./methods/ai_engines/GetAiEngineByName");
 const Tag = require("./methods/tags/Tag");
 
 
-const Headers = require("./methods/Headers");
 module.exports = {
+  ORIGIN: 'https://api.mantiumai.com',
+  API_VERSION: 'v1',
+
   api_key: null,
   ai_provider: 'mantium',
   organization: null,
