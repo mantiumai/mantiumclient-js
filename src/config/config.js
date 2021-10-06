@@ -15,9 +15,6 @@ module.exports = {
   accessTokenLoginURL() {
     return `${this.baseURL()}/auth/login/access/token`;
   },
-  resetPasswordURL() {
-    return `${this.baseURL()}/auth/user/reset/password`;
-  },
   revokeTokenURL() {
     return `${this.baseURL()}/auth/user/revoke/token`;
   },

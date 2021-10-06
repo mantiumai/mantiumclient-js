@@ -61,13 +61,11 @@ module.exports = {
     function main() {
       return {
         accessTokenLogin: accessTokenLogin,
-        revokeToken: revokeToken,
-        resetPassword: resetPassword
+        revokeToken: revokeToken
       };
     }
     main.accessTokenLogin = accessTokenLogin;
     main.revokeToken = revokeToken;
-    main.resetPassword = resetPassword;
 
     return main;
   })(),
