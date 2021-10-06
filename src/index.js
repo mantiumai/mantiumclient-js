@@ -15,7 +15,6 @@ const Headers = require("./methods/Headers");
 // Auth
 const Login = require("./methods/auth/Login");
 const Logout = require("./methods/auth/Logout");
-const ResetPassword = require("./methods/auth/ResetPassword");
 
 // Ai methods
 const ListMethods = require("./methods/ai_methods/ListMethods");
