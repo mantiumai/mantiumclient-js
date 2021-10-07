@@ -1,8 +1,20 @@
+const getOrigin = () => {
+  return module.exports.ORIGIN;
+};
+
+const getApiVersion = () => {
+  return module.exports.API_VERSION;
+};
+
+exports.getOrigin = getOrigin;
+exports.getApiVersion = getApiVersion;
+
+// Class Headers (used to set header)
+const Headers = require("./methods/Headers");
 
 // Auth
 const Login = require("./methods/auth/Login");
 const Logout = require("./methods/auth/Logout");
-const ResetPassword = require("./methods/auth/ResetPassword");
 
 // Ai methods
 const ListMethods = require("./methods/ai_methods/ListMethods");
@@ -16,8 +28,10 @@ const GetAiEngineByName = require("./methods/ai_engines/GetAiEngineByName");
 const Tag = require("./methods/tags/Tag");
 
 
-const Headers = require("./methods/Headers");
 module.exports = {
+  ORIGIN: 'https://api.mantiumai.com',
+  API_VERSION: 'v1',
+
   api_key: null,
   ai_provider: 'mantium',
   organization: null,
@@ -35,37 +49,23 @@ module.exports = {
 
     /**
     * Summary: Returns Object as response in the API call.
-    * 
-    * This mehtod required Header `Authorization: Bearer {bearer_id}`, you can obtain `bearer_id` using `.Auth().accessTokenLogin()` method.
-    * 
+    *
+    * This method requires Header `Authorization: Bearer {bearer_id}`, you can obtain `bearer_id` using `.Auth().accessTokenLogin()` method.
+    *
     * @return {object} Invalidate a user's Access token (logout).
     */
     function revokeToken() {
       return Logout(new Headers(module.exports.api_key, module.exports.organization));
     }
 
-    /**
-    * Summary: This method trigger reset password email with a link.
-    * 
-    * This mehtod required Header `Authorization: Bearer {bearer_id}`, you can obtain `bearer_id` using `.Auth().accessTokenLogin()` method.
-    *
-    * @param {object} { email: useremail@somedomain.com } User's email/Login email.
-    * @return {object} Provide information with success message.
-    */
-    function resetPassword(data) {
-      return ResetPassword(new Headers(module.exports.api_key, module.exports.organization), data);
-    }
-
     function main() {
       return {
         accessTokenLogin: accessTokenLogin,
-        revokeToken: revokeToken,
-        resetPassword: resetPassword
+        revokeToken: revokeToken
       };
     }
     main.accessTokenLogin = accessTokenLogin;
     main.revokeToken = revokeToken;
-    main.ResetPassword = ResetPassword;
 
     return main;
   })(),
@@ -75,8 +75,8 @@ module.exports = {
 
     /**
     * Summary: Get all of the supported ai_methods for a provider.
-    * 
-    * This mehtod required Header `Authorization: Bearer {bearer_id}`, you can obtain `bearer_id` using `.Auth().accessTokenLogin()` method.
+    *
+    * This method requires Header `Authorization: Bearer {bearer_id}`, you can obtain `bearer_id` using `.Auth().accessTokenLogin()` method.
     * @param {object} { page: 1, size: 2 } the query param in the format of key pair.
     * @return {Method} Provide method list in array format.
     */
@@ -86,8 +86,8 @@ module.exports = {
 
     /**
     * Summary: take provider name to perfom GET AI methods.
-    * 
-    * This mehtod required Header `Authorization: Bearer {bearer_id}`, you can obtain `bearer_id` using `.Auth().accessTokenLogin()` method.
+    *
+    * This method requires Header `Authorization: Bearer {bearer_id}`, you can obtain `bearer_id` using `.Auth().accessTokenLogin()` method.
     * AI Provider name (case sensitive)
     *
     * @param {string} Provider some provider like `openai`, `cohere`, `mantium`, `OpenAI`, `Cohere`, `Mantium`
@@ -109,8 +109,8 @@ module.exports = {
 
     /**
     * Summary: Get all of the configured and available AI engines.
-    * 
-    * This mehtod required Header `Authorization: Bearer {bearer_id}`, you can obtain `bearer_id` using `.Auth().accessTokenLogin()` method.
+    *
+    * This method requires Header `Authorization: Bearer {bearer_id}`, you can obtain `bearer_id` using `.Auth().accessTokenLogin()` method.
     * @param {object} { page: 1, size: 2 } the query param in the format of key pair.
     * @return {Method} Provide method list in array format.
     */
@@ -120,8 +120,8 @@ module.exports = {
 
     /**
     * Summary: List all of the AI Engines for a specific AI Provider.
-    * 
-    * This mehtod required Header `Authorization: Bearer {bearer_id}`, you can obtain `bearer_id` using `.Auth().accessTokenLogin()` method.
+    *
+    * This method requires Header `Authorization: Bearer {bearer_id}`, you can obtain `bearer_id` using `.Auth().accessTokenLogin()` method.
     * @param {object} { page: 1, size: 2 } the query param in the format of key pair.
     * @return {Method} Provide method list in array format.
     */
@@ -131,8 +131,8 @@ module.exports = {
 
     /**
     * Summary: Get the details for a specific AI Engine.
-    * 
-    * This mehtod required Header `Authorization: Bearer {bearer_id}`, you can obtain `bearer_id` using `.Auth().accessTokenLogin()` method.
+    *
+    * This method requires Header `Authorization: Bearer {bearer_id}`, you can obtain `bearer_id` using `.Auth().accessTokenLogin()` method.
     * @param {object} { page: 1, size: 2 } the query param in the format of key pair.
     * @return {Method} Provide method list in array format.
     */
@@ -142,8 +142,8 @@ module.exports = {
 
     /**
     * Summary: take provider or engine name to perfom GET AI Engines.
-    * 
-    * This mehtod required Header `Authorization: Bearer {bearer_id}`, you can obtain `bearer_id` using `.Auth().accessTokenLogin()` method.
+    *
+    * This method requires Header `Authorization: Bearer {bearer_id}`, you can obtain `bearer_id` using `.Auth().accessTokenLogin()` method.
     * AI Provider name (case sensitive), Only one parameter is required either `Provider Name` or `Engine`
     *
     * @param {string} Provider some provider like `openai`, `cohere`, `mantium`, `OpenAI`, `Cohere`, `Mantium`
@@ -169,10 +169,10 @@ module.exports = {
 
     /**
     * Summary: Get all of the tags for your selected organization.
-    * 
-    * This mehtod required Header `Authorization: Bearer {bearer_id}`, you can obtain `bearer_id` using `.Auth().accessTokenLogin()` method.
+    *
+    * This method requires Header `Authorization: Bearer {bearer_id}`, you can obtain `bearer_id` using `.Auth().accessTokenLogin()` method.
     * @param {object} { 'page': 1, 'size': 20 };
-    * 
+    *
     * @return {Method} Provide method list in array format.
     */
     function list(data) {
@@ -181,10 +181,10 @@ module.exports = {
 
     /**
     * Summary: Create a Tag.
-    * 
-    * This mehtod required Header `Authorization: Bearer {bearer_id}`, you can obtain `bearer_id` using `.Auth().accessTokenLogin()` method.
+    *
+    * This method requires Header `Authorization: Bearer {bearer_id}`, you can obtain `bearer_id` using `.Auth().accessTokenLogin()` method.
     * @param {object} { name: 'tag name', description: 'Some description' };
-    * 
+    *
     * @return {Method} Provide method list in array format.
     */
     function create(data) {
@@ -193,10 +193,10 @@ module.exports = {
 
     /**
     * Summary: Update a Tag.
-    * 
-    * This mehtod required Header `Authorization: Bearer {bearer_id}`, you can obtain `bearer_id` using `.Auth().accessTokenLogin()` method.
+    *
+    * This method requires Header `Authorization: Bearer {bearer_id}`, you can obtain `bearer_id` using `.Auth().accessTokenLogin()` method.
     * @param {object} { id: 'tagid', name: 'tag name', description: 'Some description' };
-    * 
+    *
     * @return {Method} Provide method list in array format.
     */
     function update(data) {
@@ -205,34 +205,34 @@ module.exports = {
 
     /**
     * Summary: Get details about a specific tag.
-    * 
-    * This mehtod required Header `Authorization: Bearer {bearer_id}`, you can obtain `bearer_id` using `.Auth().accessTokenLogin()` method.
+    *
+    * This method requires Header `Authorization: Bearer {bearer_id}`, you can obtain `bearer_id` using `.Auth().accessTokenLogin()` method.
     * @param {string} id tagid
-    * 
+    *
     * @return {Method} Provide method list in array format.
     */
-    function retreive(id) {
+    function retrieve(id) {
       return Tag(new Headers(module.exports.api_key, module.exports.organization), { type: 'item', method: 'GET', id: id });
     }
 
     /**
     * Summary: Get details about a specific tag.
-    * 
-    * This mehtod required Header `Authorization: Bearer {bearer_id}`, you can obtain `bearer_id` using `.Auth().accessTokenLogin()` method.
-    * @param {string} id tagid 
-    * 
+    *
+    * This method requires Header `Authorization: Bearer {bearer_id}`, you can obtain `bearer_id` using `.Auth().accessTokenLogin()` method.
+    * @param {string} id tagid
+    *
     * @return {Method} Provide method list in array format.
     */
-    function retreiveId(id) {
+    function retrieveId(id) {
       return Tag(new Headers(module.exports.api_key, module.exports.organization), { type: 'item', method: 'GET', id: id });
     }
 
     /**
     * Summary: Get details about a specific tag.
-    * 
-    * This mehtod required Header `Authorization: Bearer {bearer_id}`, you can obtain `bearer_id` using `.Auth().accessTokenLogin()` method.
+    *
+    * This method requires Header `Authorization: Bearer {bearer_id}`, you can obtain `bearer_id` using `.Auth().accessTokenLogin()` method.
     * @param {string} id tagid
-    * 
+    *
     * @return {Method} Provide method list in array format.
     */
     function remove(id) {
@@ -244,8 +244,8 @@ module.exports = {
         list: list,
         create: create,
         update: update,
-        retreive: retreive,
-        retreiveId: retreiveId,
+        retrieve: retrieve,
+        retrieveId: retrieveId,
         remove: remove
       }
     }
@@ -253,8 +253,8 @@ module.exports = {
     main.list = list;
     main.create = create;
     main.update = update;
-    main.retreive = retreive;
-    main.retreiveId = retreiveId;
+    main.retrieve = retrieve;
+    main.retrieveId = retrieveId;
     main.remove = remove;
 
     return main;

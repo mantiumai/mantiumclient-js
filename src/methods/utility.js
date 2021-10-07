@@ -1,13 +1,28 @@
-export const objToQueryStr = (obj) => isNotNil(obj) && isObject(obj)
-  ? '?' + Object.keys(obj).map(key => key + '=' + obj[key]).join('&')
-  : '';
+module.exports = {
 
-export const isNil = (val) => [null, undefined].includes(val);
+  isNil(val) {
+    return [null, undefined].includes(val);
+  },
 
-export const isNull = (val) => val === null;
+  isNull(val) {
+    return val === null;
+  },
 
-export const isNotNil = (val) => !isNil(val);
+  isNotNil(val) {
+    return !this.isNil(val);
+  },
 
-export const isNotNull = (val) => !isNull(val);
+  isNotNull(val) {
+    return !this.isNull(val)
+  },
 
-export const isObject = (val) => typeof val === 'object' && isNotNull(val);
+  isObject(val) {
+    return  typeof val === 'object' && this.isNotNull(val);
+  },
+
+  objToQueryStr(obj) {
+    return this.isNotNil(obj) && this.isObject(obj)
+      ? '?' + Object.keys(obj).map(key => key + '=' + obj[key]).join('&')
+      : '';
+  }
+}

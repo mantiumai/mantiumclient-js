@@ -7,15 +7,6 @@ module.exports = function
    * @return {object} AI Api response.
    */
   (options) {
-  /* *
-  *
-  * Console.log is testing purpose before build delete it
-  * 
-  * */
-
-  console.log('************** new method **************');
-  console.log(options);
-
   const apiPromise = new Promise((resolve, reject) => {
     request(options, function (error, response) {
       if (error) {
