@@ -47,5 +47,11 @@ module.exports = {
   */
   tagsURL(isOldURL = false) {
     return `${this.baseURL()}/tag${isOldURL ? '/id' : ''}`;
+  },
+
+  promptURL() {
+    return `${this.baseURL()}/prompt`;
   }
 };
+
+

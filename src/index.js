@@ -27,6 +27,9 @@ const GetAiEngineByName = require("./methods/ai_engines/GetAiEngineByName");
 // Tag
 const Tag = require("./methods/tags/Tag");
 
+// Prompt
+const Prompt = require("./methods/prompt/Prompt");
+
 
 module.exports = {
   ORIGIN: 'https://api.mantiumai.com',
@@ -256,6 +259,65 @@ module.exports = {
     main.retrieve = retrieve;
     main.retrieveId = retrieveId;
     main.remove = remove;
+
+    return main;
+  })(),
+
+  Prompts: (function () {
+    let provider = undefined;
+    /**
+    * Summary: Get all of the tags for your selected organization.
+    *
+    * This method requires Header `Authorization: Bearer {bearer_id}`, you can obtain `bearer_id` using `.Auth().accessTokenLogin()` method.
+    * @param {object} { 'page': 1, 'size': 20, 'show_public_shareable': false, 'adults_only': false, 'tags': `<tagid>`};
+    *
+    * @return {Method} Provide method list in array format.
+    */
+    function list(data) {
+      return Prompt(new Headers(module.exports.api_key, module.exports.organization), { type: 'list', method: 'GET', queryParam: data });
+    }
+
+    function create(data) {
+
+      let modifier = Object.assign({
+        'ai_provider': provider,
+        'type': 'item',
+        'method': 'POST'
+      }, data);
+
+      console.log("modifier :::", modifier);
+      return Prompt(new Headers(module.exports.api_key, module.exports.organization), modifier);
+    }
+
+    function update(data) {
+      return Prompt(new Headers(module.exports.api_key, module.exports.organization), Object.assign({ type: 'item', method: 'PATCH' }, data));
+    }
+
+    function retreive(id) {
+      return Prompt(new Headers(module.exports.api_key, module.exports.organization), { type: 'item', method: 'GET', id: id });
+    }
+
+    function retreiveId(id) {
+      return Prompt(new Headers(module.exports.api_key, module.exports.organization), { type: 'item', method: 'GET', isOldURL: true, id: id });
+    }
+
+    function remove(data) {
+      return Prompt(new Headers(module.exports.api_key, module.exports.organization), { type: 'item', method: 'POST', queryParam: data });
+    }
+    function main(p) {
+      provider = p;
+      return {
+        list: list,
+        create: create,
+        update: update,
+        retreive: retreive,
+        retreiveId: retreiveId,
+        remove: remove
+      }
+    }
+
+    main.list = list;
+    main.create = create;
 
     return main;
   })(),

@@ -12,6 +12,7 @@ module.exports = class {
 
     if (this.api_key) {
       headers["Authorization"] = `Bearer ${this.api_key}`;
+      // TODO(Kedar): Change the static text to dynamic
     }
 
     if (this.organization) {

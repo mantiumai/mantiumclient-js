@@ -7,6 +7,9 @@ module.exports = function
    * @return {object} AI Api response.
    */
   (options) {
+
+
+    console.log('options :::', options)
   const apiPromise = new Promise((resolve, reject) => {
     request(options, function (error, response) {
       if (error) {

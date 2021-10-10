@@ -23,6 +23,7 @@
     - [Get Tag ](#get-tag)
     - [Update Tag](#update-tag)
     - [Delete Tag](#delete-tag)
+  - [Prompts](#prompts)
 ## Quickstart:
 Read the [getting started guide](https://developer.mantiumai.com/docs) for more information on how to use Mantium.
 ## Authentication
@@ -743,4 +744,297 @@ const mantiumAi = require('mantiumclient-js');
   links: {}
 }
 ```
+[Go to Table of Contents](#table-of-contents)
+
+### Prompts
+
+#### List Prompts
+
+List all of your organization's prompts.  
+
+Query String Parameters  
+
+- page - The page of records to return. Optional, defaults to page 1.
+- size - the number of records to return for each page. Optional, defaults to 20 - prompts a page.
+- schema_class - not used, exclude.
+- tags - A list of Tag IDs separated by comma used to filter the results, optional.
+
+```js
+const mantiumAi = require('mantiumclient-js');
+
+(async () => {
+  
+  await mantiumAi.Auth().accessTokenLogin({
+    username: 'useremail@somedomain.com',
+    password: 'p@ssWord!'
+  })
+  .then((response) => {
+    // get bearer_id and set to default
+    mantiumAi.api_key = response.data.attributes.bearer_id;
+    return response;
+  });
+
+  await mantiumAi.Prompts().list({ 'page': 1, 'size': 20, 'show_public_shareable': false }).then((response) => {
+    console.log('*********** List *********');
+    console.log(response.data);
+  });
+})();
+```
+
+#### Example of a successful completion response
+```js
+{
+  data: [
+    {
+      id: '242bb0a2-213e-4001-96a4-f29e0912c99a',
+      type: 'prompt',
+      attributes: {
+        prompt_id: '242bb0a2-213e-4001-96a4-f29e0912c99a',
+        organization_id: 'c68c07c9-d11a-4b54-8823-1dff6792916d',
+        name: 'Basic Prompt',
+        description: 'Basic Prompt Description',
+        created_at: '2021-09-29T02:54:28.543648+00:00',
+        prompt_text: 'Endpoint Settings: Prompt Line',
+        share_scope: 'ORGANIZATION_ONLY',
+        ai_provider_approved: false,
+        adults_only: false,
+        ai_method: 'completion',
+        ai_provider: 'OpenAI',
+        intelets: [
+          
+        ],
+        default_engine: 'ada',
+        status: 'ACTIVE',
+        prompt_parameters: [
+          {
+            prompt_text: 'Endpoint Settings: Prompt Line',
+            basic_settings: {
+              top_p: '1',
+              stop_seq: [
+                'Basic Settings: Stop Sequence'
+              ],
+              max_tokens: '1024',
+              temperature: '1',
+              presence_penalty: '1',
+              frequency_penalty: '1'
+            },
+            default_engine: 'ada',
+            advanced_settings: {
+              n: '1',
+              echo: true,
+              stream: true,
+              best_of: '10',
+              logprobs: '10',
+              logit_bias: [
+                
+              ]
+            }
+          }
+        ],
+        last_activity: null,
+        share_name: null,
+        share_description: '',
+        share_placeholder: '',
+        share_author_name: null,
+        share_author_contact: '',
+        share_type: null,
+        share_allow_input: false,
+        share_status: 'ACTIVE'
+      },
+      relationships: {
+        intelets: { data: [ ] },
+        tags: {
+          data: [
+            {
+              type: 'tag',
+              id: '383fb5e6-6c30-4641-9850-efeb3cdd77b8'
+            }
+          ]
+        },
+        security_policies: { data: [ ] },
+        prompt_policies: { data: [ ] }
+      }
+    }
+  ],
+  included: [
+    {
+      id: '383fb5e6-6c30-4641-9850-efeb3cdd77b8',
+      type: 'tag',
+      attributes: [
+        { tag_id: '383fb5e6-6c30-4641-9850-efeb3cdd77b8', name: 'Basic Tag' }
+      ],
+      relationships: {
+        
+      }
+    }
+  ],
+  meta: {
+    
+  },
+  links: {
+    total_items: 3,
+    current_page: 1
+  }
+}
+
+```
+[Go to Table of Contents](#table-of-contents)
+
+#### Add Prompt
+
+Body Params  
+
+with asterisk sign are mandatory fields.  
+
+- Adults Only `boolean`  
+- Ai Method* `string` i.e. 'completion'  
+- Ai Provider* `string` i.e. 'OpenAI'  
+- Ai Provider Approved `boolean`  
+- Default Engine `string` i.e. 'babbage'  
+- Description  `string` i.e. 'This prompt classifies the tweet'  
+- Intelets `array of strings` ['string-id']  
+- Name* `string` i.e. 'Tweet Classification'  
+- Policies `array of strings` ['string-id']  
+- Prompt Parameters* `object`  
+- Prompt Text `string` i.e. 'A prompt for completion type, and a string of documents separated by a separator for search type.'  
+- Share Allow Input `boolean`  
+- Share Author Contact `string` i.e. 'example@mantium.com'  
+- Share Author Name `string` i.e. 'First name Last name'  
+- Share Description `string` i.e. 'This is simple meme generat'  
+- Share Name `string` i.e. 'Meme Generator'  
+- Share Placeholder i.e. 'Meme Generator'  
+- Share Scope `string` i.e. 'ORGANIZATION_ONLY'  
+- ShareStatus `string` i.e. 'ACTIVE'  
+- Share Type `string` i.e. 'PROMPT'  
+- PromptStatus `string` i.e. 'ACTIVE'  
+- Tags `array of strings` ['string-id']  
+
+
+##### Example of violate setting value(s) and it's Response(s)
+
+in following example we send number beyond the number range  
+`prompt_parameters.advanced_settings.n = 10`  
+this value should between 1 - 3  
+
+
+```js
+
+const mantiumAi = require('mantiumclient-js');
+
+(async () => {
+  
+  await mantiumAi.Auth().accessTokenLogin({
+    username: 'useremail@somedomain.com',
+    password: 'p@ssWord!'
+  })
+  .then((response) => {
+    // get bearer_id and set to default
+    mantiumAi.api_key = response.data.attributes.bearer_id;
+    return response;
+  });
+
+  mantiumAi.Prompts('OpenAI').create({
+    "name": "create the Prompt",
+    "intelets": [],
+    "policies": [],
+    "tags": ["383fb5e6-6c30-4641-9850-efeb3cdd77b8"],
+    "status": "ACTIVE",
+    "description": "Basic Prompt Description",
+    "prompt_text": "Endpoint Settings: Prompt Line",
+    "ai_method": "completion",
+    "default_engine": "ada",
+    "prompt_parameters": {
+      "basic_settings": {
+        "temperature": "1",
+        "max_tokens": "512",
+        "frequency_penalty": "1",
+        "presence_penalty": "1",
+        "top_p": "1",
+        "stop_seq": ["Basic Settings: Stop Sequence"]
+      },
+      "advanced_settings": {
+        "best_of": "5",
+        "n": "10",
+        "logprobs": "10",
+        "echo": true,
+        "stream": true,
+        "logit_bias": []
+      }
+    }
+  }).then((response) => {
+    console.log("*************** Prompt Create ***************");
+    console.log(response.detail);
+  });
+})();
+```
+##### Example of a Error response
+```js
+// *************** Prompt Create ***************
+{
+  detail: [
+    {
+      loc: [ 'body', 'prompt_parameters', 'advanced_settings', 'n' ],
+      msg: 'ensure this value is less than or equal to 3',
+      type: 'value_error.number.not_le',
+      ctx: { limit_value: 3 }
+    }
+  ]
+}
+
+```
+
+#### Example of a successful completion response
+
+```js
+// *************** Prompt Create ***************
+{
+  data: {
+    id: 'fab6e007-dab2-4245-907e-e1edf6f5f690',
+    type: 'prompt',
+    attributes: {
+      prompt_id: 'fab6e007-dab2-4245-907e-e1edf6f5f690',
+      organization_id: 'c68c07c9-d11a-4b54-8823-1dff6792916d',
+      name: 'create the Prompt',
+      description: 'Basic Prompt Description',
+      created_at: '2021-10-10T15:28:29.026463+00:00',
+      prompt_text: 'Endpoint Settings: Prompt Line',
+      share_scope: 'ORGANIZATION_ONLY',
+      ai_provider_approved: false,
+      adults_only: false,
+      ai_method: 'completion',
+      ai_provider: 'OpenAI',
+      default_engine: 'ada',
+      status: 'ACTIVE',
+      prompt_parameters: [Object],
+      last_activity: null,
+      share_name: null,
+      share_description: '',
+      share_placeholder: '',
+      share_author_name: null,
+      share_author_contact: '',
+      share_type: null,
+      share_allow_input: false,
+      share_status: 'ACTIVE'
+    },
+    relationships: {
+      intelets: [Object],
+      tags: [Object],
+      security_policies: [Object],
+      prompt_policies: [Object]
+    }
+  },
+  included: [
+    {
+      id: '383fb5e6-6c30-4641-9850-efeb3cdd77b8',
+      type: 'tag',
+      attributes: [Object],
+      relationships: {}
+    }
+  ],
+  meta: {},
+  links: {}
+}
+
+```
+
 [Go to Table of Contents](#table-of-contents)
