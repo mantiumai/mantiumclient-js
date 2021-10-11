@@ -269,7 +269,7 @@ module.exports = {
     * Summary: Get all of the tags for your selected organization.
     *
     * This method requires Header `Authorization: Bearer {bearer_id}`, you can obtain `bearer_id` using `.Auth().accessTokenLogin()` method.
-    * @param {object} { 'page': 1, 'size': 20, 'show_public_shareable': false, 'adults_only': false, 'tags': `<tagid>`};
+    * @param {object} object { 'page': 1, 'size': 20, 'show_public_shareable': false, 'adults_only': false, 'tags': `<tagid>`};
     *
     * @return {Method} Provide method list in array format.
     */
@@ -277,20 +277,41 @@ module.exports = {
       return Prompt(new Headers(module.exports.api_key, module.exports.organization), { type: 'list', method: 'GET', queryParam: data });
     }
 
+    /**
+    * Summary: Add Prompt
+    *
+    * This method requires Header `Authorization: Bearer {bearer_id}`, you can obtain `bearer_id` using `.Auth().accessTokenLogin()` method.
+    * @param {object} object { ...data }; [Object example](https://developer.mantiumai.com/reference#add_prompt_v1_prompt__post)
+    *
+    * @return {Method} Provide method list in array format.
+    */
     function create(data) {
-
-      let modifier = Object.assign({
+      const newLocal = Object.assign({
         'ai_provider': provider,
         'type': 'item',
         'method': 'POST'
       }, data);
+      const modifier = newLocal;
 
-      console.log("modifier :::", modifier);
       return Prompt(new Headers(module.exports.api_key, module.exports.organization), modifier);
     }
 
+    /**
+    * Summary: Update a Tag.
+    *
+    * This method requires Header `Authorization: Bearer {bearer_id}`, you can obtain `bearer_id` using `.Auth().accessTokenLogin()` method.
+    * @param {object} object { ...data }; [Object example](https://developer.mantiumai.com/reference#add_prompt_v1_prompt__post)
+    *
+    * @return {Method} Provide method list in array format.
+    */
     function update(data) {
-      return Prompt(new Headers(module.exports.api_key, module.exports.organization), Object.assign({ type: 'item', method: 'PATCH' }, data));
+      const newLocal = Object.assign({
+        'ai_provider': provider,
+        'type': 'item',
+        'method': 'PATCH'
+      }, data);
+      const modifier = newLocal;
+      return Prompt(new Headers(module.exports.api_key, module.exports.organization), modifier);
     }
 
     function retreive(id) {
