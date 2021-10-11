@@ -24,6 +24,10 @@
     - [Update Tag](#update-tag)
     - [Delete Tag](#delete-tag)
   - [Prompts](#prompts)
+    - [List Prompts](#list-prompts)
+    - [Create a Prompt](#create-a-prompt)
+    - [Update Prompt](#update-prompt)
+
 ## Quickstart:
 Read the [getting started guide](https://developer.mantiumai.com/docs) for more information on how to use Mantium.
 ## Authentication
@@ -750,20 +754,22 @@ const mantiumAi = require('mantiumclient-js');
 
 #### List Prompts
 
-List all of your organization's prompts.  
+List all of your organization's prompts.
 
-Query String Parameters  
+Query String Parameters
 
 - page - The page of records to return. Optional, defaults to page 1.
 - size - the number of records to return for each page. Optional, defaults to 20 - prompts a page.
 - schema_class - not used, exclude.
 - tags - A list of Tag IDs separated by comma used to filter the results, optional.
 
+[Document link](https://developer.mantiumai.com/reference#list_prompts_v1_prompt__get)
+
 ```js
 const mantiumAi = require('mantiumclient-js');
 
 (async () => {
-  
+
   await mantiumAi.Auth().accessTokenLogin({
     username: 'useremail@somedomain.com',
     password: 'p@ssWord!'
@@ -786,11 +792,11 @@ const mantiumAi = require('mantiumclient-js');
 {
   data: [
     {
-      id: '242bb0a2-213e-4001-96a4-f29e0912c99a',
+      id: 'some-long-id',
       type: 'prompt',
       attributes: {
-        prompt_id: '242bb0a2-213e-4001-96a4-f29e0912c99a',
-        organization_id: 'c68c07c9-d11a-4b54-8823-1dff6792916d',
+        prompt_id: 'some-long-id',
+        organization_id: 'organization-some-long-id',
         name: 'Basic Prompt',
         description: 'Basic Prompt Description',
         created_at: '2021-09-29T02:54:28.543648+00:00',
@@ -801,7 +807,7 @@ const mantiumAi = require('mantiumclient-js');
         ai_method: 'completion',
         ai_provider: 'OpenAI',
         intelets: [
-          
+
         ],
         default_engine: 'ada',
         status: 'ACTIVE',
@@ -826,7 +832,7 @@ const mantiumAi = require('mantiumclient-js');
               best_of: '10',
               logprobs: '10',
               logit_bias: [
-                
+
               ]
             }
           }
@@ -847,7 +853,7 @@ const mantiumAi = require('mantiumclient-js');
           data: [
             {
               type: 'tag',
-              id: '383fb5e6-6c30-4641-9850-efeb3cdd77b8'
+              id: 'tag-some-long-id'
             }
           ]
         },
@@ -858,18 +864,18 @@ const mantiumAi = require('mantiumclient-js');
   ],
   included: [
     {
-      id: '383fb5e6-6c30-4641-9850-efeb3cdd77b8',
+      id: 'tag-some-long-id',
       type: 'tag',
       attributes: [
-        { tag_id: '383fb5e6-6c30-4641-9850-efeb3cdd77b8', name: 'Basic Tag' }
+        { tag_id: 'tag-some-long-id', name: 'Basic Tag' }
       ],
       relationships: {
-        
+
       }
     }
   ],
   meta: {
-    
+
   },
   links: {
     total_items: 3,
@@ -880,41 +886,19 @@ const mantiumAi = require('mantiumclient-js');
 ```
 [Go to Table of Contents](#table-of-contents)
 
-#### Add Prompt
+#### Create a Prompt
 
-Body Params  
+Body payload
 
-with asterisk sign are mandatory fields.  
+`object` { ...data }; [Object example](https://developer.mantiumai.com/reference#add_prompt_v1_prompt__post)
 
-- Adults Only `boolean`  
-- Ai Method* `string` i.e. 'completion'  
-- Ai Provider* `string` i.e. 'OpenAI'  
-- Ai Provider Approved `boolean`  
-- Default Engine `string` i.e. 'babbage'  
-- Description  `string` i.e. 'This prompt classifies the tweet'  
-- Intelets `array of strings` ['string-id']  
-- Name* `string` i.e. 'Tweet Classification'  
-- Policies `array of strings` ['string-id']  
-- Prompt Parameters* `object`  
-- Prompt Text `string` i.e. 'A prompt for completion type, and a string of documents separated by a separator for search type.'  
-- Share Allow Input `boolean`  
-- Share Author Contact `string` i.e. 'example@mantium.com'  
-- Share Author Name `string` i.e. 'First name Last name'  
-- Share Description `string` i.e. 'This is simple meme generat'  
-- Share Name `string` i.e. 'Meme Generator'  
-- Share Placeholder i.e. 'Meme Generator'  
-- Share Scope `string` i.e. 'ORGANIZATION_ONLY'  
-- ShareStatus `string` i.e. 'ACTIVE'  
-- Share Type `string` i.e. 'PROMPT'  
-- PromptStatus `string` i.e. 'ACTIVE'  
-- Tags `array of strings` ['string-id']  
-
+[Document link](https://developer.mantiumai.com/reference#add_prompt_v1_prompt__post)
 
 ##### Example of violate setting value(s) and it's Response(s)
 
-in following example we send number beyond the number range  
-`prompt_parameters.advanced_settings.n = 10`  
-this value should between 1 - 3  
+in following example we send number beyond the number range
+`prompt_parameters.advanced_settings.n = 10`
+this value should between 1 - 3
 
 
 ```js
@@ -922,7 +906,7 @@ this value should between 1 - 3
 const mantiumAi = require('mantiumclient-js');
 
 (async () => {
-  
+
   await mantiumAi.Auth().accessTokenLogin({
     username: 'useremail@somedomain.com',
     password: 'p@ssWord!'
@@ -937,7 +921,7 @@ const mantiumAi = require('mantiumclient-js');
     "name": "create the Prompt",
     "intelets": [],
     "policies": [],
-    "tags": ["383fb5e6-6c30-4641-9850-efeb3cdd77b8"],
+    "tags": ["tag-some-long-id"],
     "status": "ACTIVE",
     "description": "Basic Prompt Description",
     "prompt_text": "Endpoint Settings: Prompt Line",
@@ -989,11 +973,11 @@ const mantiumAi = require('mantiumclient-js');
 // *************** Prompt Create ***************
 {
   data: {
-    id: 'fab6e007-dab2-4245-907e-e1edf6f5f690',
+    id: 'some-long-id',
     type: 'prompt',
     attributes: {
-      prompt_id: 'fab6e007-dab2-4245-907e-e1edf6f5f690',
-      organization_id: 'c68c07c9-d11a-4b54-8823-1dff6792916d',
+      prompt_id: 'some-long-id',
+      organization_id: 'organization-some-long-id',
       name: 'create the Prompt',
       description: 'Basic Prompt Description',
       created_at: '2021-10-10T15:28:29.026463+00:00',
@@ -1025,7 +1009,7 @@ const mantiumAi = require('mantiumclient-js');
   },
   included: [
     {
-      id: '383fb5e6-6c30-4641-9850-efeb3cdd77b8',
+      id: 'tag-some-long-id',
       type: 'tag',
       attributes: [Object],
       relationships: {}
@@ -1034,7 +1018,147 @@ const mantiumAi = require('mantiumclient-js');
   meta: {},
   links: {}
 }
+```
 
+[Go to Table of Contents](#table-of-contents)
+
+#### Update Prompt
+
+Body payload
+
+`object` { ...data }; [Object example](https://developer.mantiumai.com/reference#edit_prompt_v1_prompt__prompt_id__patch)
+
+[Document link](https://developer.mantiumai.com/reference#edit_prompt_v1_prompt__prompt_id__patch)
+
+```js
+const mantiumAi = require('mantiumclient-js');
+
+(async () => {
+  await mantiumAi.Auth().accessTokenLogin({
+    username: 'useremail@somedomain.com',
+    password: 'p@ssWord!'
+  })
+    .then((response) => {
+      // get bearer_id and set to default
+      mantiumAi.api_key = response.data.attributes.bearer_id;
+      // console.log(response);
+      return response;
+    });
+
+  /*
+  * API Key is set on above
+  * mantiumAi.api_key=`key`
+  * so we can call these method directly now
+  */
+  mantiumAi.Prompts('OpenAI').update({
+    "id": "some-long-id",
+    "name": "update the Prompt",
+    "intelets": [],
+    "policies": [],
+    "tags": ["383fb5e6-6c30-4641-9850-efeb3cdd77b8"],
+    "status": "ACTIVE",
+    "description": "Basic Prompt Description",
+    "prompt_text": "Endpoint Settings: Prompt Line",
+    "ai_method": "completion",
+    "default_engine": "ada",
+    "prompt_parameters": {
+      "basic_settings": {
+        "temperature": "1",
+        "max_tokens": "512",
+        "frequency_penalty": "1",
+        "presence_penalty": "1",
+        "top_p": "1",
+        "stop_seq": ["Basic Settings: Stop Sequence"]
+      },
+      "advanced_settings": {
+        "best_of": "5",
+        "n": "2",
+        "logprobs": "10",
+        "echo": true,
+        "stream": true,
+        "logit_bias": []
+      }
+    }
+  }).then((response) => {
+    console.log("*************** Update Create ***************");
+    console.log(response);
+  });
+
+})();
+
+```
+
+#### Example of a successful completion response
+
+```js
+// *************** Update Create ***************
+{
+  data: {
+    id: 'some-long-id',
+    type: 'prompt',
+    attributes: {
+      prompt_id: 'some-long-id',
+      organization_id: 'organization-some-long-id',
+      name: 'update the Prompt',
+      description: 'Basic Prompt Description',
+      created_at: '2021-10-10T15:28:29.026463+00:00',
+      prompt_text: 'Endpoint Settings: Prompt Line',
+      share_scope: 'ORGANIZATION_ONLY',
+      ai_provider_approved: false,
+      adults_only: false,
+      ai_method: 'completion',
+      ai_provider: 'OpenAI',
+      default_engine: 'ada',
+      status: 'ACTIVE',
+      prompt_parameters: {
+        basic_settings: {
+          top_p: '1',
+          stop_seq: [Array],
+          max_tokens: '512',
+          temperature: '1',
+          presence_penalty: '1',
+          frequency_penalty: '1'
+        },
+        advanced_settings: {
+          n: '2',
+          echo: true,
+          stream: true,
+          best_of: '5',
+          logprobs: '10',
+          logit_bias: []
+        }
+      },
+      last_activity: null,
+      share_name: null,
+      share_description: '',
+      share_placeholder: '',
+      share_author_name: null,
+      share_author_contact: '',
+      share_type: null,
+      share_allow_input: false,
+      share_status: 'ACTIVE'
+    },
+    relationships: {
+      intelets: { data: [] },
+      tags: { data: [ [Object] ] },
+      security_policies: { data: [] },
+      prompt_policies: { data: [] }
+    }
+  },
+  included: [
+    {
+      id: 'tag-some-long-id',
+      type: 'tag',
+      attributes: {
+        tag_id: 'tag-some-long-id',
+        name: 'Basic Tag'
+      },
+      relationships: {}
+    }
+  ],
+  meta: {},
+  links: {}
+}
 ```
 
 [Go to Table of Contents](#table-of-contents)
