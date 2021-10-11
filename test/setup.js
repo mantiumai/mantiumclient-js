@@ -1,15 +1,13 @@
 require('dotenv').config();
+const msg = require('../src/config/error-message');
 
-const username = process.env.USER_NAME;
-const password = process.env.PASSWORD;
+const username = process.env.MANTIUM_USER_NAME;
+const password = process.env.MANTIUM_PASSWORD;
 
 const mantiumAi = require('../lib/index');
 
-if (!username && !password) {
-  throw new Error(
-    'username and password are needed to run testsuite: set environment variable: USER_NAME and PASSWORD'
-  );
-}
+if (!username && !password)
+  throw new Error(msg.errorMessages().env_missing);
 
 // root hook to run before every test (even in other files)
 beforeEach(async function () {

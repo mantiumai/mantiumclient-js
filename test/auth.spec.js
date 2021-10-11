@@ -1,16 +1,14 @@
 require('dotenv').config();
-const username = process.env.USER_NAME;
-const password = process.env.PASSWORD;
+const username = process.env.MANTIUM_USER_NAME;
+const password = process.env.MANTIUM_PASSWORD;
 
+const msg = require('../src/config/error-message');
 const mantiumAi = require('../lib/index');
 
 const assert = require('chai').assert;
 
-if (!username && !password) {
-  throw new Error(
-    'username and password are needed to run testsuite: set environment variable: USER_NAME and PASSWORD'
-  );
-}
+if (!username && !password)
+  throw new Error(msg.errorMessages().env_missing);
 
 describe('Auth methods', function () {
   it('should login and return the token', async function () {
