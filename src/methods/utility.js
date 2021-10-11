@@ -1,5 +1,4 @@
 module.exports = {
-
   isNil(val) {
     return [null, undefined].includes(val);
   },
@@ -13,16 +12,19 @@ module.exports = {
   },
 
   isNotNull(val) {
-    return !this.isNull(val)
+    return !this.isNull(val);
   },
 
   isObject(val) {
-    return  typeof val === 'object' && this.isNotNull(val);
+    return typeof val === 'object' && this.isNotNull(val);
   },
 
   objToQueryStr(obj) {
     return this.isNotNil(obj) && this.isObject(obj)
-      ? '?' + Object.keys(obj).map(key => key + '=' + obj[key]).join('&')
+      ? '?' +
+          Object.keys(obj)
+            .map((key) => key + '=' + obj[key])
+            .join('&')
       : '';
   },
 
@@ -52,5 +54,5 @@ module.exports = {
 
   hasProperty(obj, key) {
     return Object.prototype.hasOwnProperty.call(obj, key);
-  }
-}
+  },
+};

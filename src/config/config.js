@@ -2,16 +2,16 @@ const index = require('../index');
 
 module.exports = {
   /*
-  * Construct base URL
-  */
+   * Construct base URL
+   */
   baseURL() {
-    return `${index.getOrigin()}/${index.getApiVersion()}`
+    return `${index.getOrigin()}/${index.getApiVersion()}`;
   },
 
   /*
-  * Auth endpoints
-  * https://developer.mantiumai.com/reference#auth
-  */
+   * Auth endpoints
+   * https://developer.mantiumai.com/reference#auth
+   */
   accessTokenLoginURL() {
     return `${this.baseURL()}/auth/login/access/token`;
   },
@@ -20,17 +20,17 @@ module.exports = {
   },
 
   /*
-  * List Methods
-  * https://developer.mantiumai.com/reference#ai_methods
-  */
+   * List Methods
+   * https://developer.mantiumai.com/reference#ai_methods
+   */
   aiMethodsURL() {
     return `${this.baseURL()}/ai_methods`;
   },
 
   /*
-  * Get All Ai Engines
-  * https://developer.mantiumai.com/reference#ai-engines
-  */
+   * Get All Ai Engines
+   * https://developer.mantiumai.com/reference#ai-engines
+   */
   aiEnginesAllURL() {
     return `${this.baseURL()}/ai/engine/all`;
   },
@@ -42,16 +42,14 @@ module.exports = {
   },
 
   /*
-  * Tags
-  * https://developer.mantiumai.com/reference#tags
-  */
+   * Tags
+   * https://developer.mantiumai.com/reference#tags
+   */
   tagsURL(isOldURL = false) {
     return `${this.baseURL()}/tag${isOldURL ? '/id' : ''}`;
   },
 
   promptURL() {
     return `${this.baseURL()}/prompt`;
-  }
+  },
 };
-
-
