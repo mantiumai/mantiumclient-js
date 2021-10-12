@@ -8,6 +8,12 @@ module.exports = function (headers, opt) {
     throw new Error(msg.errorMessages().access_token_missing);
 
   if (
+    ['POST', 'PATCH'].includes(opt.method) &&
+    !utils.isNotNilOrEmptyString(opt.ai_provider)
+  )
+    throw new Error(msg.errorMessages().Provider_missing);
+
+  if (
     ['GET', 'PATCH', 'DELETE'].includes(opt.method) &&
     utils.isNil(opt.id) &&
     opt.type === 'item'
@@ -22,17 +28,17 @@ module.exports = function (headers, opt) {
   let options = {
     method: opt.method,
     url: config
-      .tagsURL(opt.isIdURL)
+      .promptURL(opt.isIdURL)
       .concat('/', id, utils.objToQueryStr(opt.queryParam)),
     headers: headers.getHeaders(),
   };
 
+  console.log('options :::', options);
+
   if (opt.name && opt.type !== 'list') {
-    options['body'] = JSON.stringify({
-      name: opt.name,
-      description: opt.description,
-    });
+    options['body'] = JSON.stringify(opt);
   }
 
+  // return options;
   return fetch(options);
 };

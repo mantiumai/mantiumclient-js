@@ -1,17 +1,17 @@
 const config = require('../../config/config');
 const msg = require('../../config/error-message');
 const fetch = require('../fetch');
-const utils = require('../utility');
 
-module.exports = function (headers, queryParam, aiProvider) {
+module.exports = function (headers, { email } = {}) {
   if (!headers.api_key)
     throw new Error(msg.errorMessages().access_token_missing);
   let options = {
-    method: 'GET',
-    url: config
-      .aiMethodsURL()
-      .concat('/', aiProvider, utils.objToQueryStr(queryParam)),
+    method: 'POST',
+    url: config.resetPasswordURL(),
     headers: headers.getHeaders(),
+    body: JSON.stringify({
+      email,
+    }),
   };
 
   return fetch(options);

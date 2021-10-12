@@ -4,10 +4,13 @@ const fetch = require('../fetch');
 const utils = require('../utility');
 
 module.exports = function (headers, queryParam, engineName) {
-  if (!headers.api_key) throw new Error(msg.errorMessages().access_token_missing);
+  if (!headers.api_key)
+    throw new Error(msg.errorMessages().access_token_missing);
   let options = {
-    method: "GET",
-    url: config.aiEnginesByNameURL().concat('/', engineName, utils.objToQueryStr(queryParam)),
+    method: 'GET',
+    url: config
+      .aiEnginesByNameURL()
+      .concat('/', engineName, utils.objToQueryStr(queryParam)),
     headers: headers.getHeaders(),
   };
 
