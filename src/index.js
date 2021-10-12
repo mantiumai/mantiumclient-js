@@ -102,7 +102,8 @@ module.exports = {
      * AI Provider name (case sensitive)
      *
      * @param {string} Provider some provider like `openai`, `cohere`, `mantium`, `OpenAI`, `Cohere`, `Mantium`
-     * @return {method} This return the method `.listMethods(queryParam)`.
+     * @return {Array} This return the list of methods for AiMethods.
+     * - list
      */
     function main(p) {
       ai_provider = p;
@@ -123,7 +124,7 @@ module.exports = {
      *
      * This method requires Header `Authorization: Bearer {bearer_id}`, you can obtain `bearer_id` using `.Auth().accessTokenLogin()` method.
      * @param {object} { page: 1, size: 2 } the query param in the format of key pair.
-     * @return {Method} Provide method list in array format.
+     * @return {Array} Provide method list in array format.
      */
     function all(queryParam) {
       return GetAllAiEngines(
@@ -137,7 +138,7 @@ module.exports = {
      *
      * This method requires Header `Authorization: Bearer {bearer_id}`, you can obtain `bearer_id` using `.Auth().accessTokenLogin()` method.
      * @param {object} { page: 1, size: 2 } the query param in the format of key pair.
-     * @return {Method} Provide method list in array format.
+     * @return {Array} Provide method list in array format.
      */
     function byProvider(queryParam) {
       return GetAiEnginesByProvider(
@@ -152,7 +153,7 @@ module.exports = {
      *
      * This method requires Header `Authorization: Bearer {bearer_id}`, you can obtain `bearer_id` using `.Auth().accessTokenLogin()` method.
      * @param {object} { page: 1, size: 2 } the query param in the format of key pair.
-     * @return {Method} Provide method list in array format.
+     * @return {object} Provide object type 'ai_engine'.
      */
     function byName(queryParam) {
       return GetAiEngineByName(
@@ -170,7 +171,10 @@ module.exports = {
      *
      * @param {string} Provider some provider like `openai`, `cohere`, `mantium`, `OpenAI`, `Cohere`, `Mantium`
      * @param {string} Engine AI Engine name.
-     * @return {method} This return the method `.listMethods(queryParam)`.
+     * @return {Method} This return the list of methods for AiEngines.
+     * - all
+     * - byProvider
+     * - byName
      */
     function main(e) {
       name = e;
@@ -194,7 +198,7 @@ module.exports = {
      * This method requires Header `Authorization: Bearer {bearer_id}`, you can obtain `bearer_id` using `.Auth().accessTokenLogin()` method.
      * @param {object} { 'page': 1, 'size': 20 };
      *
-     * @return {Method} Provide method list in array format.
+     * @return {Array} Provide method list in array format.
      */
     function list(data) {
       return Tag(
@@ -209,7 +213,7 @@ module.exports = {
      * This method requires Header `Authorization: Bearer {bearer_id}`, you can obtain `bearer_id` using `.Auth().accessTokenLogin()` method.
      * @param {object} { name: 'tag name', description: 'Some description' };
      *
-     * @return {Method} Provide method list in array format.
+     * @return {object} Provide object type 'tag'.
      */
     function create(data) {
       return Tag(
@@ -224,7 +228,7 @@ module.exports = {
      * This method requires Header `Authorization: Bearer {bearer_id}`, you can obtain `bearer_id` using `.Auth().accessTokenLogin()` method.
      * @param {object} { id: 'tagid', name: 'tag name', description: 'Some description' };
      *
-     * @return {Method} Provide method list in array format.
+     * @return {object} Provide object type 'tag'.
      */
     function update(data) {
       return Tag(
@@ -239,7 +243,7 @@ module.exports = {
      * This method requires Header `Authorization: Bearer {bearer_id}`, you can obtain `bearer_id` using `.Auth().accessTokenLogin()` method.
      * @param {string} id tagid
      *
-     * @return {Method} Provide method list in array format.
+     * @return {object} Provide object type 'tag'.
      */
     function retrieve(id) {
       return Tag(
@@ -254,7 +258,7 @@ module.exports = {
      * This method requires Header `Authorization: Bearer {bearer_id}`, you can obtain `bearer_id` using `.Auth().accessTokenLogin()` method.
      * @param {string} id tagid
      *
-     * @return {Method} Provide method list in array format.
+     * @return {object} Provide object type 'tag'.
      */
     function retrieveId(id) {
       return Tag(
@@ -264,12 +268,12 @@ module.exports = {
     }
 
     /**
-     * Summary: Get details about a specific tag.
+     * Summary: Remove a specific tag.
      *
      * This method requires Header `Authorization: Bearer {bearer_id}`, you can obtain `bearer_id` using `.Auth().accessTokenLogin()` method.
      * @param {string} id tagid
      *
-     * @return {Method} Provide method list in array format.
+     * @return {object} Provide object type 'tag'.
      */
     function remove(id) {
       return Tag(
@@ -278,6 +282,21 @@ module.exports = {
       );
     }
 
+    /**
+     * Summary: Tags related operations.
+     *
+     * This method requires Header `Authorization: Bearer {bearer_id}`, you can obtain `bearer_id` using `.Auth().accessTokenLogin()` method.
+     * AI Provider name (case sensitive)
+     *
+     * @param {string} Provider some provider like `openai`, `cohere`, `mantium`, `OpenAI`, `Cohere`, `Mantium`
+     * @return {Method} This return the list of methods for Tags.
+     * - list
+     * - create
+     * - update
+     * - retrieve
+     * - retrieveId
+     * - remove
+     */
     function main() {
       return {
         list: list,
@@ -307,7 +326,7 @@ module.exports = {
      * This method requires Header `Authorization: Bearer {bearer_id}`, you can obtain `bearer_id` using `.Auth().accessTokenLogin()` method.
      * @param {object} object { 'page': 1, 'size': 20, 'show_public_shareable': false, 'adults_only': false, 'tags': `<tagid>`};
      *
-     * @return {Method} Provide method list in array format.
+     * @return {Array} Provide method list in array format.
      */
     function list(data) {
       return Prompt(
@@ -322,7 +341,7 @@ module.exports = {
      * This method requires Header `Authorization: Bearer {bearer_id}`, you can obtain `bearer_id` using `.Auth().accessTokenLogin()` method.
      * @param {object} object { ...data }; [Object example](https://developer.mantiumai.com/reference#add_prompt_v1_prompt__post)
      *
-     * @return {Method} Provide method list in array format.
+     * @return {object}  Provide object type 'prompt'.
      */
     function create(data) {
       const newLocal = Object.assign(
@@ -347,7 +366,7 @@ module.exports = {
      * This method requires Header `Authorization: Bearer {bearer_id}`, you can obtain `bearer_id` using `.Auth().accessTokenLogin()` method.
      * @param {object} object { ...data }; [Object example](https://developer.mantiumai.com/reference#add_prompt_v1_prompt__post)
      *
-     * @return {Method} Provide method list in array format.
+     * @return {object}  Provide object type 'prompt'.
      */
     function update(data) {
       const newLocal = Object.assign(
@@ -365,6 +384,14 @@ module.exports = {
       );
     }
 
+    /**
+     * Summary: Get details about a specific prompt.
+     *
+     * This method requires Header `Authorization: Bearer {bearer_id}`, you can obtain `bearer_id` using `.Auth().accessTokenLogin()` method.
+     * @param {string} id Prompt ID
+     *
+     * @return {object}  Provide object type 'prompt'.
+     */
     function retreive(id) {
       return Prompt(
         new Headers(module.exports.api_key, module.exports.organization),
@@ -372,6 +399,14 @@ module.exports = {
       );
     }
 
+    /**
+     * Summary: Get details about a specific prompt.
+     *
+     * This method requires Header `Authorization: Bearer {bearer_id}`, you can obtain `bearer_id` using `.Auth().accessTokenLogin()` method.
+     * @param {string} id Prompt ID
+     *
+     * @return {object}  Provide object type 'prompt'.
+     */
     function retreiveId(id) {
       return Prompt(
         new Headers(module.exports.api_key, module.exports.organization),
@@ -379,12 +414,35 @@ module.exports = {
       );
     }
 
-    function remove(data) {
+    /**
+     * Summary: Remove a specific Prompt.
+     *
+     * This method requires Header `Authorization: Bearer {bearer_id}`, you can obtain `bearer_id` using `.Auth().accessTokenLogin()` method.
+     * @param {string} id Prompt ID
+     *
+     * @return {object}  Provide object type 'prompt'.
+     */
+    function remove(id) {
       return Prompt(
         new Headers(module.exports.api_key, module.exports.organization),
-        { type: 'item', method: 'POST', queryParam: data }
+        { type: 'item', method: 'DELETE', id: id }
       );
     }
+
+    /**
+     * Summary: Prompt(s) related operations.
+     *
+     * This method requires Header `Authorization: Bearer {bearer_id}`, you can obtain `bearer_id` using `.Auth().accessTokenLogin()` method.
+     * AI Provider name (case sensitive)
+     *
+     * @param {string} Provider some provider like `openai`, `cohere`, `mantium`, `OpenAI`, `Cohere`, `Mantium`
+     * @return {Method} This return the list of methods for Prompt.
+     * - list
+     * - create
+     * - retreive
+     * - retreiveId
+     * - remove
+     */
     function main(p) {
       provider = p;
       return {
