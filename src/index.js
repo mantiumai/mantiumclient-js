@@ -320,6 +320,7 @@ module.exports = {
 
   Prompts: (function () {
     let provider = undefined;
+
     /**
      * Summary: Get all of the tags for your selected organization.
      *
@@ -430,6 +431,73 @@ module.exports = {
     }
 
     /**
+     * Summary: Get details about a specific prompt.
+     *
+     * This method requires Header `Authorization: Bearer {bearer_id}`, you can obtain `bearer_id` using `.Auth().accessTokenLogin()` method.
+     * @param {object} input { id: 'prompt_id', input: 'input text for the execute' }
+     *
+     * @return {object}  Provide object with `prompt_execution_id`.
+     */
+    function execute(data) {
+      const newLocal = Object.assign(
+        {
+          ai_provider: provider,
+          type: 'item',
+          method: 'POST',
+          id: data.id,
+          action: 'execute',
+        },
+        data
+      );
+      const modifier = newLocal;
+      return Prompt(
+        new Headers(module.exports.api_key, module.exports.organization),
+        modifier
+      );
+    }
+
+    /**
+     * Summary: Get details about a specific prompt.
+     *
+     * This method requires Header `Authorization: Bearer {bearer_id}`, you can obtain `bearer_id` using `.Auth().accessTokenLogin()` method.
+     * @param {string} PromptExecutionId This will achive by using `Prompts('OpenAI').execute` [method](https://developer.mantiumai.com/reference#execute_prompt_v1_prompt__prompt_id__execute_post)
+     *
+     * @return {object}  Provide object with `prompt_execution_id`.
+     */
+    function result(PromptExecutionId) {
+      return Prompt(
+        new Headers(module.exports.api_key, module.exports.organization),
+        {
+          ai_provider: provider,
+          type: 'item',
+          method: 'GET',
+          id: PromptExecutionId,
+          action: 'result',
+        }
+      ).then(function checkResponse(res) {
+        if (
+          res &&
+          !['COMPLETED', 'REJECTED', 'INTERRUPTED', 'ERRORED'].includes(
+            res.status
+          )
+        ) {
+          return Prompt(
+            new Headers(module.exports.api_key, module.exports.organization),
+            {
+              ai_provider: provider,
+              type: 'item',
+              method: 'GET',
+              id: PromptExecutionId,
+              action: 'result',
+            }
+          ).then((response) => checkResponse(response));
+        } else {
+          return res;
+        }
+      });
+    }
+
+    /**
      * Summary: Prompt(s) related operations.
      *
      * This method requires Header `Authorization: Bearer {bearer_id}`, you can obtain `bearer_id` using `.Auth().accessTokenLogin()` method.
@@ -442,6 +510,8 @@ module.exports = {
      * - retreive
      * - retreiveId
      * - remove
+     * - execute
+     * - result
      */
     function main(p) {
       provider = p;
@@ -452,11 +522,19 @@ module.exports = {
         retreive: retreive,
         retreiveId: retreiveId,
         remove: remove,
+        execute: execute,
+        result: result,
       };
     }
 
     main.list = list;
     main.create = create;
+    main.update = update;
+    main.retreive = retreive;
+    main.retreiveId = retreiveId;
+    main.remove = remove;
+    main.execute = execute;
+    main.result = result;
 
     return main;
   })(),
