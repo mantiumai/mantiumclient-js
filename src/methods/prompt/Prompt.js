@@ -44,6 +44,9 @@ module.exports = function (headers, opt) {
     method: opt.method,
     url,
     headers: headers.getHeaders(),
+    isWithInterval: utils.isNotNil(opt.isWithInterval)
+      ? opt.isWithInterval
+      : false,
   };
 
   if (opt.action && opt.type !== 'list') {

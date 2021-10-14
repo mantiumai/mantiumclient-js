@@ -1,4 +1,6 @@
 const request = require('request');
+const index = require('../index');
+
 module.exports = function (
   /**
    * Returns Object as response in the API call.
@@ -13,7 +15,14 @@ module.exports = function (
       if (error) {
         reject(error);
       } else {
-        resolve(JSON.parse(response.body));
+        if (options.isWithInterval) {
+          setTimeout(
+            () => resolve(JSON.parse(response.body)),
+            index.getResultStatusInterval()
+          );
+        } else {
+          resolve(JSON.parse(response.body));
+        }
       }
     });
   });

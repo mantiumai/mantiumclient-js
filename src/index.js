@@ -6,8 +6,13 @@ const getApiVersion = () => {
   return module.exports.API_VERSION;
 };
 
+const getResultStatusInterval = () => {
+  return module.exports.RESULT_STATUS_INTERVAL;
+};
+
 exports.getOrigin = getOrigin;
 exports.getApiVersion = getApiVersion;
+exports.getResultStatusInterval = getResultStatusInterval;
 
 // Class Headers (used to set header)
 const Headers = require('./methods/Headers');
@@ -33,6 +38,7 @@ const Prompt = require('./methods/prompt/Prompt');
 module.exports = {
   ORIGIN: 'https://api.mantiumai.com',
   API_VERSION: 'v1',
+  RESULT_STATUS_INTERVAL: 500,
 
   api_key: null,
   ai_provider: 'mantium',
@@ -464,7 +470,7 @@ module.exports = {
      *
      * @return {object}  Provide object with `prompt_execution_id`.
      */
-    function result(PromptExecutionId) {
+    function result(PromptExecutionId, isWithInterval = true) {
       return Prompt(
         new Headers(module.exports.api_key, module.exports.organization),
         {
@@ -489,6 +495,7 @@ module.exports = {
               method: 'GET',
               id: PromptExecutionId,
               action: 'result',
+              isWithInterval,
             }
           ).then((response) => checkResponse(response));
         } else {
