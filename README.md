@@ -27,6 +27,11 @@
     - [List Prompts](#list-prompts)
     - [Create a Prompt](#create-a-prompt)
     - [Update Prompt](#update-prompt)
+    - [Get Prompt using ID url](#get-prompt-using-id-url)
+    - [Get Prompt ](#get-prompt)
+    - [Delete Prompt](#delete-prompt)
+    - [Execute Prompt](#execute-prompt)
+    - [Get Prompt Result](#get-prompt-result)
 
 ## Quickstart:
 Read the [getting started guide](https://developer.mantiumai.com/docs) for more information on how to use Mantium.
@@ -1024,9 +1029,11 @@ const mantiumAi = require('mantiumclient-js');
 
 #### Update Prompt
 
-Body payload
+Update details about a specific Prompt.
 
-`object` { ...data }; [Object example](https://developer.mantiumai.com/reference#edit_prompt_v1_prompt__prompt_id__patch)
+Prompt Id* (string)* required parameter
+
+Body payload `object` { ...data }; [Object example](https://developer.mantiumai.com/reference#edit_prompt_v1_prompt__prompt_id__patch)
 
 [Document link](https://developer.mantiumai.com/reference#edit_prompt_v1_prompt__prompt_id__patch)
 
@@ -1080,7 +1087,7 @@ const mantiumAi = require('mantiumclient-js');
       }
     }
   }).then((response) => {
-    console.log("*************** Update Create ***************");
+    console.log("*************** Prompt Update ***************");
     console.log(response);
   });
 
@@ -1091,7 +1098,7 @@ const mantiumAi = require('mantiumclient-js');
 #### Example of a successful completion response
 
 ```js
-// *************** Update Create ***************
+// *************** Prompt Update ***************
 {
   data: {
     id: 'some-long-id',
@@ -1161,4 +1168,402 @@ const mantiumAi = require('mantiumclient-js');
 }
 ```
 
+[Go to Table of Contents](#table-of-contents)
+
+
+#### Get Prompt using ID url
+Get details about a specific Prompt.
+
+Prompt Id* (string)* required parameter
+
+[Document link](https://developer.mantiumai.com/reference#show_prompt_by_id_v1_prompt_id__prompt_id__get)
+
+```js
+const mantiumAi = require('mantiumclient-js');
+
+(async () => {
+  await mantiumAi.Auth().accessTokenLogin({
+    username: 'useremail@somedomain.com',
+    password: 'p@ssWord!'
+  })
+    .then((response) => {
+      // get bearer_id and set to default
+      mantiumAi.api_key = response.data.attributes.bearer_id;
+      return response;
+    });
+
+  /*
+  * API Key is set on above
+  * mantiumAi.api_key=`key`
+  * so we can call these method directly now
+  */
+  await mantiumAi.Prompts()
+    .retreiveId('fab6e007-dab2-4245-907e-e1edf6f5f690')
+    .then((response) => {
+      console.log("*************** Retreive ***************");
+      console.log(response);
+    });
+})();
+```
+
+#### Example of a successful completion response
+```js
+{
+  data: {
+    id: 'fab6e007-dab2-4245-907e-e1edf6f5f690',
+    type: 'prompt',
+    attributes: {
+      prompt_id: 'fab6e007-dab2-4245-907e-e1edf6f5f690',
+      organization_id: 'c68c07c9-d11a-4b54-8823-1dff6792916d',
+      name: 'update the Prompt',
+      description: 'Basic Prompt Description',
+      created_at: '2021-10-10T15:28:29.026463+00:00',
+      prompt_text: 'Endpoint Settings: Prompt Line',
+      share_scope: 'ORGANIZATION_ONLY',
+      ai_provider_approved: false,
+      adults_only: false,
+      ai_method: 'completion',
+      ai_provider: 'OpenAI',
+      default_engine: 'ada',
+      status: 'ACTIVE',
+      prompt_parameters: {
+        basic_settings: {
+          top_p: '1',
+          stop_seq: [Array],
+          max_tokens: '512',
+          temperature: '1',
+          presence_penalty: '1',
+          frequency_penalty: '1'
+        },
+        advanced_settings: {
+          n: '2',
+          echo: true,
+          stream: true,
+          best_of: '5',
+          logprobs: '10',
+          logit_bias: []
+        }
+      },
+      last_activity: null,
+      share_name: null,
+      share_description: '',
+      share_placeholder: '',
+      share_author_name: null,
+      share_author_contact: '',
+      share_type: null,
+      share_allow_input: false,
+      share_status: 'ACTIVE'
+    },
+    relationships: {
+      intelets: { data: [] },
+      tags: { data: [ [Object] ] },
+      security_policies: { data: [] },
+      prompt_policies: { data: [] }
+    }
+  },
+  included: [
+    {
+      id: '383fb5e6-6c30-4641-9850-efeb3cdd77b8',
+      type: 'tag',
+      attributes: {
+        tag_id: '383fb5e6-6c30-4641-9850-efeb3cdd77b8',
+        name: 'Basic Tag'
+      },
+      relationships: {}
+    }
+  ],
+  meta: {},
+  links: {}
+}
+```
+[Go to Table of Contents](#table-of-contents)
+
+
+#### Get Prompt
+Get details about a specific Prompt.
+
+Prompt Id* (string)* required parameter
+
+[Document link](https://developer.mantiumai.com/reference#show_prompt_by_id_v1_prompt__prompt_id__get)
+```js
+const mantiumAi = require('mantiumclient-js');
+
+(async () => {
+  await mantiumAi.Auth().accessTokenLogin({
+    username: 'useremail@somedomain.com',
+    password: 'p@ssWord!'
+  })
+    .then((response) => {
+      // get bearer_id and set to default
+      mantiumAi.api_key = response.data.attributes.bearer_id;
+      return response;
+    });
+
+  /*
+  * API Key is set on above
+  * mantiumAi.api_key=`key`
+  * so we can call these method directly now
+  */
+  await mantiumAi.Prompts()
+    .retreive('fab6e007-dab2-4245-907e-e1edf6f5f690')
+    .then((response) => {
+      console.log("*************** Retreive ***************");
+      console.log(response);
+    });
+})();
+```
+
+#### Example of a successful completion response
+```js
+{
+  data: {
+    id: 'fab6e007-dab2-4245-907e-e1edf6f5f690',
+    type: 'prompt',
+    attributes: {
+      prompt_id: 'fab6e007-dab2-4245-907e-e1edf6f5f690',
+      organization_id: 'c68c07c9-d11a-4b54-8823-1dff6792916d',
+      name: 'update the Prompt',
+      description: 'Basic Prompt Description',
+      created_at: '2021-10-10T15:28:29.026463+00:00',
+      prompt_text: 'Endpoint Settings: Prompt Line',
+      share_scope: 'ORGANIZATION_ONLY',
+      ai_provider_approved: false,
+      adults_only: false,
+      ai_method: 'completion',
+      ai_provider: 'OpenAI',
+      default_engine: 'ada',
+      status: 'ACTIVE',
+      prompt_parameters: {
+        basic_settings: {
+          top_p: '1',
+          stop_seq: [Array],
+          max_tokens: '512',
+          temperature: '1',
+          presence_penalty: '1',
+          frequency_penalty: '1'
+        },
+        advanced_settings: {
+          n: '2',
+          echo: true,
+          stream: true,
+          best_of: '5',
+          logprobs: '10',
+          logit_bias: []
+        }
+      },
+      last_activity: null,
+      share_name: null,
+      share_description: '',
+      share_placeholder: '',
+      share_author_name: null,
+      share_author_contact: '',
+      share_type: null,
+      share_allow_input: false,
+      share_status: 'ACTIVE'
+    },
+    relationships: {
+      intelets: { data: [] },
+      tags: { data: [ [Object] ] },
+      security_policies: { data: [] },
+      prompt_policies: { data: [] }
+    }
+  },
+  included: [
+    {
+      id: '383fb5e6-6c30-4641-9850-efeb3cdd77b8',
+      type: 'tag',
+      attributes: {
+        tag_id: '383fb5e6-6c30-4641-9850-efeb3cdd77b8',
+        name: 'Basic Tag'
+      },
+      relationships: {}
+    }
+  ],
+  meta: {},
+  links: {}
+}
+```
+[Go to Table of Contents](#table-of-contents)
+
+
+#### Delete Prompt
+
+Delete a specific Prompt.
+
+Prompt Id* (string)* required parameter
+
+[Document link](https://developer.mantiumai.com/reference#delete_prompt_v1_prompt__prompt_id__delete)
+
+```js
+
+
+const mantiumAi = require('mantiumclient-js');
+
+(async () => {
+  await mantiumAi.Auth().accessTokenLogin({
+    username: 'useremail@somedomain.com',
+    password: 'p@ssWord!'
+  })
+    .then((response) => {
+      // get bearer_id and set to default
+      mantiumAi.api_key = response.data.attributes.bearer_id;
+      return response;
+    });
+
+  /*
+  * API Key is set on above
+  * mantiumAi.api_key=`key`
+  * so we can call these method directly now
+  */
+  await mantiumAi.Prompts()
+    .remove('fab6e007-dab2-4245-907e-e1edf6f5f690')
+    .then((response) => {
+      console.log("*************** Remove ***************");
+      console.log(response);
+    });
+})();
+
+/*
+* run command
+* node prompt/retreive.js
+*/
+
+```
+
+#### Example of a successful completion response
+```js
+{}
+```
+[Go to Table of Contents](#table-of-contents)
+
+
+#### Execute Prompt
+
+Asynchronously submit a prompt by prompt_id. If successful, the status and results of the prompt can be retrieved
+from the /v1/prompt/result/{prompt_execution_id} endpoint by prompt_execution_id.
+
+Prompt Id* (string)* required parameter
+
+Input* (string)* Input for executing a prompt asynchronously
+
+[Document link](https://developer.mantiumai.com/reference#execute_prompt_v1_prompt__prompt_id__execute_post)
+
+```js
+const mantiumAi = require('mantiumclient-js');
+
+(async () => {
+  await mantiumAi.Auth().accessTokenLogin({
+    username: 'useremail@somedomain.com',
+    password: 'p@ssWord!'
+  })
+    .then((response) => {
+      // get bearer_id and set to default
+      mantiumAi.api_key = response.data.attributes.bearer_id;
+      return response;
+    });
+
+  /*
+  * API Key is set on above
+  * mantiumAi.api_key=`key`
+  * so we can call these method directly now
+  */
+
+  let prompt_id = 'b1c01f1a-ff6c-45e8-8378-d23d11d7de9c';
+  let input = 'This is my first test execute prompt';
+
+  await mantiumAi.Prompts('OpenAI')
+    .execute({
+      id: prompt_id,
+      input
+    })
+    .then(async (res) => {
+      console.log("*************** Execute ***************");
+      console.log(res);
+    });
+})();
+```
+
+#### Example of a successful completion response
+```js
+// *************** Execute ***************
+{
+  success: true,
+  prompt_id: 'b1c01f1a-ff6c-45e8-8378-d23d11d7de9c',
+  input: 'This is my first test execute prompt',
+  status: 'QUEUED',
+  prompt_execution_id: 'd96d6f42-05a3-4ae6-b846-a891af8a8635',
+  error: '',
+  warning_message: ''
+}
+```
+[Go to Table of Contents](#table-of-contents)
+
+
+#### Get Prompt Result
+
+Returns execution status of a prompt ran through the prompt execution workflow asynchronously.
+
+Prompt Execution Id* (string)* this can be achieved from the successful response from the execute prompt method.
+
+[Document link](https://developer.mantiumai.com/reference#get_prompt_result_v1_prompt_result__prompt_execution_id__get)
+
+```js
+const mantiumAi = require('mantiumclient-js');
+
+(async () => {
+  await mantiumAi.Auth().accessTokenLogin({
+    username: 'useremail@somedomain.com',
+    password: 'p@ssWord!'
+  })
+    .then((response) => {
+      // get bearer_id and set to default
+      mantiumAi.api_key = response.data.attributes.bearer_id;
+      return response;
+    });
+
+  /*
+  * API Key is set on above
+  * mantiumAi.api_key=`key`
+  * so we can call these method directly now
+  */
+
+  let prompt_id = 'b1c01f1a-ff6c-45e8-8378-d23d11d7de9c';
+  let input = 'This is my second test execute prompt';
+
+  await mantiumAi.Prompts('OpenAI')
+    .execute({
+      id: prompt_id,
+      input
+    })
+    .then(async (res) => {
+      /*
+      * from the successful response collect the prompt_execution_id
+      * and then pass this to the result method
+      */
+      if(res?.prompt_execution_id) {
+        await mantiumAi.Prompts('OpenAI').result(res.prompt_execution_id)
+        .then((response) => {
+          console.log("*************** Execute Result ***************");
+          console.log(response);
+        });
+      }
+    });
+})();
+```
+
+#### Example of a successful completion response
+```js
+// *************** Execute Result ***************
+{
+  prompt_execution_id: 'd96d6f42-05a3-4ae6-b846-a891af8a8635',
+  prompt_id: 'b1c01f1a-ff6c-45e8-8378-d23d11d7de9c',
+  status: 'COMPLETED',
+  input: 'This is my second test execute prompt',
+  output: "Endpoint Settings: Prompt LineThis is my second test execute prompt, but my last one worked fine. I thought this was rough except for Thoughtnet having doubts about working with it... I found another test which showed interaction with the NavigatorHelpers class. But, now my memory is terrible. Part of that may be hardware ghosting or at least faulty programming on bad servers.....I tried to use InsertPageName here only to find that didn't work though. So, if extra query pages fail because not everything's Showed in Page Name window, something cleantly isn't done.... Now the question is whether Thoughtnet will comply so they don't have to deal w/ weird loading times?????Edit: You can go straight off After powering up after this screen appearsoted by Admin using Command Prompt",
+  error: '',
+  reason: '',
+  hitl_info: null,
+  warning_message: ''
+}
+```
 [Go to Table of Contents](#table-of-contents)

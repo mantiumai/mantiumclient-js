@@ -49,7 +49,19 @@ module.exports = {
     return `${this.baseURL()}/tag${isOldURL ? '/id' : ''}`;
   },
 
-  promptURL() {
-    return `${this.baseURL()}/prompt`;
+  /*
+   * Prompts
+   * https://developer.mantiumai.com/reference#prompts
+   */
+  promptURL(isOldURL = false) {
+    return `${this.baseURL()}/prompt${isOldURL ? '/id' : ''}`;
+  },
+
+  promptExecuteURL(id) {
+    return `${this.baseURL()}/prompt/${id}/execute`;
+  },
+
+  promptResultURL() {
+    return `${this.baseURL()}/prompt/result`;
   },
 };
