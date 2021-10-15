@@ -64,4 +64,8 @@ module.exports = {
   promptResultURL() {
     return `${this.baseURL()}/prompt/result`;
   },
+
+  promptTryURL(id) {
+    return `${this.baseURL()}/prompt/${id}/try`;
+  },
 };

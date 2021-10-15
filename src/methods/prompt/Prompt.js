@@ -40,6 +40,14 @@ module.exports = function (headers, opt) {
     url = config.promptResultURL().concat('/', id);
   }
 
+  if (utils.isNotNil(opt.action) && opt.action === 'try') {
+    if (id === '') throw new Error(msg.errorMessages().id_missing);
+    if (opt.input === '') throw new Error(msg.errorMessages().input_missing);
+    url = config
+      .promptTryURL(opt.id)
+      .concat(utils.objToQueryStr({ input: opt.input }));
+  }
+
   let options = {
     method: opt.method,
     url,
