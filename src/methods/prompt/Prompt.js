@@ -16,7 +16,7 @@ module.exports = function (headers, opt) {
   if (
     ['GET', 'PATCH', 'DELETE'].includes(opt.method) &&
     utils.isNil(opt.id) &&
-    opt.type === 'item'
+    opt.io_type === 'item'
   )
     throw new Error(msg.errorMessages().id_missing);
 
@@ -40,6 +40,14 @@ module.exports = function (headers, opt) {
     url = config.promptResultURL().concat('/', id);
   }
 
+  if (utils.isNotNil(opt.action) && opt.action === 'try') {
+    if (id === '') throw new Error(msg.errorMessages().id_missing);
+    if (opt.input === '') throw new Error(msg.errorMessages().input_missing);
+    url = config
+      .promptTryURL(opt.id)
+      .concat(utils.objToQueryStr({ input: opt.input }));
+  }
+
   let options = {
     method: opt.method,
     url,
@@ -49,7 +57,9 @@ module.exports = function (headers, opt) {
       : false,
   };
 
-  if (opt.action && opt.type !== 'list') {
+  if (['POST', 'PATCH', 'PUT'].includes(opt.method) && opt.io_type !== 'list') {
+    delete opt.io_type; // internal use only
+    delete opt.isIdURL; // internal use only
     options['body'] = JSON.stringify(opt);
   }
 

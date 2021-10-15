@@ -209,7 +209,7 @@ module.exports = {
     function list(data) {
       return Tag(
         new Headers(module.exports.api_key, module.exports.organization),
-        { type: 'list', method: 'GET', queryParam: data }
+        { io_type: 'list', method: 'GET', queryParam: data }
       );
     }
 
@@ -224,7 +224,7 @@ module.exports = {
     function create(data) {
       return Tag(
         new Headers(module.exports.api_key, module.exports.organization),
-        Object.assign({ type: 'item', method: 'POST' }, data)
+        Object.assign({ io_type: 'item', method: 'POST' }, data)
       );
     }
 
@@ -239,7 +239,7 @@ module.exports = {
     function update(data) {
       return Tag(
         new Headers(module.exports.api_key, module.exports.organization),
-        Object.assign({ type: 'item', method: 'PATCH' }, data)
+        Object.assign({ io_type: 'item', method: 'PATCH' }, data)
       );
     }
 
@@ -254,7 +254,7 @@ module.exports = {
     function retrieve(id) {
       return Tag(
         new Headers(module.exports.api_key, module.exports.organization),
-        { type: 'item', method: 'GET', id: id }
+        { io_type: 'item', method: 'GET', id: id }
       );
     }
 
@@ -269,7 +269,7 @@ module.exports = {
     function retrieveId(id) {
       return Tag(
         new Headers(module.exports.api_key, module.exports.organization),
-        { type: 'item', method: 'GET', id: id }
+        { io_type: 'item', method: 'GET', isIdURL: true, id: id }
       );
     }
 
@@ -284,7 +284,7 @@ module.exports = {
     function remove(id) {
       return Tag(
         new Headers(module.exports.api_key, module.exports.organization),
-        { type: 'item', method: 'DELETE', id: id }
+        { io_type: 'item', method: 'DELETE', id: id }
       );
     }
 
@@ -338,7 +338,7 @@ module.exports = {
     function list(data) {
       return Prompt(
         new Headers(module.exports.api_key, module.exports.organization),
-        { type: 'list', method: 'GET', queryParam: data }
+        { io_type: 'list', method: 'GET', queryParam: data }
       );
     }
 
@@ -354,7 +354,7 @@ module.exports = {
       const newLocal = Object.assign(
         {
           ai_provider: provider,
-          type: 'item',
+          io_type: 'item',
           method: 'POST',
         },
         data
@@ -379,7 +379,7 @@ module.exports = {
       const newLocal = Object.assign(
         {
           ai_provider: provider,
-          type: 'item',
+          io_type: 'item',
           method: 'PATCH',
         },
         data
@@ -399,10 +399,10 @@ module.exports = {
      *
      * @return {object}  Provide object type 'prompt'.
      */
-    function retreive(id) {
+    function retrieve(id) {
       return Prompt(
         new Headers(module.exports.api_key, module.exports.organization),
-        { type: 'item', method: 'GET', id: id }
+        { io_type: 'item', method: 'GET', id: id }
       );
     }
 
@@ -414,10 +414,10 @@ module.exports = {
      *
      * @return {object}  Provide object type 'prompt'.
      */
-    function retreiveId(id) {
+    function retrieveId(id) {
       return Prompt(
         new Headers(module.exports.api_key, module.exports.organization),
-        { type: 'item', method: 'GET', isOldURL: true, id: id }
+        { io_type: 'item', method: 'GET', isIdURL: true, id: id }
       );
     }
 
@@ -432,7 +432,7 @@ module.exports = {
     function remove(id) {
       return Prompt(
         new Headers(module.exports.api_key, module.exports.organization),
-        { type: 'item', method: 'DELETE', id: id }
+        { io_type: 'item', method: 'DELETE', id: id }
       );
     }
 
@@ -448,7 +448,7 @@ module.exports = {
       const newLocal = Object.assign(
         {
           ai_provider: provider,
-          type: 'item',
+          io_type: 'item',
           method: 'POST',
           id: data.id,
           action: 'execute',
@@ -475,7 +475,7 @@ module.exports = {
         new Headers(module.exports.api_key, module.exports.organization),
         {
           ai_provider: provider,
-          type: 'item',
+          io_type: 'item',
           method: 'GET',
           id: PromptExecutionId,
           action: 'result',
@@ -491,7 +491,7 @@ module.exports = {
             new Headers(module.exports.api_key, module.exports.organization),
             {
               ai_provider: provider,
-              type: 'item',
+              io_type: 'item',
               method: 'GET',
               id: PromptExecutionId,
               action: 'result',
@@ -505,6 +505,32 @@ module.exports = {
     }
 
     /**
+     * Summary: Execute a prompt specified by given prompt ID synchronously.
+     *
+     * This method requires Header `Authorization: Bearer {bearer_id}`, you can obtain `bearer_id` using `.Auth().accessTokenLogin()` method.
+     * @param {object} input { id: 'prompt_id', input: 'input text for the execute' }
+     *
+     * @return {object}  Provide object with `prompt_execution_id`.
+     */
+    function tryPrompt(data) {
+      const newLocal = Object.assign(
+        {
+          ai_provider: provider,
+          io_type: 'item',
+          method: 'POST',
+          id: data.id,
+          action: 'try',
+        },
+        data
+      );
+      const modifier = newLocal;
+      return Prompt(
+        new Headers(module.exports.api_key, module.exports.organization),
+        modifier
+      );
+    }
+
+    /**
      * Summary: Prompt(s) related operations.
      *
      * This method requires Header `Authorization: Bearer {bearer_id}`, you can obtain `bearer_id` using `.Auth().accessTokenLogin()` method.
@@ -514,8 +540,8 @@ module.exports = {
      * @return {Method} This return the list of methods for Prompt.
      * - list
      * - create
-     * - retreive
-     * - retreiveId
+     * - retrieve
+     * - retrieveId
      * - remove
      * - execute
      * - result
@@ -526,22 +552,24 @@ module.exports = {
         list: list,
         create: create,
         update: update,
-        retreive: retreive,
-        retreiveId: retreiveId,
+        retrieve: retrieve,
+        retrieveId: retrieveId,
         remove: remove,
         execute: execute,
         result: result,
+        tryPrompt: tryPrompt,
       };
     }
 
     main.list = list;
     main.create = create;
     main.update = update;
-    main.retreive = retreive;
-    main.retreiveId = retreiveId;
+    main.retrieve = retrieve;
+    main.retrieveId = retrieveId;
     main.remove = remove;
     main.execute = execute;
     main.result = result;
+    main.tryPrompt = tryPrompt;
 
     return main;
   })(),
