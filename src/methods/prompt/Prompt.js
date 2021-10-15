@@ -16,7 +16,7 @@ module.exports = function (headers, opt) {
   if (
     ['GET', 'PATCH', 'DELETE'].includes(opt.method) &&
     utils.isNil(opt.id) &&
-    opt.type === 'item'
+    opt.io_type === 'item'
   )
     throw new Error(msg.errorMessages().id_missing);
 
@@ -49,7 +49,9 @@ module.exports = function (headers, opt) {
       : false,
   };
 
-  if (opt.action && opt.type !== 'list') {
+  if (['POST', 'PATCH', 'PUT'].includes(opt.method) && opt.io_type !== 'list') {
+    delete opt.io_type; // internal use only
+    delete opt.isIdURL; // internal use only
     options['body'] = JSON.stringify(opt);
   }
 

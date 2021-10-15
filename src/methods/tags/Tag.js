@@ -10,7 +10,7 @@ module.exports = function (headers, opt) {
   if (
     ['GET', 'PATCH', 'DELETE'].includes(opt.method) &&
     utils.isNil(opt.id) &&
-    opt.type === 'item'
+    opt.io_type === 'item'
   )
     throw new Error(msg.errorMessages().id_missing);
 
@@ -27,7 +27,9 @@ module.exports = function (headers, opt) {
     headers: headers.getHeaders(),
   };
 
-  if (opt.name && opt.type !== 'list') {
+  if (opt.name && opt.io_type !== 'list') {
+    delete opt.io_type; // internal use only
+    delete opt.isIdURL; // internal use only
     options['body'] = JSON.stringify({
       name: opt.name,
       description: opt.description,
