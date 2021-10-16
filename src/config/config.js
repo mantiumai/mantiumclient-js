@@ -45,16 +45,16 @@ module.exports = {
    * Tags
    * https://developer.mantiumai.com/reference#tags
    */
-  tagsURL(isOldURL = false) {
-    return `${this.baseURL()}/tag${isOldURL ? '/id' : ''}`;
+  tagsURL(isIdURL = false) {
+    return `${this.baseURL()}/tag${isIdURL ? '/id' : ''}`;
   },
 
   /*
    * Prompts
    * https://developer.mantiumai.com/reference#prompts
    */
-  promptURL(isOldURL = false) {
-    return `${this.baseURL()}/prompt${isOldURL ? '/id' : ''}`;
+  promptURL(isIdURL = false) {
+    return `${this.baseURL()}/prompt${isIdURL ? '/id' : ''}`;
   },
 
   promptExecuteURL(id) {
@@ -67,5 +67,14 @@ module.exports = {
 
   promptTryURL(id) {
     return `${this.baseURL()}/prompt/${id}/try`;
+  },
+
+  /*
+   * Logs
+   * https://developer.mantiumai.com/reference#logs
+   */
+
+  logsURL(isIdURL = false) {
+    return `${this.baseURL()}/log${isIdURL ? '/id' : ''}`;
   },
 };

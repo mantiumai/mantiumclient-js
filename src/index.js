@@ -35,6 +35,9 @@ const Tag = require('./methods/tags/Tag');
 // Prompt
 const Prompt = require('./methods/prompt/Prompt');
 
+// Logs
+const Log = require('./methods/logs/Log');
+
 module.exports = {
   ORIGIN: 'https://api.mantiumai.com',
   API_VERSION: 'v1',
@@ -571,6 +574,75 @@ module.exports = {
     main.result = result;
     main.tryPrompt = tryPrompt;
 
+    return main;
+  })(),
+
+  Logs: (function () {
+    /**
+     * Summary: List all Logs.
+     *
+     * This method requires Header `Authorization: Bearer {bearer_id}`, you can obtain `bearer_id` using `.Auth().accessTokenLogin()` method.
+     * @param {object} object {"page":"1","size":"20","after_date":"jan","before_date":"jan","log_type":"DEFAULT","log_level":"top","log_status":"completed"};
+     *
+     * @return {Array} Provide method list in array format.
+     */
+    function list(data) {
+      return Log(
+        new Headers(module.exports.api_key, module.exports.organization),
+        { io_type: 'list', method: 'GET', queryParam: data }
+      );
+    }
+
+    /**
+     * Summary: Get details about a specific log.
+     *
+     * This method requires Header `Authorization: Bearer {bearer_id}`, you can obtain `bearer_id` using `.Auth().accessTokenLogin()` method.
+     * @param {string} id Prompt ID
+     *
+     * @return {object}  Provide object type 'log'.
+     */
+    function retrieve(id) {
+      return Log(
+        new Headers(module.exports.api_key, module.exports.organization),
+        { io_type: 'item', method: 'GET', id: id }
+      );
+    }
+
+    /**
+     * Summary: Get details about a specific log.
+     *
+     * This method requires Header `Authorization: Bearer {bearer_id}`, you can obtain `bearer_id` using `.Auth().accessTokenLogin()` method.
+     * @param {string} id Prompt ID
+     *
+     * @return {object}  Provide object type 'prompt'.
+     */
+    function retrieveId(id) {
+      return Log(
+        new Headers(module.exports.api_key, module.exports.organization),
+        { io_type: 'item', method: 'GET', isIdURL: true, id: id }
+      );
+    }
+
+    /**
+     * Summary: Log(s) operations.
+     *
+     * This method requires Header `Authorization: Bearer {bearer_id}`, you can obtain `bearer_id` using `.Auth().accessTokenLogin()` method.
+     * AI Provider name (case sensitive)
+     *
+     * @return {Method} This return the list of methods for Prompt.
+     * - list
+     * - retrieve
+     * - retrieveId
+     */
+    function main() {
+      return {
+        list: list,
+        retrieve: retrieve,
+        retrieveId: retrieveId,
+      };
+    }
+
+    main.list = list;
     return main;
   })(),
 };

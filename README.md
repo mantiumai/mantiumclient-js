@@ -33,6 +33,10 @@
     - [Execute Prompt](#execute-prompt)
     - [Get Prompt Result](#get-prompt-result)
     - [Try Prompt](#try-prompt)
+  - [Logs](#logs)
+    - [List Logs](#list-logs)
+    - [Get Log using ID url](#get-log-using-id-url)
+    - [Get Log](#get-log)
 
 ## Quickstart:
 Read the [getting started guide](https://developer.mantiumai.com/docs) for more information on how to use Mantium.
@@ -1572,11 +1576,11 @@ const mantiumAi = require('mantiumclient-js');
 
 #### Try Prompt
 
-Execute a prompt specified by given prompt ID synchronously.  
+Execute a prompt specified by given prompt ID synchronously.
 
-Prompt Id* (string)* required parameter  
+Prompt Id* (string)* required parameter
 
-Input* (string)* Input for executing a prompt asynchronously  
+Input* (string)* Input for executing a prompt asynchronously
 
 [Document link](https://developer.mantiumai.com/reference#try_prompt_v1_prompt__prompt_id__try_post)
 
@@ -1646,4 +1650,256 @@ const mantiumAi = require('mantiumclient-js');
   warning_message: null
 }
 ```
+[Go to Table of Contents](#table-of-contents)
+
+### Logs
+
+#### List Logs
+
+Query Params
+
+`page` (number) - Page number
+
+`size` (number) - Page size. If not supplied, returns all the results in a single page for certain APIs.
+
+`after_date` (string) - After Date
+
+`before_date` (string) Before Date
+
+`log_type` (string) LogType, An enumeration. [AUTH | DEFAULT | PROMPT | INTELET FILE]
+
+`log_level` (string) Log Level
+
+`log_status` (string) Log Status
+
+
+[Document link](https://developer.mantiumai.com/reference#list_logs_v1_log__get)
+
+```js
+const mantiumAi = require('mantiumclient-js');
+
+(async () => {
+  await mantiumAi.Auth().accessTokenLogin({
+    username: 'kedman1234@gmail.com',
+    password: 'Suvarna@12'
+  })
+    .then((response) => {
+      // get bearer_id and set to default
+      mantiumAi.api_key = response.data.attributes.bearer_id;
+    });
+
+  /*
+  * API Key is set on above
+  * mantiumAi.api_key=`key`
+  * so we can call these method directly now
+  */
+
+  await mantiumAi.Logs().list({
+      'page': 1,
+      'size': 2
+    })
+    .then((response) => {
+      console.log('*********** Logs list *********');
+      console.log(response);
+    });
+})();
+```
+
+#### Example of a successful completion response
+```js
+// *********** Logs list *********
+{
+  data: [
+    {
+      id: 'log-some-long-id',
+      type: 'log',
+      attributes: {
+        log_id: 'log-some-long-id',
+        event_timestamp: '2021-10-15T13:55:57.468749+00:00',
+        organization_id: 'organization-some-long-id',
+        log_type: 'PROMPT',
+        log_payload: [Object],
+        log_level: 'INFO'
+      },
+      relationships: {}
+    },
+    {
+      id: 'log-some-long-id',
+      type: 'log',
+      attributes: {
+        log_id: 'log-some-long-id',
+        event_timestamp: '2021-10-15T13:55:52.304732+00:00',
+        organization_id: 'organization-some-long-id',
+        log_type: 'PROMPT',
+        log_payload: [Object],
+        log_level: 'WARNING'
+      },
+      relationships: {}
+    }
+  ],
+  included: [],
+  meta: {},
+  links: { total_items: 103, current_page: 1, next_page: 2 }
+}
+```
+[Go to Table of Contents](#table-of-contents)
+
+
+#### Get Log using ID url
+
+Get details about a specific log.
+
+Prompt Id* (string)* required parameter
+
+[Document link](https://developer.mantiumai.com/reference#get_log_v1_log_id__log_id__get)
+
+```js
+const mantiumAi = require('mantiumclient-js');
+
+(async () => {
+  await mantiumAi.Auth().accessTokenLogin({
+    username: 'kedman1234@gmail.com',
+    password: 'Suvarna@12'
+  })
+    .then((response) => {
+      // get bearer_id and set to default
+      mantiumAi.api_key = response.data.attributes.bearer_id;
+    });
+
+  /*
+  * API Key is set on above
+  * mantiumAi.api_key=`key`
+  * so we can call these method directly now
+  */
+
+  await mantiumAi.Logs().retrieveId('log-some-long-id')
+    .then((response) => {
+      console.log('*********** Log *********');
+      console.log(response);
+    });
+})();
+```
+
+#### Example of a successful completion response
+
+```js
+{
+  data: {
+    id: 'bb65e751-9384-4239-a9e9-a29703e94de4',
+    type: 'log',
+    attributes: {
+      log_id: 'bb65e751-9384-4239-a9e9-a29703e94de4',
+      event_timestamp: '2021-10-15T13:55:57.468749+00:00',
+      organization_id: 'c68c07c9-d11a-4b54-8823-1dff6792916d',
+      log_type: 'PROMPT',
+      log_payload: {
+        to: 'completion',
+        name: 'update the Prompt',
+        error: '',
+        input: 'This is my testing execute prompt',
+        config: [Object],
+        output: '. I have a new prompt line that I want to test. I have a new prompt line that I want to test. I have a new prompt line that I want to test. I have a new prompt line that I want to test. I have a new prompt line that I want to test. I have a new prompt line that I want to test. I have a new prompt line that I want to test. I have a new prompt line that I want to test. I have a new prompt line that I want to test.\n' +
+          'I have a new prompt line that I want to test.',
+        status: 'COMPLETED',
+        ai_app_id: null,
+        ai_method: 'completion',
+        direction: 'incoming',
+        prompt_id: '29d46e2b-9d43-42cf-a1b0-edbf5db745dc',
+        intelet_id: null,
+        ai_provider: 'OpenAI',
+        prompt_text: 'Updated new Prompt Line',
+        warning_message: null,
+        provider_response: [Object],
+        input_character_length: 56
+      },
+      log_level: 'INFO'
+    },
+    relationships: {}
+  },
+  included: [],
+  meta: {},
+  links: {}
+}
+```
+
+[Go to Table of Contents](#table-of-contents)
+
+
+#### Get Log
+
+Get details about a specific log.
+
+Prompt Id* (string)* required parameter
+
+[Document link](https://developer.mantiumai.com/reference#get_log_v1_log__log_id__get)
+
+```js
+const mantiumAi = require('mantiumclient-js');
+
+(async () => {
+  await mantiumAi.Auth().accessTokenLogin({
+    username: 'kedman1234@gmail.com',
+    password: 'Suvarna@12'
+  })
+    .then((response) => {
+      // get bearer_id and set to default
+      mantiumAi.api_key = response.data.attributes.bearer_id;
+    });
+
+  /*
+  * API Key is set on above
+  * mantiumAi.api_key=`key`
+  * so we can call these method directly now
+  */
+
+  await mantiumAi.Logs().retrieveId('log-some-long-id')
+    .then((response) => {
+      console.log('*********** Log *********');
+      console.log(response);
+    });
+})();
+```
+
+#### Example of a successful completion response
+
+```js
+{
+  data: {
+    id: 'bb65e751-9384-4239-a9e9-a29703e94de4',
+    type: 'log',
+    attributes: {
+      log_id: 'bb65e751-9384-4239-a9e9-a29703e94de4',
+      event_timestamp: '2021-10-15T13:55:57.468749+00:00',
+      organization_id: 'c68c07c9-d11a-4b54-8823-1dff6792916d',
+      log_type: 'PROMPT',
+      log_payload: {
+        to: 'completion',
+        name: 'update the Prompt',
+        error: '',
+        input: 'This is my testing execute prompt',
+        config: [Object],
+        output: '. I have a new prompt line that I want to test. I have a new prompt line that I want to test. I have a new prompt line that I want to test. I have a new prompt line that I want to test. I have a new prompt line that I want to test. I have a new prompt line that I want to test. I have a new prompt line that I want to test. I have a new prompt line that I want to test. I have a new prompt line that I want to test.\n' +
+          'I have a new prompt line that I want to test.',
+        status: 'COMPLETED',
+        ai_app_id: null,
+        ai_method: 'completion',
+        direction: 'incoming',
+        prompt_id: '29d46e2b-9d43-42cf-a1b0-edbf5db745dc',
+        intelet_id: null,
+        ai_provider: 'OpenAI',
+        prompt_text: 'Updated new Prompt Line',
+        warning_message: null,
+        provider_response: [Object],
+        input_character_length: 56
+      },
+      log_level: 'INFO'
+    },
+    relationships: {}
+  },
+  included: [],
+  meta: {},
+  links: {}
+}
+```
+
 [Go to Table of Contents](#table-of-contents)
