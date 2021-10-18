@@ -77,4 +77,20 @@ module.exports = {
   logsURL(isIdURL = false) {
     return `${this.baseURL()}/log${isIdURL ? '/id' : ''}`;
   },
+
+  /*
+   * Intelet
+   * https://developer.mantiumai.com/reference#intelets
+   */
+  inteletURL(isIdURL = false) {
+    return `${this.baseURL()}/intelet${isIdURL ? '/id' : ''}`;
+  },
+
+  inteletExecuteURL(id) {
+    return `${this.baseURL()}/intelet/${id}/execute`;
+  },
+
+  inteletResultURL() {
+    return `${this.baseURL()}/intelet/result`;
+  },
 };
