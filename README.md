@@ -37,14 +37,25 @@
     - [List Logs](#list-logs)
     - [Get Log using ID url](#get-log-using-id-url)
     - [Get Log](#get-log)
+  - [Intelets](#intelets)
+    - [List Intelets](#list-intelets)
+    - [Create an Intelet](#create-an-intelet)
+    - [Update Intelet](#update-intelet)
+    - [Get an Intelet using ID url](#get-an-intelet-using-id-url)
+    - [Get an Intelet ](#get-an-intelet)
+    - [Delete an Intelet](#delete-an-intelet)
 
 ## Quickstart:
-Read the [getting started guide](https://developer.mantiumai.com/docs) for more information on how to use Mantium.
+
+Read the [getting started guide](https://developer.mantiumai.com/docs) for more information on how to use Mantium.  
+
 ## Authentication
+
 - Make an account by visiting [app.mantiumai.com](https://app.mantiumai.com) and select Register.
 - Enter your email address and create a password. After you've verified the email, you'll be able to sign in to the Mantium application. You'll also need your username and password to obtain a token for API use.
 
 ## Installation
+
 Install [Node.js](https://nodejs.org/en/) on your computer. To install JavaScript Library please use the following command.
 
 ```js
@@ -1680,8 +1691,8 @@ const mantiumAi = require('mantiumclient-js');
 
 (async () => {
   await mantiumAi.Auth().accessTokenLogin({
-    username: 'kedman1234@gmail.com',
-    password: 'Suvarna@12'
+    username: 'useremail@somedomain.com',
+    password: 'p@ssWord!'
   })
     .then((response) => {
       // get bearer_id and set to default
@@ -1758,8 +1769,8 @@ const mantiumAi = require('mantiumclient-js');
 
 (async () => {
   await mantiumAi.Auth().accessTokenLogin({
-    username: 'kedman1234@gmail.com',
-    password: 'Suvarna@12'
+    username: 'useremail@somedomain.com',
+    password: 'p@ssWord!'
   })
     .then((response) => {
       // get bearer_id and set to default
@@ -1838,8 +1849,8 @@ const mantiumAi = require('mantiumclient-js');
 
 (async () => {
   await mantiumAi.Auth().accessTokenLogin({
-    username: 'kedman1234@gmail.com',
-    password: 'Suvarna@12'
+    username: 'useremail@somedomain.com',
+    password: 'p@ssWord!'
   })
     .then((response) => {
       // get bearer_id and set to default
@@ -1902,4 +1913,519 @@ const mantiumAi = require('mantiumclient-js');
 }
 ```
 
+[Go to Table of Contents](#table-of-contents)
+
+
+### Intelets
+
+#### List Intelets
+
+List all of your organization's intelets.  
+
+Query String Parameters  
+
+- page (number) - The page of records to return. Optional, defaults to page 1.  
+
+- size (number) - the number of records to return for each page. Optional, defaults to 20 intelets a page.  
+
+- tags (string) - A list of Tag IDs separated by comma used to filter the results, optional.  
+
+[Document link](https://developer.mantiumai.com/reference#list_intelets_v1_intelet__get)
+
+```js
+const mantiumAi = require('mantiumclient-js');
+
+(async () => {
+  await mantiumAi.Auth().accessTokenLogin({
+    username: 'useremail@somedomain.com',
+    password: 'p@ssWord!'
+  })
+    .then((response) => {
+      // get bearer_id and set to default
+      mantiumAi.api_key = response.data.attributes.bearer_id;
+      return response;
+    });
+
+  /*
+  * API Key is set on above
+  * mantiumAi.api_key=`key`
+  * so we can call these method directly now
+  */
+  await mantiumAi.Intelets().list({ 'page': 1, 'size': 20 }).then((response) => {
+    console.log('*********** List *********');
+    console.log(response);
+  });
+})();
+
+```
+
+#### Example of a successful completion response
+```js
+{
+  data: [
+    {
+      id: 'f6e84a80-5c60-4015-90e8-21fe0b0fc8b7',
+      type: 'intelet_view',
+      attributes: {
+        intelet_id: 'f6e84a80-5c60-4015-90e8-21fe0b0fc8b7',
+        name: 'Intelet Name given by me',
+        description: 'Description given by me',
+        created_at: '2021-10-17T10:44:14.510931+00:00',
+        created_by: 'a3e5c076-311c-46af-97cd-d1e529512afe',
+        created_by_email: 'kedman1234@gmail.com',
+        created_by_name: ' ',
+        updated_at: null,
+        updated_by_email: null,
+        updated_by_name: null,
+        organization_id: 'c68c07c9-d11a-4b54-8823-1dff6792916d',
+        organization_name: ' ',
+        tags: null,
+        prompts: [
+          {
+            prompt_id: 'c45bcc94-ea1e-4faa-886b-059b10c38020',
+            prompt_name: 'update the Prompt',
+            operation_order: 1
+          },
+          {
+            prompt_id: '242bb0a2-213e-4001-96a4-f29e0912c99a',
+            prompt_name: 'Basic Prompt',
+            operation_order: 2
+          }
+        ]
+      },
+      relationships: {}
+    }
+  ],
+  included: [],
+  meta: {},
+  links: { total_items: 1, current_page: 1 }
+}
+```
+[Go to Table of Contents](#table-of-contents)
+
+#### Create an Intelet
+
+- Name* (string) - Name of the Intelet.  
+
+- Description (string) - Text to describe the purpose of this Intelet.  
+
+- Prompts (array) - Prompts to include in the Intelet. Prompts are executed in the order that they appear in this list, with the first Prompt feeding its output to the 2nd Prompt, and so on until the final Prompt.  
+
+Body payload `object` { ...data }; [Object example](https://developer.mantiumai.com/reference#create_intelet_v1_intelet__post)
+
+
+[Document link](https://developer.mantiumai.com/reference#create_intelet_v1_intelet__post)
+
+
+##### Example of violate setting value(s) and it's Response(s)
+
+in following example we send wrong prompts ID's
+
+
+```js
+const mantiumAi = require('mantiumclient-js');
+
+(async () => {
+  await mantiumAi.Auth().accessTokenLogin({
+    username: 'useremail@somedomain.com',
+    password: 'p@ssWord!'
+  })
+    .then((response) => {
+      // get bearer_id and set to default
+      mantiumAi.api_key = response.data.attributes.bearer_id;
+      return response;
+    });
+
+  /*
+  * API Key is set on above
+  * mantiumAi.api_key=`key`
+  * so we can call these method directly now
+  */
+  mantiumAi.Intelets('OpenAI').create({
+    "name":"intelet name",
+    "description":"description for the intelet",
+    "prompts":[
+      "41f62edf-9b0f-4397-8254-21dfc95e4efe",
+      "23c217b8-1f87-4222-9e3c-e3bf4497c217"
+    ]}).then((response) => {
+    console.log("*************** Intelet Create ***************");
+    console.log(response);
+  });
+
+})();
+```
+
+
+
+##### Example of a Error response
+```js
+// *************** Prompt Create ***************
+{
+  detail: 'Prompt ID 96613f72-0fed-4b39-8775-beafe74d30ef does not exist for the organization 563821cd-903e-4b5c-8541-ea828058aec6'
+}
+
+```
+
+#### Correct data for creation
+```js
+const mantiumAi = require('mantiumclient-js');
+
+(async () => {
+  await mantiumAi.Auth().accessTokenLogin({
+    username: 'useremail@somedomain.com',
+    password: 'p@ssWord!'
+  })
+    .then((response) => {
+      // get bearer_id and set to default
+      mantiumAi.api_key = response.data.attributes.bearer_id;
+      return response;
+    });
+
+  /*
+  * API Key is set on above
+  * mantiumAi.api_key=`key`
+  * so we can call these method directly now
+  */
+  mantiumAi.Intelets('OpenAI').create({
+    "name":"intelet name",
+    "description":"description for the intelet",
+    "prompts":[
+      "41f62edf-9b0f-4397-8254-21dfc95e4efe",
+      "23c217b8-1f87-4222-9e3c-e3bf4497c217"
+    ]}).then((response) => {
+    console.log("*************** Intelet Create ***************");
+    console.log(response);
+  });
+})();
+```
+
+#### Example of a successful completion response
+```js
+{
+  data: {
+    id: '8caa02c8-cb62-4a58-a17c-302a8369b3a0',
+    type: 'intelet',
+    attributes: {
+      created_at: '2021-10-17T17:18:39.618524+00:00',
+      updated_at: null,
+      intelet_id: '8caa02c8-cb62-4a58-a17c-302a8369b3a0',
+      organization_id: 'c68c07c9-d11a-4b54-8823-1dff6792916d',
+      name: 'intelet name',
+      description: 'description for the intelet',
+      share_allow_input: false,
+      share_name: null,
+      share_description: '',
+      share_placeholder: '',
+      share_author_name: null,
+      share_author_contact: '',
+      share_type: null,
+      share_status: 'ACTIVE',
+      created_by: 'a3e5c076-311c-46af-97cd-d1e529512afe',
+      updated_by: null
+    },
+    relationships: {}
+  },
+  included: [],
+  meta: {},
+  links: {}
+}
+```
+[Go to Table of Contents](#table-of-contents)
+
+#### Update Intelet
+
+
+- Name* (string) - Name of the Intelet.  
+
+- Description (string) - Text to describe the purpose of this Intelet.  
+
+- Prompts (array) - Prompts to include in the Intelet. Prompts are executed in the order that they appear in this list, with the first Prompt feeding its output to the 2nd Prompt, and so on until the final Prompt. 
+
+
+Prompt Id* (string)* required parameter
+
+Body payload `object` { ...data }; [Object example](https://developer.mantiumai.com/reference#edit_intelet_v1_intelet__intelet_id__patch)
+
+[Document link](https://link)
+
+```js
+const mantiumAi = require('mantiumclient-js');
+
+// mantiumAi.ORIGIN = 'https://api.staging.mantiumai.com';
+
+(async () => {
+  await mantiumAi.Auth().accessTokenLogin({
+    username: 'useremail@somedomain.com',
+    password: 'p@ssWord!'
+  })
+    .then((response) => {
+      // get bearer_id and set to default
+      mantiumAi.api_key = response.data.attributes.bearer_id;
+      // console.log(response);
+      return response;
+    });
+
+  /*
+  * API Key is set on above
+  * mantiumAi.api_key=`key`
+  * so we can call these method directly now
+  */
+  mantiumAi.Intelets().update({
+    "id": "5407866a-0ad3-4671-b7e3-b5635bf521ea",
+    "name":"Chang in intelet name",
+    "description":"description for the intelet is changed",
+    "prompts":[
+      "41f62edf-9b0f-4397-8254-21dfc95e4efe",
+      "23c217b8-1f87-4222-9e3c-e3bf4497c217"
+    ]}).then((response) => {
+    console.log("*************** Intelet update ***************");
+    console.log(response);
+  });
+
+})();
+```
+
+#### Example of a successful completion response
+```js
+// *************** Intelet Update ***************
+{
+  data: {
+    id: '5407866a-0ad3-4671-b7e3-b5635bf521ea',
+    type: 'intelet',
+    attributes: {
+      created_at: '2021-10-18T10:25:08.034662+00:00',
+      updated_at: '2021-10-18T10:42:57.048906+00:00',
+      intelet_id: '5407866a-0ad3-4671-b7e3-b5635bf521ea',
+      organization_id: 'c68c07c9-d11a-4b54-8823-1dff6792916d',
+      name: 'Chang in intelet name',
+      description: 'description for the intelet is changed',
+      share_allow_input: false,
+      share_name: null,
+      share_description: '',
+      share_placeholder: '',
+      share_author_name: null,
+      share_author_contact: '',
+      share_type: null,
+      share_status: 'ACTIVE',
+      created_by: 'a3e5c076-311c-46af-97cd-d1e529512afe',
+      updated_by: 'a3e5c076-311c-46af-97cd-d1e529512afe'
+    },
+    relationships: {}
+  },
+  included: [],
+  meta: {},
+  links: {}
+}
+```
+[Go to Table of Contents](#table-of-contents)
+
+
+#### Get an Intelet using ID url
+
+Information on specific intelet  
+
+- Intelet Id* (string)  
+
+[Document link](https://developer.mantiumai.com/reference#show_intelet_by_id_v1_intelet_id__intelet_id__get)
+
+```js
+const mantiumAi = require('mantiumclient-js');
+
+(async () => {
+  await mantiumAi.Auth().accessTokenLogin({
+    username: 'useremail@somedomain.com',
+    password: 'p@ssWord!'
+  })
+    .then((response) => {
+      // get bearer_id and set to default
+      mantiumAi.api_key = response.data.attributes.bearer_id;
+      return response;
+    });
+
+  /*
+  * API Key is set on above
+  * mantiumAi.api_key=`key`
+  * so we can call these method directly now
+  */
+  await mantiumAi.Intelets()
+    .retrieveId('5407866a-0ad3-4671-b7e3-b5635bf521ea')
+    .then((response) => {
+      console.log("*************** retrieve ***************");
+      console.log(response);
+    });
+})();
+```
+
+#### Example of a successful completion response
+```js
+// *************** retrieve ***************
+{
+  data: {
+    id: '5407866a-0ad3-4671-b7e3-b5635bf521ea',
+    type: 'intelet_view',
+    attributes: {
+      intelet_id: '5407866a-0ad3-4671-b7e3-b5635bf521ea',
+      name: 'Chang in intelet name',
+      description: 'description for the intelet is changed',
+      created_at: '2021-10-18T10:25:08.034662+00:00',
+      created_by: 'a3e5c076-311c-46af-97cd-d1e529512afe',
+      created_by_email: 'kedman1234@gmail.com',
+      created_by_name: ' ',
+      updated_at: '2021-10-18T10:42:57.048906+00:00',
+      updated_by_email: 'kedman1234@gmail.com',
+      updated_by_name: ' ',
+      organization_id: 'c68c07c9-d11a-4b54-8823-1dff6792916d',
+      organization_name: ' ',
+      tags: null,
+      prompts: [
+        {
+          prompt_id: 'c07449be-aae0-421c-a00d-72e1b6928ac4',
+          prompt_name: 'update the Prompt',
+          operation_order: 1
+        },
+        {
+          prompt_id: 'fb6a24b9-cd3c-4600-a58f-929ce6d5c044',
+          prompt_name: 'Test prompt name',
+          operation_order: 2
+        }
+      ]
+    },
+    relationships: {}
+  },
+  included: [],
+  meta: {},
+  links: {}
+}
+```
+[Go to Table of Contents](#table-of-contents)
+
+
+#### Get an Intelet
+
+Information on specific intelet  
+
+- Intelet Id* (string)  
+
+[Document link](https://developer.mantiumai.com/reference#show_intelet_by_id_v1_intelet_id__intelet_id__get)
+
+```js
+const mantiumAi = require('mantiumclient-js');
+
+(async () => {
+  await mantiumAi.Auth().accessTokenLogin({
+    username: 'useremail@somedomain.com',
+    password: 'p@ssWord!'
+  })
+    .then((response) => {
+      // get bearer_id and set to default
+      mantiumAi.api_key = response.data.attributes.bearer_id;
+      return response;
+    });
+
+  /*
+  * API Key is set on above
+  * mantiumAi.api_key=`key`
+  * so we can call these method directly now
+  */
+  await mantiumAi.Intelets()
+    .retrieve('5407866a-0ad3-4671-b7e3-b5635bf521ea')
+    .then((response) => {
+      console.log("*************** retrieve ***************");
+      console.log(response);
+    });
+})();
+```
+
+#### Example of a successful completion response
+```js
+// *************** retrieve ***************
+{
+  data: {
+    id: '5407866a-0ad3-4671-b7e3-b5635bf521ea',
+    type: 'intelet_view',
+    attributes: {
+      intelet_id: '5407866a-0ad3-4671-b7e3-b5635bf521ea',
+      name: 'Chang in intelet name',
+      description: 'description for the intelet is changed',
+      created_at: '2021-10-18T10:25:08.034662+00:00',
+      created_by: 'a3e5c076-311c-46af-97cd-d1e529512afe',
+      created_by_email: 'kedman1234@gmail.com',
+      created_by_name: ' ',
+      updated_at: '2021-10-18T10:42:57.048906+00:00',
+      updated_by_email: 'kedman1234@gmail.com',
+      updated_by_name: ' ',
+      organization_id: 'c68c07c9-d11a-4b54-8823-1dff6792916d',
+      organization_name: ' ',
+      tags: null,
+      prompts: [
+        {
+          prompt_id: 'c07449be-aae0-421c-a00d-72e1b6928ac4',
+          prompt_name: 'update the Prompt',
+          operation_order: 1
+        },
+        {
+          prompt_id: 'fb6a24b9-cd3c-4600-a58f-929ce6d5c044',
+          prompt_name: 'Test prompt name',
+          operation_order: 2
+        }
+      ]
+    },
+    relationships: {}
+  },
+  included: [],
+  meta: {},
+  links: {}
+}
+```
+[Go to Table of Contents](#table-of-contents)
+
+
+
+
+#### Delete an Intelet
+
+- Intelet Id* (string)  
+
+[Document link](https://developer.mantiumai.com/reference#delete_intelet_v1_intelet__intelet_id__delete)
+
+```js
+
+
+const mantiumAi = require('mantiumclient-js');
+
+(async () => {
+  await mantiumAi.Auth().accessTokenLogin({
+    username: 'useremail@somedomain.com',
+    password: 'p@ssWord!'
+  })
+    .then((response) => {
+      // get bearer_id and set to default
+      mantiumAi.api_key = response.data.attributes.bearer_id;
+      return response;
+    });
+
+  /*
+  * API Key is set on above
+  * mantiumAi.api_key=`key`
+  * so we can call these method directly now
+  */
+  await mantiumAi.Intelets()
+    .remove('2bddef3e-f4d9-400c-b2db-4ed2a52c6b83')
+    .then((response) => {
+      console.log("*************** Remove ***************");
+      console.log(response);
+    });
+})();
+
+/*
+* run command
+* node intelets/remove.js
+*/
+
+```
+
+#### Example of a successful completion response
+```js
+Intelet Deleted
+```
 [Go to Table of Contents](#table-of-contents)

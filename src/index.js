@@ -38,6 +38,9 @@ const Prompt = require('./methods/prompt/Prompt');
 // Logs
 const Log = require('./methods/logs/Log');
 
+// Intelet
+const Intelet = require('./methods/intelets/Intelet');
+
 module.exports = {
   ORIGIN: 'https://api.mantiumai.com',
   API_VERSION: 'v1',
@@ -643,6 +646,220 @@ module.exports = {
     }
 
     main.list = list;
+    return main;
+  })(),
+
+  Intelets: (function () {
+    /**
+     * Summary: Get all of the tags for your selected organization.
+     *
+     * This method requires Header `Authorization: Bearer {bearer_id}`, you can obtain `bearer_id` using `.Auth().accessTokenLogin()` method.
+     * @param {object} object { 'page': 1, 'size': 20, 'tags': `<tagid>`};
+     *
+     * @return {Array} Provide method list in array format.
+     */
+    function list(data) {
+      return Intelet(
+        new Headers(module.exports.api_key, module.exports.organization),
+        { io_type: 'list', method: 'GET', queryParam: data }
+      );
+    }
+
+    /**
+     * Summary: Add Intelet
+     *
+     * This method requires Header `Authorization: Bearer {bearer_id}`, you can obtain `bearer_id` using `.Auth().accessTokenLogin()` method.
+     * @param {object} object { ...data }; [Object example](https://developer.mantiumai.com/reference#add_intelet_v1_intelet__post)
+     *
+     * @return {object}  Provide object type 'intelet'.
+     */
+    function create(data) {
+      const newLocal = Object.assign(
+        {
+          io_type: 'item',
+          method: 'POST',
+        },
+        data
+      );
+      const modifier = newLocal;
+
+      return Intelet(
+        new Headers(module.exports.api_key, module.exports.organization),
+        modifier
+      );
+    }
+
+    /**
+     * Summary: Update a Tag.
+     *
+     * This method requires Header `Authorization: Bearer {bearer_id}`, you can obtain `bearer_id` using `.Auth().accessTokenLogin()` method.
+     * @param {object} object { ...data }; [Object example](https://developer.mantiumai.com/reference#add_intelet_v1_intelet__post)
+     *
+     * @return {object}  Provide object type 'intelet'.
+     */
+    function update(data) {
+      const newLocal = Object.assign(
+        {
+          io_type: 'item',
+          method: 'PATCH',
+        },
+        data
+      );
+      const modifier = newLocal;
+      return Intelet(
+        new Headers(module.exports.api_key, module.exports.organization),
+        modifier
+      );
+    }
+
+    /**
+     * Summary: Get details about a specific intelet.
+     *
+     * This method requires Header `Authorization: Bearer {bearer_id}`, you can obtain `bearer_id` using `.Auth().accessTokenLogin()` method.
+     * @param {string} id Intelet ID
+     *
+     * @return {object}  Provide object type 'intelet'.
+     */
+    function retrieve(id) {
+      return Intelet(
+        new Headers(module.exports.api_key, module.exports.organization),
+        { io_type: 'item', method: 'GET', id: id }
+      );
+    }
+
+    /**
+     * Summary: Get details about a specific intelet.
+     *
+     * This method requires Header `Authorization: Bearer {bearer_id}`, you can obtain `bearer_id` using `.Auth().accessTokenLogin()` method.
+     * @param {string} id Intelet ID
+     *
+     * @return {object}  Provide object type 'intelet'.
+     */
+    function retrieveId(id) {
+      return Intelet(
+        new Headers(module.exports.api_key, module.exports.organization),
+        { io_type: 'item', method: 'GET', isIdURL: true, id: id }
+      );
+    }
+
+    /**
+     * Summary: Remove a specific Intelet.
+     *
+     * This method requires Header `Authorization: Bearer {bearer_id}`, you can obtain `bearer_id` using `.Auth().accessTokenLogin()` method.
+     * @param {string} id Intelet ID
+     *
+     * @return {object}  Provide object type 'intelet'.
+     */
+    function remove(id) {
+      return Intelet(
+        new Headers(module.exports.api_key, module.exports.organization),
+        { io_type: 'item', method: 'DELETE', id: id }
+      );
+    }
+
+    /**
+     * Summary: Get details about a specific intelet.
+     *
+     * This method requires Header `Authorization: Bearer {bearer_id}`, you can obtain `bearer_id` using `.Auth().accessTokenLogin()` method.
+     * @param {object} input { id: 'intelet_id', input: 'input text for the execute' }
+     *
+     * @return {object}  Provide object with `intelet_execution_id`.
+     */
+    function execute(data) {
+      const newLocal = Object.assign(
+        {
+          io_type: 'item',
+          method: 'POST',
+          id: data.id,
+          action: 'execute',
+        },
+        data
+      );
+      const modifier = newLocal;
+      return Intelet(
+        new Headers(module.exports.api_key, module.exports.organization),
+        modifier
+      );
+    }
+
+    /**
+     * Summary: Get details about a specific intelet.
+     *
+     * This method requires Header `Authorization: Bearer {bearer_id}`, you can obtain `bearer_id` using `.Auth().accessTokenLogin()` method.
+     * @param {string} InteletExecutionId This will achive by using `Intelets('OpenAI').execute` [method](https://developer.mantiumai.com/reference#execute_intelet_v1_intelet__intelet_id__execute_post)
+     *
+     * @return {object}  Provide object with `intelet_execution_id`.
+     */
+    function result(InteletExecutionId, isWithInterval = true) {
+      return Intelet(
+        new Headers(module.exports.api_key, module.exports.organization),
+        {
+          io_type: 'item',
+          method: 'GET',
+          id: InteletExecutionId,
+          action: 'result',
+        }
+      ).then(function checkResponse(res) {
+        if (
+          res &&
+          !['COMPLETED', 'REJECTED', 'INTERRUPTED', 'ERRORED'].includes(
+            res.status
+          )
+        ) {
+          return Intelet(
+            new Headers(module.exports.api_key, module.exports.organization),
+            {
+              io_type: 'item',
+              method: 'GET',
+              id: InteletExecutionId,
+              action: 'result',
+              isWithInterval,
+            }
+          ).then((response) => checkResponse(response));
+        } else {
+          return res;
+        }
+      });
+    }
+
+    /**
+     * Summary: Intelet(s) related operations.
+     *
+     * This method requires Header `Authorization: Bearer {bearer_id}`, you can obtain `bearer_id` using `.Auth().accessTokenLogin()` method.
+     * AI Provider name (case sensitive)
+     *
+     * @param {string} Provider some provider like `openai`, `cohere`, `mantium`, `OpenAI`, `Cohere`, `Mantium`
+     * @return {Method} This return the list of methods for Intelets.
+     * - list
+     * - create
+     * - retrieve
+     * - retrieveId
+     * - remove
+     * - execute
+     * - result
+     */
+    function main() {
+      return {
+        list: list,
+        create: create,
+        update: update,
+        retrieve: retrieve,
+        retrieveId: retrieveId,
+        remove: remove,
+        execute: execute,
+        result: result,
+      };
+    }
+
+    main.list = list;
+    main.create = create;
+    main.update = update;
+    main.retrieve = retrieve;
+    main.retrieveId = retrieveId;
+    main.remove = remove;
+    main.execute = execute;
+    main.result = result;
+
     return main;
   })(),
 };
