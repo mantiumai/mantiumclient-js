@@ -4,7 +4,7 @@
   "description": "JavaScript client for the Mantium AI API.",
   "main": "lib/index.js",
   "scripts": {
-    "build": "babel ./src -d ./lib",
+    "build": "babel ./src --out-dir ./lib",
     "test": "mocha --use_strict --timeout 0 ./test/**/*.spec.js"
   },
   "repository": {
@@ -40,8 +40,9 @@
   },
   "homepage": "https://github.com/mantiumai/mantiumclient-js#readme",
   "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-preset-env": "^1.7.0",
+    "@babel/cli": "^7.15.7",
+    "@babel/core": "^7.15.8",
+    "@babel/preset-env": "^7.15.8",
     "chai": "^4.3.4",
     "eslint": "^7.32.0",
     "mocha": "^9.1.2"
