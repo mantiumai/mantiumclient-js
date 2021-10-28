@@ -44,6 +44,8 @@
     - [Get an Intelet using ID url](#get-an-intelet-using-id-url)
     - [Get an Intelet ](#get-an-intelet)
     - [Delete an Intelet](#delete-an-intelet)
+    - [Execute Intelet](#execute-intelet)
+    - [Get Intelet Result](#get-intelet-result)
 
 ## Quickstart:
 
@@ -2423,5 +2425,167 @@ const mantiumAi = require('@mantium/mantiumapi');
 #### Example of a successful completion response
 ```js
 Intelet Deleted
+```
+[Go to Table of Contents](#table-of-contents)
+
+
+#### Execute Intelet
+
+Asynchronously submit data to an intelet by intelet_id. If successful, the status and results of the intelet can be retrieved from the /v1/intelet/result/{intelet_execution_id} endpoint by intelet_execution_id.
+
+Intelet Id* (string)* required parameter, The ID of the intelet to start executing
+
+Input* (string)* Data to input into the Intelet
+
+[Document link](https://developer.mantiumai.com/reference#execute_intelet_v1_intelet__intelet_id__execute_post)
+
+```js
+const mantiumAi = require('@mantium/mantiumapi');
+
+(async () => {
+  await mantiumAi.Auth().accessTokenLogin({
+    username: 'useremail@somedomain.com',
+    password: 'p@ssWord!'
+  })
+    .then((response) => {
+      // get bearer_id and set to default
+      mantiumAi.api_key = response.data.attributes.bearer_id;
+      return response;
+    });
+
+  /*
+  * API Key is set on above
+  * mantiumAi.api_key=`key`
+  * so we can call these method directly now
+  */
+
+  let intelet_id = 'some-long-intelets-id';
+  let input = 'What is the meaning of life?';
+
+  await mantiumAi.Intelets()
+    .execute({
+      id: intelet_id,
+      input
+    })
+    .then(async (res) => {
+      console.log("*************** Execute ***************");
+      console.log(res);
+    });
+})();
+```
+
+#### Example of a successful completion response
+```js
+// *************** Execute ***************
+{
+  success: true,
+  intelet_id: 'some-long-intelets-id',
+  input: 'What is the meaning of life?',
+  status: 'QUEUED',
+  intelet_execution_id: 'some-long-intelets-execution-id',
+  error: ''
+}
+```
+[Go to Table of Contents](#table-of-contents)
+
+
+#### Get Intelet Result
+
+Get Intelet Execution Result  
+
+Returns execution status of intelet ran through the intelet execution workflow asynchronously.  
+
+Intelet Execution Id* (string)* this can be achieved from the successful response from the execute Intelet method.
+
+[Document link](https://developer.mantiumai.com/reference#get_intelet_execution_result_v1_intelet_result__intelet_execution_id__get)
+
+```js
+const mantiumAi = require('@mantium/mantiumapi');
+
+(async () => {
+  await mantiumAi.Auth().accessTokenLogin({
+    username: 'useremail@somedomain.com',
+    password: 'p@ssWord!'
+  })
+    .then((response) => {
+      // get bearer_id and set to default
+      mantiumAi.api_key = response.data.attributes.bearer_id;
+      return response;
+    });
+
+  /*
+  * API Key is set on above
+  * mantiumAi.api_key=`key`
+  * so we can call these method directly now
+  */
+
+  let intelet_id = 'some-long-intelets-id';
+  let input = 'What is the meaning of life?';
+
+  await mantiumAi.Intelets()
+    .execute({
+      id: intelet_id,
+      input
+    })
+    .then(async (res) => {
+      /*
+      * from the successful response collect the prompt_execution_id
+      * and then pass this to the result method
+      */
+      if(res?.intelet_execution_id) {
+        await mantiumAi.Intelets().result(res.intelet_execution_id)
+        .then((response) => {
+          console.log("*************** Execute Result ***************");
+          console.log(response);
+        });
+      }
+    });
+})();
+```
+
+#### Example of a successful completion response
+```js
+// *************** Execute Result ***************
+{
+  intelet_execution_id: '81daa784-838f-46f6-9518-2c50cec7fb4b',
+  intelet_id: 'da98c9fc-c139-4136-a6e9-286bca5cc397',
+  status: 'COMPLETED',
+  input: 'What is the meaning of life?',
+  output: '\n' +
+    '"I am a man of the people, and I will not be a slave to the people." - Abraham Lincoln\n' +
+    '\n',
+  error: '',
+  reason: '',
+  results: [],
+  pending_prompts: [],
+  executed_prompts: [
+    {
+      status: 'COMPLETED',
+      prompt_execution_id: '4e72c6a3-3560-410c-af5f-fe5544d5b986',
+      prompt_id: '41f62edf-9b0f-4397-8254-21dfc95e4efe',
+      input: 'What is the meaning of life?',
+      output: '\n' +
+        'Check out my FULL explanation, including copyright claim for this work at the bottom of the OP.\n' +
+        "Well is it absolutely necessary? I know you like to troll, but if your goal is information sharing (and not trolling) is there any point in starting with negativity? Or am I missing something that using fault finding opens up exept personal gratification on your part..OH PS IM NOT A TANK!!!! Well many people may respond 'TKO's SILLY' Check out my FULL explanation, including copyright claim for this work at the bottom of the OP.Well is it absolutely necessary? I know you like to troll, but if your goal is information sharing (and not trolling)is there any point in starting with negativity? Or am I missing something that using fault finding opens up exept personal gratification on your part..OH PS IM NOT A TANK!!!!",
+      reason: '',
+      error: '',
+      hitl_info: null
+    },
+    {
+      status: 'COMPLETED',
+      prompt_execution_id: '8108d3be-0f12-4d94-bfda-1f49327c6d12',
+      prompt_id: '23c217b8-1f87-4222-9e3c-e3bf4497c217',
+      input: '\n' +
+        'Check out my FULL explanation, including copyright claim for this work at the bottom of the OP.\n' +
+        "Well is it absolutely necessary? I know you like to troll, but if your goal is information sharing (and not trolling) is there any point in starting with negativity? Or am I missing something that using fault finding opens up exept personal gratification on your part..OH PS IM NOT A TANK!!!! Well many people may respond 'TKO's SILLY' Check out my FULL explanation, including copyright claim for this work at the bottom of the OP.Well is it absolutely necessary? I know you like to troll, but if your goal is information sharing (and not trolling)is there any point in starting with negativity? Or am I missing something that using fault finding opens up exept personal gratification on your part..OH PS IM NOT A TANK!!!!",
+      output: '\n' +
+        '"I am a man of the people, and I will not be a slave to the people." - Abraham Lincoln\n' +
+        '\n',
+      reason: '',
+      error: '',
+      hitl_info: null
+    }
+  ]
+}
 ```
 [Go to Table of Contents](#table-of-contents)
