@@ -47,7 +47,7 @@
 
 ## Quickstart:
 
-Read the [getting started guide](https://developer.mantiumai.com/docs) for more information on how to use Mantium.  
+Read the [getting started guide](https://developer.mantiumai.com/docs) for more information on how to use Mantium.
 
 ## Authentication
 
@@ -59,14 +59,14 @@ Read the [getting started guide](https://developer.mantiumai.com/docs) for more 
 Install [Node.js](https://nodejs.org/en/) on your computer. To install JavaScript Library please use the following command.
 
 ```js
-  npm install mantiumclient-js
+  npm install @mantium/mantiumapi
 ```
 
 ## Usage
 
 ### Initializing
 ```js
-  const mantiumAi = require('mantiumclient-js');
+  const mantiumAi = require('@mantium/mantiumapi');
 
   // bearer_id is received in response after successful login using auth login method.
   mantiumAi.api_key = bearer_id
@@ -85,7 +85,7 @@ password: user's password
 [Document link](https://developer.mantiumai.com/reference#access_token_login_v1_auth_login_access_token_post)
 
 ```js
-const mantiumAi = require('mantiumclient-js');
+const mantiumAi = require('@mantium/mantiumapi');
 
 (async () => {
   const loginResponse = await mantiumAi.Auth().accessTokenLogin({
@@ -128,7 +128,7 @@ Requirements:
 bearer_id: bearer id
 [Document link](https://developer.mantiumai.com/reference#revoke_token_v1_auth_user_revoke_token_post)
 ```js
-const mantiumAi = require('mantiumclient-js');
+const mantiumAi = require('@mantium/mantiumapi');
 
 // This method throw error as we are not passing the Authorization [bearer_id]
 (async () => {
@@ -189,7 +189,7 @@ Require AI Provider name (case sensitive)*
 [Document link](https://developer.mantiumai.com/reference#get_ai_engine_by_name_v1_ai_engine_get_name__name__get)
 
 ```js
-const mantiumAi = require('mantiumclient-js');
+const mantiumAi = require('@mantium/mantiumapi');
 
 (async () => {
   await mantiumAi.Auth().accessTokenLogin({
@@ -257,7 +257,7 @@ Query Params
 [Document link](https://developer.mantiumai.com/reference#get_all_ai_engines_v1_ai_engine_all_get)
 
 ```js
-const mantiumAi = require('mantiumclient-js');
+const mantiumAi = require('@mantium/mantiumapi');
 
 (async () => {
   await mantiumAi.Auth().accessTokenLogin({
@@ -313,7 +313,7 @@ Query Params
 
 [Document link](https://developer.mantiumai.com/reference#get_ai_engines_by_provider_v1_ai_engine_get_ai_providers__ai_provider__get)
 ```js
-const mantiumAi = require('mantiumclient-js');
+const mantiumAi = require('@mantium/mantiumapi');
 
 (async () => {
   await mantiumAi.Auth().accessTokenLogin({
@@ -379,7 +379,7 @@ require: AI Engine name
 
 [Document link](https://developer.mantiumai.com/reference#get_ai_engine_by_name_v1_ai_engine_get_name__name__get)
 ```js
-const mantiumAi = require('mantiumclient-js');
+const mantiumAi = require('@mantium/mantiumapi');
 
 (async () => {
   await mantiumAi.Auth().accessTokenLogin({
@@ -439,7 +439,7 @@ Query Params
 [Document link](https://developer.mantiumai.com/reference#list_tags_v1_tag__get)
 
 ```js
-const mantiumAi = require('mantiumclient-js');
+const mantiumAi = require('@mantium/mantiumapi');
 
 (async () => {
   await mantiumAi.Auth().accessTokenLogin({
@@ -497,7 +497,7 @@ Description (string) Optional value for tags used to add additional data regardi
 
 [Document link](https://developer.mantiumai.com/reference#post_tag_v1_tag__post)
 ```js
-const mantiumAi = require('mantiumclient-js');
+const mantiumAi = require('@mantium/mantiumapi');
 
 (async () => {
   await mantiumAi.Auth().accessTokenLogin({
@@ -556,7 +556,7 @@ Tag Id* (string)* required parameter
 
 [Document link](https://developer.mantiumai.com/reference#get_tag_v1_tag_id__tag_id__get)
 ```js
-const mantiumAi = require('mantiumclient-js');
+const mantiumAi = require('@mantium/mantiumapi');
 
 (async () => {
   await mantiumAi.Auth().accessTokenLogin({
@@ -658,7 +658,7 @@ Update details about a specific tag.
 Tag Id* (string)* required parameter
 [Document link](https://developer.mantiumai.com/reference#patch_tag_v1_tag__tag_id__patch)
 ```js
-const mantiumAi = require('mantiumclient-js');
+const mantiumAi = require('@mantium/mantiumapi');
 
 (async () => {
   await mantiumAi.Auth().accessTokenLogin({
@@ -720,7 +720,7 @@ Delete a specific tag.
 Tag Id* (string)* required parameter
 [Document link](https://developer.mantiumai.com/reference#delete_tag_v1_tag__tag_id__delete)
 ```js
-const mantiumAi = require('mantiumclient-js');
+const mantiumAi = require('@mantium/mantiumapi');
 
 (async () => {
   await mantiumAi.Auth().accessTokenLogin({
@@ -787,7 +787,7 @@ Query String Parameters
 [Document link](https://developer.mantiumai.com/reference#list_prompts_v1_prompt__get)
 
 ```js
-const mantiumAi = require('mantiumclient-js');
+const mantiumAi = require('@mantium/mantiumapi');
 
 (async () => {
 
@@ -924,7 +924,7 @@ this value should between 1 - 3
 
 ```js
 
-const mantiumAi = require('mantiumclient-js');
+const mantiumAi = require('@mantium/mantiumapi');
 
 (async () => {
 
@@ -1054,7 +1054,7 @@ Body payload `object` { ...data }; [Object example](https://developer.mantiumai.
 [Document link](https://developer.mantiumai.com/reference#edit_prompt_v1_prompt__prompt_id__patch)
 
 ```js
-const mantiumAi = require('mantiumclient-js');
+const mantiumAi = require('@mantium/mantiumapi');
 
 (async () => {
   await mantiumAi.Auth().accessTokenLogin({
@@ -1195,7 +1195,7 @@ Prompt Id* (string)* required parameter
 [Document link](https://developer.mantiumai.com/reference#show_prompt_by_id_v1_prompt_id__prompt_id__get)
 
 ```js
-const mantiumAi = require('mantiumclient-js');
+const mantiumAi = require('@mantium/mantiumapi');
 
 (async () => {
   await mantiumAi.Auth().accessTokenLogin({
@@ -1302,7 +1302,7 @@ Prompt Id* (string)* required parameter
 
 [Document link](https://developer.mantiumai.com/reference#show_prompt_by_id_v1_prompt__prompt_id__get)
 ```js
-const mantiumAi = require('mantiumclient-js');
+const mantiumAi = require('@mantium/mantiumapi');
 
 (async () => {
   await mantiumAi.Auth().accessTokenLogin({
@@ -1413,7 +1413,7 @@ Prompt Id* (string)* required parameter
 ```js
 
 
-const mantiumAi = require('mantiumclient-js');
+const mantiumAi = require('@mantium/mantiumapi');
 
 (async () => {
   await mantiumAi.Auth().accessTokenLogin({
@@ -1465,7 +1465,7 @@ Input* (string)* Input for executing a prompt asynchronously
 [Document link](https://developer.mantiumai.com/reference#execute_prompt_v1_prompt__prompt_id__execute_post)
 
 ```js
-const mantiumAi = require('mantiumclient-js');
+const mantiumAi = require('@mantium/mantiumapi');
 
 (async () => {
   await mantiumAi.Auth().accessTokenLogin({
@@ -1524,7 +1524,7 @@ Prompt Execution Id* (string)* this can be achieved from the successful response
 [Document link](https://developer.mantiumai.com/reference#get_prompt_result_v1_prompt_result__prompt_execution_id__get)
 
 ```js
-const mantiumAi = require('mantiumclient-js');
+const mantiumAi = require('@mantium/mantiumapi');
 
 (async () => {
   await mantiumAi.Auth().accessTokenLogin({
@@ -1596,7 +1596,7 @@ Input* (string)* Input for executing a prompt asynchronously
 [Document link](https://developer.mantiumai.com/reference#try_prompt_v1_prompt__prompt_id__try_post)
 
 ```js
-const mantiumAi = require('mantiumclient-js');
+const mantiumAi = require('@mantium/mantiumapi');
 
 (async () => {
   await mantiumAi.Auth().accessTokenLogin({
@@ -1687,7 +1687,7 @@ Query Params
 [Document link](https://developer.mantiumai.com/reference#list_logs_v1_log__get)
 
 ```js
-const mantiumAi = require('mantiumclient-js');
+const mantiumAi = require('@mantium/mantiumapi');
 
 (async () => {
   await mantiumAi.Auth().accessTokenLogin({
@@ -1765,7 +1765,7 @@ Prompt Id* (string)* required parameter
 [Document link](https://developer.mantiumai.com/reference#get_log_v1_log_id__log_id__get)
 
 ```js
-const mantiumAi = require('mantiumclient-js');
+const mantiumAi = require('@mantium/mantiumapi');
 
 (async () => {
   await mantiumAi.Auth().accessTokenLogin({
@@ -1845,7 +1845,7 @@ Prompt Id* (string)* required parameter
 [Document link](https://developer.mantiumai.com/reference#get_log_v1_log__log_id__get)
 
 ```js
-const mantiumAi = require('mantiumclient-js');
+const mantiumAi = require('@mantium/mantiumapi');
 
 (async () => {
   await mantiumAi.Auth().accessTokenLogin({
@@ -1920,20 +1920,20 @@ const mantiumAi = require('mantiumclient-js');
 
 #### List Intelets
 
-List all of your organization's intelets.  
+List all of your organization's intelets.
 
-Query String Parameters  
+Query String Parameters
 
-- page (number) - The page of records to return. Optional, defaults to page 1.  
+- page (number) - The page of records to return. Optional, defaults to page 1.
 
-- size (number) - the number of records to return for each page. Optional, defaults to 20 intelets a page.  
+- size (number) - the number of records to return for each page. Optional, defaults to 20 intelets a page.
 
-- tags (string) - A list of Tag IDs separated by comma used to filter the results, optional.  
+- tags (string) - A list of Tag IDs separated by comma used to filter the results, optional.
 
 [Document link](https://developer.mantiumai.com/reference#list_intelets_v1_intelet__get)
 
 ```js
-const mantiumAi = require('mantiumclient-js');
+const mantiumAi = require('@mantium/mantiumapi');
 
 (async () => {
   await mantiumAi.Auth().accessTokenLogin({
@@ -1944,12 +1944,8 @@ const mantiumAi = require('mantiumclient-js');
       // get bearer_id and set to default
       mantiumAi.api_key = response.data.attributes.bearer_id;
       return response;
-    });
-
-  /*
-  * API Key is set on above
-  * mantiumAi.api_key=`key`
-  * so we can call these method directly now
+    });iumapi');
+e method directly now
   */
   await mantiumAi.Intelets().list({ 'page': 1, 'size': 20 }).then((response) => {
     console.log('*********** List *********');
@@ -2005,11 +2001,11 @@ const mantiumAi = require('mantiumclient-js');
 
 #### Create an Intelet
 
-- Name* (string) - Name of the Intelet.  
+- Name* (string) - Name of the Intelet.
 
-- Description (string) - Text to describe the purpose of this Intelet.  
+- Description (string) - Text to describe the purpose of this Intelet.
 
-- Prompts (array) - Prompts to include in the Intelet. Prompts are executed in the order that they appear in this list, with the first Prompt feeding its output to the 2nd Prompt, and so on until the final Prompt.  
+- Prompts (array) - Prompts to include in the Intelet. Prompts are executed in the order that they appear in this list, with the first Prompt feeding its output to the 2nd Prompt, and so on until the final Prompt.
 
 Body payload `object` { ...data }; [Object example](https://developer.mantiumai.com/reference#create_intelet_v1_intelet__post)
 
@@ -2023,7 +2019,7 @@ in following example we send wrong prompts ID's
 
 
 ```js
-const mantiumAi = require('mantiumclient-js');
+const mantiumAi = require('@mantium/mantiumapi');
 
 (async () => {
   await mantiumAi.Auth().accessTokenLogin({
@@ -2068,7 +2064,7 @@ const mantiumAi = require('mantiumclient-js');
 
 #### Correct data for creation
 ```js
-const mantiumAi = require('mantiumclient-js');
+const mantiumAi = require('@mantium/mantiumapi');
 
 (async () => {
   await mantiumAi.Auth().accessTokenLogin({
@@ -2135,11 +2131,11 @@ const mantiumAi = require('mantiumclient-js');
 #### Update Intelet
 
 
-- Name* (string) - Name of the Intelet.  
+- Name* (string) - Name of the Intelet.
 
-- Description (string) - Text to describe the purpose of this Intelet.  
+- Description (string) - Text to describe the purpose of this Intelet.
 
-- Prompts (array) - Prompts to include in the Intelet. Prompts are executed in the order that they appear in this list, with the first Prompt feeding its output to the 2nd Prompt, and so on until the final Prompt. 
+- Prompts (array) - Prompts to include in the Intelet. Prompts are executed in the order that they appear in this list, with the first Prompt feeding its output to the 2nd Prompt, and so on until the final Prompt.
 
 
 Prompt Id* (string)* required parameter
@@ -2149,7 +2145,7 @@ Body payload `object` { ...data }; [Object example](https://developer.mantiumai.
 [Document link](https://link)
 
 ```js
-const mantiumAi = require('mantiumclient-js');
+const mantiumAi = require('@mantium/mantiumapi');
 
 // mantiumAi.ORIGIN = 'https://api.staging.mantiumai.com';
 
@@ -2222,14 +2218,14 @@ const mantiumAi = require('mantiumclient-js');
 
 #### Get an Intelet using ID url
 
-Information on specific intelet  
+Information on specific intelet
 
-- Intelet Id* (string)  
+- Intelet Id* (string)
 
 [Document link](https://developer.mantiumai.com/reference#show_intelet_by_id_v1_intelet_id__intelet_id__get)
 
 ```js
-const mantiumAi = require('mantiumclient-js');
+const mantiumAi = require('@mantium/mantiumapi');
 
 (async () => {
   await mantiumAi.Auth().accessTokenLogin({
@@ -2302,14 +2298,14 @@ const mantiumAi = require('mantiumclient-js');
 
 #### Get an Intelet
 
-Information on specific intelet  
+Information on specific intelet
 
-- Intelet Id* (string)  
+- Intelet Id* (string)
 
 [Document link](https://developer.mantiumai.com/reference#show_intelet_by_id_v1_intelet_id__intelet_id__get)
 
 ```js
-const mantiumAi = require('mantiumclient-js');
+const mantiumAi = require('@mantium/mantiumapi');
 
 (async () => {
   await mantiumAi.Auth().accessTokenLogin({
@@ -2384,14 +2380,14 @@ const mantiumAi = require('mantiumclient-js');
 
 #### Delete an Intelet
 
-- Intelet Id* (string)  
+- Intelet Id* (string)
 
 [Document link](https://developer.mantiumai.com/reference#delete_intelet_v1_intelet__intelet_id__delete)
 
 ```js
 
 
-const mantiumAi = require('mantiumclient-js');
+const mantiumAi = require('@mantium/mantiumapi');
 
 (async () => {
   await mantiumAi.Auth().accessTokenLogin({
