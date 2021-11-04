@@ -273,28 +273,6 @@ describe('Prompts', function () {
     assert.equal(methodResponse.input, input, 'input is matched');
   });
 
-  it('should get a Result using Try Prompt', async function () {
-    let input = 'This is my testing execute prompt';
-
-    const methodResponse = await mantiumAi
-      .Prompts(aiProvider)
-      .tryPrompt({
-        id: promptID,
-        input,
-      })
-      .then((response) => {
-        response.should.be.an('object');
-        return response;
-      })
-      .catch((err) => {
-        should.not.exist(err);
-      });
-    expect(methodResponse).should.be.an('object');
-    expect(methodResponse).to.have.property('prompt');
-    expect(methodResponse).to.have.property('input');
-    assert.equal(methodResponse.input, input, 'input is matched');
-  });
-
   it('should remove a specific Prompt', async function () {
     const methodResponse = await mantiumAi
       .Prompts()
