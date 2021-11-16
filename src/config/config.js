@@ -93,4 +93,12 @@ module.exports = {
   inteletResultURL() {
     return `${this.baseURL()}/intelet/result`;
   },
+
+  /*
+   * API Health
+   * https://developer.mantiumai.com/reference/api_health_health_get
+   */
+  apiHealthURL() {
+    return `${index.getOrigin()}/health`;
+  },
 };
