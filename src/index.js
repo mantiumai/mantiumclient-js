@@ -41,6 +41,9 @@ const Log = require('./methods/logs/Log');
 // Intelet
 const Intelet = require('./methods/intelets/Intelet');
 
+// Intelet
+const Health = require('./methods/health/Health');
+
 module.exports = {
   ORIGIN: 'https://api.mantiumai.com',
   API_VERSION: 'v1',
@@ -834,6 +837,32 @@ module.exports = {
     main.execute = execute;
     main.result = result;
 
+    return main;
+  })(),
+
+  Health: (function () {
+    /**
+     * Summary: Check the API health.
+     *
+     * @return {string} Provide the response status in the string format.
+     */
+    function check() {
+      return Health(new Headers());
+    }
+
+    /**
+     * Summary: Check the API health.
+     *
+     * @return {Method} This return the list of methods for check API Health.
+     * - check
+     */
+    function main() {
+      return {
+        check: check,
+      };
+    }
+
+    main.check = check;
     return main;
   })(),
 };

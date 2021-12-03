@@ -45,6 +45,7 @@
     - [Delete an Intelet](#delete-an-intelet)
     - [Execute Intelet](#execute-intelet)
     - [Get Intelet Result](#get-intelet-result)
+  - [Health](#health)
 
 ## Quickstart:
 
@@ -2510,5 +2511,28 @@ const mantiumAi = require('@mantium/mantiumapi');
     }
   ]
 }
+```
+[Go to Table of Contents](#table-of-contents)
+
+
+#### Health
+
+Check the API health.
+
+[Document link](https://developer.mantiumai.com/reference/api_health_health_get)
+
+```js
+
+const mantiumAi = require('@mantium/mantiumapi');
+
+mantiumAi.Health().check().then((response) => {
+  console.log("*************** Health response ***************");
+  console.log(response);
+});
+```
+
+#### Example of a successful completion response
+```js
+OK. API Version vX-XXXXXXXX running since YYYY-MM-DDTHH:MM:SS+00:00.
 ```
 [Go to Table of Contents](#table-of-contents)
