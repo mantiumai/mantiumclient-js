@@ -1947,8 +1947,12 @@ const mantiumAi = require('@mantium/mantiumapi');
       // get bearer_id and set to default
       mantiumAi.api_key = response.data.attributes.bearer_id;
       return response;
-    });iumapi');
-e method directly now
+    });
+
+  /*
+  * API Key is set on above
+  * mantiumAi.api_key=`key`
+  * so we can call these method directly now
   */
   await mantiumAi.Intelets().list({ 'page': 1, 'size': 20 }).then((response) => {
     console.log('*********** List *********');
@@ -2492,9 +2496,9 @@ const mantiumAi = require('@mantium/mantiumapi');
 
 #### Get Intelet Result
 
-Get Intelet Execution Result  
+Get Intelet Execution Result
 
-Returns execution status of intelet ran through the intelet execution workflow asynchronously.  
+Returns execution status of intelet ran through the intelet execution workflow asynchronously.
 
 Intelet Execution Id* (string)* this can be achieved from the successful response from the execute Intelet method.
 
