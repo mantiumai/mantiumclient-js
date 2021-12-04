@@ -514,32 +514,6 @@ module.exports = {
     }
 
     /**
-     * Summary: Execute a prompt specified by given prompt ID synchronously.
-     *
-     * This method requires Header `Authorization: Bearer {bearer_id}`, you can obtain `bearer_id` using `.Auth().accessTokenLogin()` method.
-     * @param {object} input { id: 'prompt_id', input: 'input text for the execute' }
-     *
-     * @return {object}  Provide object with `prompt_execution_id`.
-     */
-    function tryPrompt(data) {
-      const newLocal = Object.assign(
-        {
-          ai_provider: provider,
-          io_type: 'item',
-          method: 'POST',
-          id: data.id,
-          action: 'try',
-        },
-        data
-      );
-      const modifier = newLocal;
-      return Prompt(
-        new Headers(module.exports.api_key, module.exports.organization),
-        modifier
-      );
-    }
-
-    /**
      * Summary: Prompt(s) related operations.
      *
      * This method requires Header `Authorization: Bearer {bearer_id}`, you can obtain `bearer_id` using `.Auth().accessTokenLogin()` method.
