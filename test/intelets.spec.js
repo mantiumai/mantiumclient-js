@@ -7,7 +7,7 @@ const should = require('chai').should();
 
 describe('Intelets', function () {
   let inteletID = undefined;
-  // let inteletExecutionId = undefined;
+  let inteletExecutionId = undefined;
   let sampleIntelet = {
     name: 'Testing intelet name',
     description: 'description for the intelet',
@@ -172,6 +172,47 @@ describe('Intelets', function () {
       });
     expect(methodResponse).to.have.property('data');
     expect(methodResponse.data).to.be.an('array');
+  });
+
+  it('should execute a specific Intelets', async function () {
+    let input = 'What is the meaning of life?';
+
+    const methodResponse = await mantiumAi
+      .Intelets()
+      .execute({
+        id: inteletID,
+        input,
+      })
+      .then((response) => {
+        response.should.be.an('object');
+        inteletExecutionId = response?.intelet_execution_id;
+        return response;
+      })
+      .catch((err) => {
+        should.not.exist(err);
+      });
+    expect(methodResponse).should.be.an('object');
+    expect(methodResponse).to.have.property('status');
+    assert.equal(methodResponse.input, input, 'input is matched');
+  });
+
+  it('should get a Result using Intelets Execution ID', async function () {
+    let input = 'What is the meaning of life?';
+
+    const methodResponse = await mantiumAi
+      .Intelets()
+      .result(inteletExecutionId)
+      .then((response) => {
+        response.should.be.an('object');
+        return response;
+      })
+      .catch((err) => {
+        should.not.exist(err);
+      });
+    expect(methodResponse).should.be.an('object');
+    expect(methodResponse).to.have.property('status');
+    expect(methodResponse).to.have.property('output');
+    assert.equal(methodResponse.input, input, 'input is matched');
   });
 
   it('should remove a specific Prompt', async function () {
