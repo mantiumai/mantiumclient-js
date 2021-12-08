@@ -1,6 +1,6 @@
 require('./setup');
 
-const mantiumAi = require('../lib/index');
+const mantiumAi = require('../src/index');
 const expect = require('chai').expect;
 const should = require('chai').should();
 
