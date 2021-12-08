@@ -539,8 +539,7 @@ module.exports = {
         retrieveId: retrieveId,
         remove: remove,
         execute: execute,
-        result: result,
-        tryPrompt: tryPrompt,
+        result: result
       };
     }
 
@@ -552,7 +551,6 @@ module.exports = {
     main.remove = remove;
     main.execute = execute;
     main.result = result;
-    main.tryPrompt = tryPrompt;
 
     return main;
   })(),

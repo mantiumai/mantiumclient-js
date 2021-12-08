@@ -3,7 +3,7 @@ const username = process.env.MANTIUM_USER_NAME;
 const password = process.env.MANTIUM_PASSWORD;
 
 const msg = require('../src/config/error-message');
-const mantiumAi = require('../lib/index');
+const mantiumAi = require('../src/index');
 
 const assert = require('chai').assert;
 

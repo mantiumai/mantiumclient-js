@@ -4,7 +4,7 @@ const msg = require('../src/config/error-message');
 const username = process.env.MANTIUM_USER_NAME;
 const password = process.env.MANTIUM_PASSWORD;
 
-const mantiumAi = require('../lib/index');
+const mantiumAi = require('../src/index');
 
 if (!username && !password)
   throw new Error(msg.errorMessages().env_missing);
