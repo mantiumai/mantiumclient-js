@@ -101,4 +101,20 @@ module.exports = {
   apiHealthURL() {
     return `${index.getOrigin()}/health`;
   },
+
+  /*
+   * API Files
+   * https://developer.mantiumai.com/reference/get_files_v1_files_openai_files_get
+   */
+  filesURL() {
+    return `${this.baseURL()}/files/openai_files`;
+  },
+
+  filesUploadURL() {
+    return `${this.baseURL()}/files/aws/signature`;
+  },
+
+  filesFinetuneURL() {
+    return `${this.baseURL()}/files/finetunes`;
+  },
 };
