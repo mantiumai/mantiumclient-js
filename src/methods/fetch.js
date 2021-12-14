@@ -15,6 +15,15 @@ module.exports = function (
       if (error) {
         reject(error);
       } else {
+        // https://developer.mozilla.org/en-US/docs/Web/HTTP/Status#successful_responses
+        if (response.statusCode <= 201 && response.body === '') {
+          response.body = JSON.stringify({
+            success: true,
+            status: response.statusCode,
+            error: '',
+            warning_message: '',
+          });
+        }
         if (options.isWithInterval) {
           setTimeout(
             () => resolve(JSON.parse(response.body)),

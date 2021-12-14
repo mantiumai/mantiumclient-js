@@ -17,6 +17,8 @@ exports.getResultStatusInterval = getResultStatusInterval;
 // Class Headers (used to set header)
 const Headers = require('./methods/Headers');
 
+const utils = require('./methods/utility');
+
 // Auth
 const Login = require('./methods/auth/Login');
 const Logout = require('./methods/auth/Logout');
@@ -879,6 +881,12 @@ module.exports = {
      * @return {Array} Provide method list in array format.
      */
     function list(data) {
+      if (utils.isNil(data)) {
+        data = { file_type: 'ALL' };
+      } else if (data && utils.isNil(data['file_type'])) {
+        data = Object.assign({ file_type: 'ALL' }, data);
+      }
+
       return File(
         new Headers(module.exports.api_key, module.exports.organization),
         { io_type: 'list', method: 'GET', queryParam: data }
@@ -893,7 +901,7 @@ module.exports = {
      *
      * @return {object} Provide object type 'tag'.
      */
-    function create(data) {
+    function upload(data) {
       let fileData = null;
       let upload = null;
       // Listen for data
@@ -905,9 +913,7 @@ module.exports = {
         new Headers(module.exports.api_key, module.exports.organization),
         Object.assign({ method: 'POST' }, data)
       ).then(async (res) => {
-        console.log('This is Res', res);
-
-        console.log('fileData :::', fileData.length);
+        const { upload_source, fine_tune_file_type, key, purpose } = data;
 
         if (res && res.data) {
           upload = await FileSubmitAWS(
@@ -916,11 +922,36 @@ module.exports = {
               { file: fileData, method: 'PUT', contentLength: fileData.length },
               res.data.attributes
             )
-          );
+          ).then((response) => {
+            if (utils.isNotNil(response) && utils.isNotNil(upload_source)) {
+              return Object.assign(response, {
+                upload_source,
+                fine_tune_file_type,
+                path: key.path,
+                purpose,
+              });
+            } else {
+              return response;
+            }
+          });
         }
-
         return upload;
       });
+    }
+
+    /**
+     * Summary: Remove a specific file.
+     *
+     * This method requires Header `Authorization: Bearer {bearer_id}`, you can obtain `bearer_id` using `.Auth().accessTokenLogin()` method.
+     * @param {string} id fileid
+     *
+     * @return {object} Provide object type 'file'.
+     */
+    function remove(id) {
+      return File(
+        new Headers(module.exports.api_key, module.exports.organization),
+        { io_type: 'item', method: 'DELETE', id: id }
+      );
     }
 
     /**
@@ -930,17 +961,20 @@ module.exports = {
      *
      * @return {Method} Get the list of files currently loaded at OpenAI.
      * - list
-     * - create
+     * - upload
+     * - remove
      */
     function main() {
       return {
         list: list,
-        create: create,
+        upload: upload,
+        remove: remove,
       };
     }
 
     main.list = list;
-    main.create = create;
+    main.upload = upload;
+    main.remove = remove;
 
     return main;
   })(),
