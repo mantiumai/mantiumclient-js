@@ -46,6 +46,10 @@
     - [Execute Intelet](#execute-intelet)
     - [Get Intelet Result](#get-intelet-result)
   - [Health](#health)
+  - [Files](#files)
+    - [List Files](#list-files)
+    - [upload a File](#upload-a-file)
+    - [Delete File](#delete-file)
 
 ## Quickstart:
 
@@ -103,7 +107,7 @@ const mantiumAi = require('@mantium/mantiumapi');
   console.log('Token', mantiumAi.api_key);
 })();
 ```
-#### Example of a successful completion response
+#### Example of a successful API response
 ```js
 {
   data: {
@@ -164,7 +168,7 @@ const mantiumAi = require('@mantium/mantiumapi');
   console.log(logoutResponse);
 })();
 ```
-#### Example of a successful completion response
+#### Example of a successful API response
 ```js
 {
   data: {
@@ -214,7 +218,7 @@ const mantiumAi = require('@mantium/mantiumapi');
 
 })();
 ```
-#### Example of a successful completion response
+#### Example of a successful API response
 ```js
 {
   data: [
@@ -282,7 +286,7 @@ const mantiumAi = require('@mantium/mantiumapi');
 })();
 ```
 
-#### Example of a successful completion response
+#### Example of a successful API response
 ```js
 {
   data: [
@@ -349,7 +353,7 @@ const mantiumAi = require('@mantium/mantiumapi');
 })();
 ```
 
-#### Example of a successful completion response
+#### Example of a successful API response
 ```js
 // *********** Response for Cohere ***********
 {
@@ -404,7 +408,7 @@ const mantiumAi = require('@mantium/mantiumapi');
 })();
 ```
 
-#### Example of a successful completion response
+#### Example of a successful API response
 ```js
 // *********** Response for ada ***********
 {
@@ -465,7 +469,7 @@ const mantiumAi = require('@mantium/mantiumapi');
 })();
 ```
 
-#### Example of a successful completion response
+#### Example of a successful API response
 ```js
 {
   data: [
@@ -525,7 +529,7 @@ const mantiumAi = require('@mantium/mantiumapi');
   });
 })();
 ```
-#### Example of a successful completion response
+#### Example of a successful API response
 ```js
 {
   data: {
@@ -581,7 +585,7 @@ const mantiumAi = require('@mantium/mantiumapi');
   });
 })();
 ```
-#### Example of a successful completion response
+#### Example of a successful API response
 ```js
 // *********** Tag retrieve by id *********
 {
@@ -632,7 +636,7 @@ Tag Id* (string)* required parameter
 })();
 ```
 
-#### Example of a successful completion response
+#### Example of a successful API response
 ```js
 *********** Tag retrieve *********
 {
@@ -689,7 +693,7 @@ const mantiumAi = require('@mantium/mantiumapi');
   });
 })();
 ```
-#### Example of a successful completion response
+#### Example of a successful API response
 ```js
 // *********** Tag updated *********
 {
@@ -747,7 +751,7 @@ const mantiumAi = require('@mantium/mantiumapi');
   });
 })();
 ```
-#### Example of a successful completion response
+#### Example of a successful API response
 ```js
 // *********** Tag remove *********
 {
@@ -810,7 +814,7 @@ const mantiumAi = require('@mantium/mantiumapi');
 })();
 ```
 
-#### Example of a successful completion response
+#### Example of a successful API response
 ```js
 {
   data: [
@@ -990,7 +994,7 @@ const mantiumAi = require('@mantium/mantiumapi');
 
 ```
 
-#### Example of a successful completion response
+#### Example of a successful API response
 
 ```js
 // *************** Prompt Create ***************
@@ -1113,7 +1117,7 @@ const mantiumAi = require('@mantium/mantiumapi');
 
 ```
 
-#### Example of a successful completion response
+#### Example of a successful API response
 
 ```js
 // *************** Prompt Update ***************
@@ -1224,7 +1228,7 @@ const mantiumAi = require('@mantium/mantiumapi');
 })();
 ```
 
-#### Example of a successful completion response
+#### Example of a successful API response
 ```js
 {
   data: {
@@ -1331,7 +1335,7 @@ const mantiumAi = require('@mantium/mantiumapi');
 })();
 ```
 
-#### Example of a successful completion response
+#### Example of a successful API response
 ```js
 {
   data: {
@@ -1448,7 +1452,7 @@ const mantiumAi = require('@mantium/mantiumapi');
 
 ```
 
-#### Example of a successful completion response
+#### Example of a successful API response
 ```js
 {}
 ```
@@ -1501,7 +1505,7 @@ const mantiumAi = require('@mantium/mantiumapi');
 })();
 ```
 
-#### Example of a successful completion response
+#### Example of a successful API response
 ```js
 // *************** Execute ***************
 {
@@ -1569,7 +1573,7 @@ const mantiumAi = require('@mantium/mantiumapi');
 })();
 ```
 
-#### Example of a successful completion response
+#### Example of a successful API response
 ```js
 // *************** Execute Result ***************
 {
@@ -1639,7 +1643,7 @@ const mantiumAi = require('@mantium/mantiumapi');
 })();
 ```
 
-#### Example of a successful completion response
+#### Example of a successful API response
 ```js
 // *********** Logs list *********
 {
@@ -1714,7 +1718,7 @@ const mantiumAi = require('@mantium/mantiumapi');
 })();
 ```
 
-#### Example of a successful completion response
+#### Example of a successful API response
 
 ```js
 {
@@ -1794,7 +1798,7 @@ const mantiumAi = require('@mantium/mantiumapi');
 })();
 ```
 
-#### Example of a successful completion response
+#### Example of a successful API response
 
 ```js
 {
@@ -1881,7 +1885,7 @@ const mantiumAi = require('@mantium/mantiumapi');
 
 ```
 
-#### Example of a successful completion response
+#### Example of a successful API response
 ```js
 {
   data: [
@@ -2021,7 +2025,7 @@ const mantiumAi = require('@mantium/mantiumapi');
 })();
 ```
 
-#### Example of a successful completion response
+#### Example of a successful API response
 ```js
 {
   data: {
@@ -2107,7 +2111,7 @@ const mantiumAi = require('@mantium/mantiumapi');
 })();
 ```
 
-#### Example of a successful completion response
+#### Example of a successful API response
 ```js
 // *************** Intelet Update ***************
 {
@@ -2178,7 +2182,7 @@ const mantiumAi = require('@mantium/mantiumapi');
 })();
 ```
 
-#### Example of a successful completion response
+#### Example of a successful API response
 ```js
 // *************** retrieve ***************
 {
@@ -2258,7 +2262,7 @@ const mantiumAi = require('@mantium/mantiumapi');
 })();
 ```
 
-#### Example of a successful completion response
+#### Example of a successful API response
 ```js
 // *************** retrieve ***************
 {
@@ -2346,7 +2350,7 @@ const mantiumAi = require('@mantium/mantiumapi');
 
 ```
 
-#### Example of a successful completion response
+#### Example of a successful API response
 ```js
 Intelet Deleted
 ```
@@ -2398,7 +2402,7 @@ const mantiumAi = require('@mantium/mantiumapi');
 })();
 ```
 
-#### Example of a successful completion response
+#### Example of a successful API response
 ```js
 // *************** Execute ***************
 {
@@ -2467,7 +2471,7 @@ const mantiumAi = require('@mantium/mantiumapi');
 })();
 ```
 
-#### Example of a successful completion response
+#### Example of a successful API response
 ```js
 // *************** Execute Result ***************
 {
@@ -2531,8 +2535,234 @@ mantiumAi.Health().check().then((response) => {
 });
 ```
 
-#### Example of a successful completion response
+#### Example of a successful API response
 ```js
 OK. API Version vX-XXXXXXXX running since YYYY-MM-DDTHH:MM:SS+00:00.
+```
+[Go to Table of Contents](#table-of-contents)
+
+
+### Files
+
+#### List Files
+
+Get the list of files currently loaded at OpenAI
+
+Requirements:
+
+QUERY PARAMS
+
+`file_type` (string) 'FILES_ONLY' or 'ALL' or 'FINETUNE_ONLY'
+
+[Document link](https://developer.mantiumai.com/reference/get_files_v1_files_openai_files_get)
+
+```js
+
+const mantiumAi = require('@mantium/mantiumapi');
+
+(async () => {
+  await mantiumAi
+    .Auth()
+    .accessTokenLogin({
+      username: 'useremail@somedomain.com',
+      password: 'p@ssWord!'
+    })
+    .then((response) => {
+      // get bearer_id and set to default
+      mantiumAi.api_key = response.data.attributes.bearer_id;
+    });
+
+  /*
+   * API Key is set on above
+   * mantiumAi.api_key=`key`
+   * so we can call these method directly now
+   */
+
+  await mantiumAi
+    .Files()
+    .list({ file_type: 'FILES_ONLY' })
+    .then((response) => {
+      console.log('*********** File list *********');
+      console.log(response);
+    });
+})();
+
+
+```
+
+#### Example of a successful API response
+```js
+{
+  data: {
+    id: 'user-fakpcmfytnzhd7s7uwvzrbms',
+    type: 'openai_file',
+    attributes: {
+      organization: 'user-fakpcmfytnzhd7s7uwvzrbms',
+      files: [
+        {
+          id: 'file-lD7g3egNlil5yyg1RaAkQlmW',
+          object: 'file',
+          bytes: 1129,
+          created_at: 1623106510,
+          filename: 'sam2.json',
+          purpose: 'answers',
+          status: 'processed',
+          status_details: null
+        },
+        {
+          id: 'file-MiwAljthEIAh0WnqVKyNm2HU',
+          object: 'file',
+          bytes: 1128,
+          created_at: 1624554610,
+          filename: 'blob',
+          purpose: 'answers',
+          status: 'processed',
+          status_details: null
+        },
+        {
+          id: 'file-nkuxoRXPWw6Tl12C0xkheNpb',
+          object: 'file',
+          bytes: 1131,
+          created_at: 1624580768,
+          filename: 'blob',
+          purpose: 'answers',
+          status: 'error',
+          status_details: 'Something went wrong while processing. Please contact support@openai.com with the file ID file-nkuxoRXPWw6Tl12C0xkheNpb'
+        }
+      ],
+      size: 3
+    },
+    relationships: {}
+  },
+  included: [],
+  meta: {},
+  links: {}
+}
+
+```
+[Go to Table of Contents](#table-of-contents)
+
+
+#### upload a File
+
+Upload a file to AWS
+
+`key` (string) The AWS key name (or filename)
+
+`purpose` (string) OpenAI file purpose, it could be one of the following `answers`, `classifications` or `search`
+
+`upload_source`* (string)* required parameter - The upload source, which could be one of `OPENAI-FILE-UPLOAD` or `OPENAI-FINETUNING-UPLOAD`
+
+`fine_tune_file_type`  (string) - Could be either `VALIDATION_FILE` or `TRAINING_FILE`
+
+[Document link](https://developer.mantiumai.com/reference/aws_upload_url_v1_files_aws_signature_post)
+
+```js
+const mantiumAi = require('@mantium/mantiumapi');
+const fs = require('fs');
+
+(async () => {
+  await mantiumAi
+    .Auth()
+    .accessTokenLogin({
+      username: 'useremail@somedomain.com',
+      password: 'p@ssWord!'
+    })
+    .then((response) => {
+      // get bearer_id and set to default
+      mantiumAi.api_key = response.data.attributes.bearer_id;
+    });
+
+  /*
+   * API Key is set on above
+   * mantiumAi.api_key=`key`
+   * so we can call these method directly now
+   */
+
+  await mantiumAi
+    .Files()
+    .upload({
+      purpose: 'Classifications',
+      key: fs.createReadStream('./files/classifications_test_file.json'),
+      upload_source: 'OPENAI-FILE-UPLOAD',
+      fine_tune_file_type: '',
+    })
+    .then((response) => {
+      console.log('*********** Upload response *********');
+      console.log(response);
+    });
+})();
+
+```
+
+#### Example of a successful API response
+```js
+{
+  success: true,
+  status: 200,
+  error: '',
+  warning_message: '',
+  upload_source: 'OPENAI-FILE-UPLOAD',
+  fine_tune_file_type: '',
+  path: './files/classifications_test_file.json',
+  purpose: 'Classifications'
+}
+```
+[Go to Table of Contents](#table-of-contents)
+
+#### Delete File
+
+`file_id`* (string)* required parameter - file id to delete
+
+[Document link](https://developer.mantiumai.com/reference/delete_file_v1_files_openai_files__file_id__delete)
+
+```js
+const mantiumAi = require('@mantium/mantiumapi');
+
+(async () => {
+  await mantiumAi
+    .Auth()
+    .accessTokenLogin({
+      username: 'useremail@somedomain.com',
+      password: 'p@ssWord!'
+    })
+    .then((response) => {
+      // get bearer_id and set to default
+      mantiumAi.api_key = response.data.attributes.bearer_id;
+    });
+
+  /*
+   * API Key is set on above
+   * mantiumAi.api_key=`key`
+   * so we can call these method directly now
+   */
+
+  await mantiumAi
+    .Files()
+    .remove('file-lD7g3egNlil5yyg1RaAkQlmW')
+    .then((response) => {
+      console.log('*********** Remove response *********');
+      console.log(response);
+    });
+})();
+```
+
+#### Example of a successful API response
+```js
+{
+  data: {
+    id: 'file-lD7g3egNlil5yyg1RaAkQlmW',
+    type: 'openai_file',
+    attributes: {
+      deleted: true,
+      file_id: 'file-lD7g3egNlil5yyg1RaAkQlmW',
+      object: 'file'
+    },
+    relationships: {}
+  },
+  included: [],
+  meta: {},
+  links: {}
+}
 ```
 [Go to Table of Contents](#table-of-contents)
