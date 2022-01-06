@@ -51,6 +51,9 @@ const File = require('./methods/files/File');
 const FileUpload = require('./methods/files/FileUpload');
 const FileSubmitAWS = require('./methods/files/FileSubmitAWS');
 
+// HITL
+const HITL = require('./methods/hitl/Hitl');
+
 module.exports = {
   ORIGIN: 'https://api.mantiumai.com',
   API_VERSION: 'v1',
@@ -975,6 +978,43 @@ module.exports = {
     main.list = list;
     main.upload = upload;
     main.remove = remove;
+
+    return main;
+  })(),
+
+  Hitl: (function () {
+    /**
+     * Summary: List all Hitl.
+     *
+     * This method requires Header `Authorization: Bearer {bearer_id}`, you can obtain `bearer_id` using `.Auth().accessTokenLogin()` method.
+     * @param {object} object {"page":"1","size":"20","after_date":"jan","before_date":"jan","log_type":"DEFAULT","log_level":"top","log_status":"completed"};
+     *
+     * @return {Array} Provide method list in array format.
+     */
+    function list(data) {
+      return HITL(
+        new Headers(module.exports.api_key, module.exports.organization),
+        { io_type: 'list', method: 'GET', queryParam: data }
+      );
+    }
+
+    /**
+     * Summary: Files related operations.
+     *
+     * This method requires Header `Authorization: Bearer {bearer_id}`, you can obtain `bearer_id` using `.Auth().accessTokenLogin()` method.
+     *
+     * @return {Method} Get the list of files currently loaded at OpenAI.
+     * - list
+     * - upload
+     * - remove
+     */
+    function main() {
+      return {
+        list: list,
+      };
+    }
+
+    main.list = list;
 
     return main;
   })(),

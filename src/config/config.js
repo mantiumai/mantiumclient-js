@@ -117,4 +117,16 @@ module.exports = {
   filesFinetuneURL() {
     return `${this.baseURL()}/files/finetunes`;
   },
+
+  /*
+   * API HITL
+   * https://developer.mantiumai.com/reference/get_all_hitl_prompt_executions_v1_hitl__get
+   */
+  hitlURL() {
+    return `${this.baseURL()}/hitl/`;
+  },
+
+  hitlActionURL(prompt_execution_id, action) {
+    return `${this.baseURL()}/hitl/${prompt_execution_id}/${action}`;
+  },
 };
