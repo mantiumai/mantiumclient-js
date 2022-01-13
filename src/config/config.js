@@ -117,4 +117,14 @@ module.exports = {
   filesFinetuneURL() {
     return `${this.baseURL()}/files/finetunes`;
   },
+
+  /*
+   * Security
+   * https://developer.mantiumai.com/reference/post_policy_v1_security_policy_post
+   */
+  securityURL(isIdURL = false, subUrl = null) {
+    return `${this.baseURL()}/security${subUrl ? '/' + subUrl : ''}${
+      isIdURL ? '/id' : ''
+    }`;
+  },
 };
