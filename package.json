@@ -1,6 +1,6 @@
 {
   "name": "@mantium/mantiumapi",
-  "version": "v0.1.4-beta",
+  "version": "v0.1.5-beta",
   "description": "JavaScript client for the Mantium AI API.",
   "main": "src/index.js",
   "scripts": {
