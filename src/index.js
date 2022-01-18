@@ -51,6 +51,9 @@ const File = require('./methods/files/File');
 const FileUpload = require('./methods/files/FileUpload');
 const FileSubmitAWS = require('./methods/files/FileSubmitAWS');
 
+// Security
+const Security = require('./methods/security/Security');
+
 module.exports = {
   ORIGIN: 'https://api.mantiumai.com',
   API_VERSION: 'v1',
@@ -975,6 +978,298 @@ module.exports = {
     main.list = list;
     main.upload = upload;
     main.remove = remove;
+
+    return main;
+  })(),
+
+  Security: (function () {
+    /**
+     * Summary: Create a Policy.
+     *
+     * This method requires Header `Authorization: Bearer {bearer_id}`, you can obtain `bearer_id` using `.Auth().accessTokenLogin()` method.
+     * @param {object} { name: 'policy name', description: 'Some description', rules: [], actions: [], notifications[] };
+     *
+     * @return {object} Provide object type 'policy'.
+     */
+    function createPolicy(data) {
+      return Security(
+        new Headers(module.exports.api_key, module.exports.organization),
+        Object.assign(
+          { io_type: 'item', method: 'POST', subUrl: 'policy' },
+          data
+        )
+      );
+    }
+
+    /**
+     * Summary: Update a Policy.
+     *
+     * This method requires Header `Authorization: Bearer {bearer_id}`, you can obtain `bearer_id` using `.Auth().accessTokenLogin()` method.
+     * @param {object} { id: 'policy_id', name: 'policy name', description: 'Some description', rules: [], actions: [], notifications[] };
+     *
+     * @return {object} Provide object type 'policy'.
+     */
+    function updatePolicy(data) {
+      return Security(
+        new Headers(module.exports.api_key, module.exports.organization),
+        Object.assign(
+          {
+            io_type: 'item',
+            method: 'PATCH',
+            subUrl: 'policy',
+            policy_id: data.id,
+          },
+          data
+        )
+      );
+    }
+
+    /**
+     * Summary: Remove a specific policy.
+     *
+     * This method requires Header `Authorization: Bearer {bearer_id}`, you can obtain `bearer_id` using `.Auth().accessTokenLogin()` method.
+     * @param {string} policy_id policy_id
+     *
+     * @return {object} Provide object type 'policy'.
+     */
+    function removePolicy(id) {
+      return Security(
+        new Headers(module.exports.api_key, module.exports.organization),
+        { io_type: 'item', method: 'DELETE', id: id, subUrl: 'policy' }
+      );
+    }
+
+    /**
+     * Summary: Get all of the security policies.
+     *
+     * This method requires Header `Authorization: Bearer {bearer_id}`, you can obtain `bearer_id` using `.Auth().accessTokenLogin()` method.
+     * @param {object} { 'page': 1, 'size': 20 };
+     *
+     * @return {Array} Provide method list in array format.
+     */
+    function listPolicies(data) {
+      return Security(
+        new Headers(module.exports.api_key, module.exports.organization),
+        {
+          io_type: 'list',
+          method: 'GET',
+          queryParam: data,
+          subUrl: 'policies',
+        }
+      );
+    }
+
+    /**
+     * Summary: Get details about a specific policy.
+     *
+     * This method requires Header `Authorization: Bearer {bearer_id}`, you can obtain `bearer_id` using `.Auth().accessTokenLogin()` method.
+     * @param {string} policy_id policy_id
+     *
+     * @return {object} Provide object type 'policy'.
+     */
+    function policy(id) {
+      return Security(
+        new Headers(module.exports.api_key, module.exports.organization),
+        {
+          io_type: 'item',
+          method: 'GET',
+          id: id,
+          subUrl: 'policy',
+        }
+      );
+    }
+
+    /**
+     * Summary: Get details about a specific policy.
+     *
+     * This method requires Header `Authorization: Bearer {bearer_id}`, you can obtain `bearer_id` using `.Auth().accessTokenLogin()` method.
+     * @param {string} policy_id policy_id
+     *
+     * @return {object} Provide object type 'policy'.
+     */
+    function policyId(id) {
+      return Security(
+        new Headers(module.exports.api_key, module.exports.organization),
+        {
+          io_type: 'item',
+          method: 'GET',
+          isIdURL: true,
+          id: id,
+          subUrl: 'policies',
+        }
+      );
+    }
+
+    /**
+     * Summary: Get all of the security rules for policy.
+     *
+     * This method requires Header `Authorization: Bearer {bearer_id}`, you can obtain `bearer_id` using `.Auth().accessTokenLogin()` method.
+     * @param {object} { 'page': 1, 'size': 20 };
+     *
+     * @return {Array} Provide method list in array format.
+     */
+    function listRules(data) {
+      return Security(
+        new Headers(module.exports.api_key, module.exports.organization),
+        {
+          io_type: 'list',
+          method: 'GET',
+          queryParam: data,
+          subUrl: 'rules',
+        }
+      );
+    }
+
+    /**
+     * Summary: Get details about a specific rule.
+     *
+     * This method requires Header `Authorization: Bearer {bearer_id}`, you can obtain `bearer_id` using `.Auth().accessTokenLogin()` method.
+     * @param {string} rule_id rule_id
+     *
+     * @return {object} Provide object type 'rule'.
+     */
+    function rule(id) {
+      return Security(
+        new Headers(module.exports.api_key, module.exports.organization),
+        {
+          io_type: 'item',
+          method: 'GET',
+          id: id,
+          subUrl: 'rule',
+        }
+      );
+    }
+
+    /**
+     * Summary: Get details about a specific rule.
+     *
+     * This method requires Header `Authorization: Bearer {bearer_id}`, you can obtain `bearer_id` using `.Auth().accessTokenLogin()` method.
+     * @param {string} rule_id rule_id
+     *
+     * @return {object} Provide object type 'rule'.
+     */
+    function ruleId(id) {
+      return Security(
+        new Headers(module.exports.api_key, module.exports.organization),
+        {
+          io_type: 'item',
+          method: 'GET',
+          isIdURL: true,
+          id: id,
+          subUrl: 'rules',
+        }
+      );
+    }
+
+    /**
+     * Summary: Get all of the security action types for policy.
+     *
+     * This method requires Header `Authorization: Bearer {bearer_id}`, you can obtain `bearer_id` using `.Auth().accessTokenLogin()` method.
+     * @param {object} { 'page': 1, 'size': 20 };
+     *
+     * @return {Array} Provide method list in array format.
+     */
+    function listActionTypes(data) {
+      return Security(
+        new Headers(module.exports.api_key, module.exports.organization),
+        {
+          io_type: 'list',
+          method: 'GET',
+          queryParam: data,
+          subUrl: 'action_types',
+        }
+      );
+    }
+
+    /**
+     * Summary: Get details about a specific action type.
+     *
+     * This method requires Header `Authorization: Bearer {bearer_id}`, you can obtain `bearer_id` using `.Auth().accessTokenLogin()` method.
+     * @param {string} action_type_id action_type_id
+     *
+     * @return {object} Provide object type 'action_type'.
+     */
+    function actionType(id) {
+      return Security(
+        new Headers(module.exports.api_key, module.exports.organization),
+        {
+          io_type: 'item',
+          method: 'GET',
+          id: id,
+          subUrl: 'action_type',
+        }
+      );
+    }
+
+    /**
+     * Summary: Get details about a specific action type.
+     *
+     * This method requires Header `Authorization: Bearer {bearer_id}`, you can obtain `bearer_id` using `.Auth().accessTokenLogin()` method.
+     * @param {string} action_type_id action_type_id
+     *
+     * @return {object} Provide object type 'action_type'.
+     */
+    function actionTypeId(id) {
+      return Security(
+        new Headers(module.exports.api_key, module.exports.organization),
+        {
+          io_type: 'item',
+          method: 'GET',
+          isIdURL: true,
+          id: id,
+          subUrl: 'action_types',
+        }
+      );
+    }
+
+    /**
+     * Summary: Security related operations.
+     *
+     * This method requires Header `Authorization: Bearer {bearer_id}`, you can obtain `bearer_id` using `.Auth().accessTokenLogin()` method.
+     * AI Provider name (case sensitive)
+     *
+     * @return {Method} This return the list of methods for Security.
+     * - createPolicy
+     * - updatePolicy
+     * - listPolicies
+     * - policy
+     * - policyId
+     * - listRules
+     * - rule
+     * - ruleId
+     * - listActionTypes
+     * - actionType
+     * - actionTypeId
+     */
+    function main() {
+      return {
+        createPolicy: createPolicy,
+        updatePolicy: updatePolicy,
+        removePolicy: removePolicy,
+        listPolicies: listPolicies,
+        policy: policy,
+        policyId: policyId,
+        listRules: listRules,
+        rule: rule,
+        ruleId: ruleId,
+        listActionTypes: listActionTypes,
+        actionType: actionType,
+        actionTypeId: actionTypeId,
+      };
+    }
+
+    main.createPolicy = createPolicy;
+    main.updatePolicy = updatePolicy;
+    main.removePolicy = removePolicy;
+    main.listPolicies = listPolicies;
+    main.policy = policy;
+    main.policyId = policyId;
+    main.listRules = listRules;
+    main.rule = rule;
+    main.ruleId = ruleId;
+    main.listActionTypes = listActionTypes;
+    main.actionType = actionType;
+    main.actionTypeId = actionTypeId;
 
     return main;
   })(),

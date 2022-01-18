@@ -2,7 +2,8 @@
 <h3 align="center">Mantium</h3>
 
 ## Table of Contents
-- [Quickstart](#quickstart)
+- [Table of Contents](#table-of-contents)
+- [Quickstart:](#quickstart)
 - [Authentication](#authentication)
 - [Installation](#installation)
 - [Usage](#usage)
@@ -14,13 +15,13 @@
     - [List Methods](#list-methods)
   - [AI Engines](#ai-engines)
     - [Get All AI Engines](#get-all-ai-engines)
-    - [Get Ai Engines By Provider](#get-ai-engines-by-provider)
-    - [Get Ai Engine By Name](#get-ai-engine-by-name)
+    - [Get AI Engines By Provider](#get-ai-engines-by-provider)
+    - [Get AI Engine By Name](#get-ai-engine-by-name)
   - [Tags](#tags)
     - [List Tags](#list-tags)
     - [Create a Tag](#create-a-tag)
     - [Get Tag using ID url](#get-tag-using-id-url)
-    - [Get Tag ](#get-tag)
+    - [Get Tag](#get-tag)
     - [Update Tag](#update-tag)
     - [Delete Tag](#delete-tag)
   - [Prompts](#prompts)
@@ -28,7 +29,7 @@
     - [Create a Prompt](#create-a-prompt)
     - [Update Prompt](#update-prompt)
     - [Get Prompt using ID url](#get-prompt-using-id-url)
-    - [Get Prompt ](#get-prompt)
+    - [Get Prompt](#get-prompt)
     - [Delete Prompt](#delete-prompt)
     - [Execute Prompt](#execute-prompt)
     - [Get Prompt Result](#get-prompt-result)
@@ -39,18 +40,31 @@
   - [Intelets](#intelets)
     - [List Intelets](#list-intelets)
     - [Create an Intelet](#create-an-intelet)
+    - [Correct data for creation](#correct-data-for-creation)
     - [Update Intelet](#update-intelet)
     - [Get an Intelet using ID url](#get-an-intelet-using-id-url)
-    - [Get an Intelet ](#get-an-intelet)
+    - [Get an Intelet](#get-an-intelet)
     - [Delete an Intelet](#delete-an-intelet)
     - [Execute Intelet](#execute-intelet)
     - [Get Intelet Result](#get-intelet-result)
-  - [Health](#health)
+    - [Health](#health)
   - [Files](#files)
     - [List Files](#list-files)
     - [upload a File](#upload-a-file)
     - [Delete File](#delete-file)
-
+  - [security](#security)
+    - [Create Policy](#create-policy)
+    - [Update Policy](#update-policy)
+    - [Remove Policy](#remove-policy)
+    - [List Policies](#list-policies)
+    - [Get policy](#get-policy)
+    - [Get policy using ID url](#get-policy-using-id-url)
+    - [List Rules](#list-rules)
+    - [Get rule](#get-rule)
+    - [Get rule using ID url](#get-rule-using-id-url)
+    - [List Action Types](#list-action-types)
+    - [Get Action Type](#get-action-type)
+    - [Get Action Type using ID url](#get-action-type-using-id-url)
 ## Quickstart:
 
 Read the [getting started guide](https://developer.mantiumai.com/docs) for more information on how to use Mantium.
@@ -2759,6 +2773,862 @@ const mantiumAi = require('@mantium/mantiumapi');
       object: 'file'
     },
     relationships: {}
+  },
+  included: [],
+  meta: {},
+  links: {}
+}
+```
+[Go to Table of Contents](#table-of-contents)
+
+
+### security  
+
+Security Policies  
+You can manage your security policies using these methods.  
+
+#### Create Policy
+
+Create a Security Policy. We only create one policy at a time.  
+
+There is no need to support posting a list of polices at once  
+
+Requirements:  
+
+`name`* (string) required parameter, The name of the security policy.  
+
+`description` (string)  A description of this security policy.  
+
+`rules`  (array) A list of JSON rules objects to attach to the policy.  
+
+`notifications` (array) A list of Notifications to send when any one of the rules are violated.  
+
+`actions` (array) A list of Security Actions to take when any one of the rules are violated.  
+
+[Document link](https://developer.mantiumai.com/reference/post_policy_v1_security_policy_post)
+
+```js
+const mantiumAi = require('mantiumclient-js');
+
+(async () => {
+  await mantiumAi.Auth().accessTokenLogin({
+    username: 'useremail@somedomain.com',
+    password: 'p@ssWord!'
+  })
+    .then((response) => {
+      // get bearer_id and set to default
+      mantiumAi.api_key = response.data.attributes.bearer_id;
+    });
+
+  /*
+  * API Key is set on above
+  * mantiumAi.api_key=`key`
+  * so we can call these method directly now
+  */
+ await mantiumAi
+    .Security()
+    .createPolicy({
+      name: 'must be policyname new',
+      description: '',
+      rules: [
+        {
+          rule_id: '8bc66446-c72d-4627-a3f4-cf942383cee5',
+          parameters: {
+            max_input_characters: '2',
+            scope: 'per_prompt',
+          },
+        },
+      ],
+      actions: [
+        {
+          action_type_id: '1e378559-7015-4271-a3f1-abcd2c663c40',
+        },
+        {
+          action_type_id: 'a49e30e3-da97-49a1-b501-7840358825ba',
+        },
+        {
+          action_type_id: '72d64ca0-35bf-4646-9782-90634d7b6b97',
+        },
+      ],
+      notifications: [],
+    })
+    .then((response) => {
+      console.log('*********** policy create *********');
+      console.log(response);
+    });
+})();
+```
+#### Example of a successful API response
+```js
+{
+  data: [
+    {
+      attributes: {
+        created_at: '2022-01-14T15:06:21.705558+00:00',
+        updated_at: null,
+        policy_id: '7510e70c-c5d8-40b0-b150-0773fccff757',
+        organization_id: 'c68c07c9-d11a-4b54-8823-1dff6792916d',
+        name: 'must be policyname new',
+        description: '',
+        created_by: 'a3e5c076-311c-46af-97cd-d1e529512afe',
+        updated_by: null,
+        rules: [
+          {
+            rule_id: '8bc66446-c72d-4627-a3f4-cf942383cee5',
+            parameters: [Object]
+          }
+        ],
+        actions: [
+          {
+            action_id: 'e171e6eb-cee2-4fb7-b5bc-ecdb62b2b654',
+            action_type_id: '1e378559-7015-4271-a3f1-abcd2c663c40'
+          },
+          {
+            action_id: '43f509a8-ec09-4221-a188-59037ddb3409',
+            action_type_id: 'a49e30e3-da97-49a1-b501-7840358825ba'
+          },
+          {
+            action_id: '6711d3cf-b877-4445-bdf4-6010b5b78625',
+            action_type_id: '72d64ca0-35bf-4646-9782-90634d7b6b97'
+          }
+        ]
+      },
+      relationships: { notifications: { data: [] } },
+      type: 'security_policy'
+    }
+  ]
+}
+```
+
+[Go to Table of Contents](#table-of-contents)
+
+#### Update Policy
+
+Update the existing policy with the contents of the payload  
+
+The UUID in the path is to specify the Security Policy to be updated  
+
+Requirements:  
+
+`id`* (string) required parameter, The policy ID which need to update.  
+
+`name`* (string) required parameter, The name of the security policy.  
+
+`description` (string)  A description of this security policy.  
+
+`rules`  (array) A list of JSON rules objects to attach to the policy.  
+
+`notifications` (array) A list of Notifications to send when any one of the rules are violated.  
+
+`actions` (array) A list of Security Actions to take when any one of the rules are violated.  
+
+[Document link](https://developer.mantiumai.com/reference/patch_policy_v1_security_policy__policy_id__patch)
+
+```js
+const mantiumAi = require('mantiumclient-js');
+
+(async () => {
+  await mantiumAi.Auth().accessTokenLogin({
+    username: 'useremail@somedomain.com',
+    password: 'p@ssWord!'
+  })
+    .then((response) => {
+      // get bearer_id and set to default
+      mantiumAi.api_key = response.data.attributes.bearer_id;
+    });
+
+  /*
+  * API Key is set on above
+  * mantiumAi.api_key=`key`
+  * so we can call these method directly now
+  */
+  await mantiumAi
+    .Security()
+    .updatePolicy({
+      id: 'fbf3383d-4349-425e-84ec-e6831318f08b',
+      name: 'must be policyname new via update',
+      description: 'updated descriptions naav change',
+      rules: [
+        {
+          rule_id: '8bc66446-c72d-4627-a3f4-cf942383cee5',
+          parameters: {
+            max_input_characters: '2',
+            scope: 'per_prompt',
+          },
+        },
+      ],
+      actions: [
+        {
+          action_type_id: '1e378559-7015-4271-a3f1-abcd2c663c40',
+        },
+        {
+          action_type_id: 'a49e30e3-da97-49a1-b501-7840358825ba',
+        },
+        {
+          action_type_id: '72d64ca0-35bf-4646-9782-90634d7b6b97',
+        },
+      ],
+      notifications: [],
+    })
+    .then((response) => {
+      console.log('*********** policy update *********');
+      console.log(response);
+      console.log(response.data[0].attributes);
+      console.log(response.data[0].relationships);
+    });
+})();
+```
+#### Example of a successful API response
+```js
+{
+  data: {
+    attributes: {
+      created_at: '2022-01-15T18:32:20.703771+00:00',
+      updated_at: '2022-01-15T19:04:42.606019+00:00',
+      policy_id: '73067dc6-44dd-472d-a82b-44e0c3a1ea0a',
+      organization_id: 'c68c07c9-d11a-4b54-8823-1dff6792916d',
+      name: 'must be policyname new via update',
+      description: 'updated descriptions naav change',
+      created_by: 'a3e5c076-311c-46af-97cd-d1e529512afe',
+      updated_by: 'a3e5c076-311c-46af-97cd-d1e529512afe',
+      rules: [Array],
+      actions: [Array]
+    },
+    relationships: { notifications: [Object] },
+    type: 'security_policy'
+  }
+}
+```
+
+[Go to Table of Contents](#table-of-contents)
+#### Remove Policy
+
+Deletes an existing policy for an organization  
+
+`id`* (string) required parameter, The policy ID
+
+[Document link](https://developer.mantiumai.com/reference/delete_policy_v1_security_policy__policy_id__delete)
+
+```js
+const mantiumAi = require('mantiumclient-js');
+
+(async () => {
+  await mantiumAi.Auth().accessTokenLogin({
+    username: 'useremail@somedomain.com',
+    password: 'p@ssWord!'
+  })
+    .then((response) => {
+      // get bearer_id and set to default
+      mantiumAi.api_key = response.data.attributes.bearer_id;
+    });
+
+  /*
+  * API Key is set on above
+  * mantiumAi.api_key=`key`
+  * so we can call these method directly now
+  */
+  await mantiumAi
+    .Security()
+    .removePolicy('d1851a8b-5735-48be-8fc6-f7aa295df3b4')
+    .then((response) => {
+      console.log('*********** removePolicy *********');
+      console.log(response);
+    });
+})();
+```
+#### Example of a successful API response
+```js
+{
+  "data": {
+    "attributes": {
+      "created_at": "2022-01-15T18:31:42.982544+00:00",
+      "updated_at": null,
+      "policy_id": "d1851a8b-5735-48be-8fc6-f7aa295df3b4",
+      "organization_id": "c68c07c9-d11a-4b54-8823-1dff6792916d",
+      "name": "must be policyname new",
+      "description": "",
+      "created_by": "a3e5c076-311c-46af-97cd-d1e529512afe",
+      "updated_by": null
+    },
+    "type": "security_policy"
+  }
+}
+```
+[Go to Table of Contents](#table-of-contents)
+
+#### List Policies
+
+Get all of your selected organization's security policies  
+
+Query Params  
+`Page` Page number  
+`Size` Page size. If not supplied, returns all the results in a single page for certain APIs.  
+
+[Document link](https://developer.mantiumai.com/reference/list_policies_v1_security_policies_get)
+
+```js
+const mantiumAi = require('mantiumclient-js');
+
+(async () => {
+  await mantiumAi.Auth().accessTokenLogin({
+    username: 'useremail@somedomain.com',
+    password: 'p@ssWord!'
+  })
+    .then((response) => {
+      // get bearer_id and set to default
+      mantiumAi.api_key = response.data.attributes.bearer_id;
+    });
+  await mantiumAi
+    .Security()
+    .listPolicies({ page: 1, size: 2 })
+    .then((response) => {
+      console.log('*********** listpolicies response *********');
+      console.log(response);
+    });
+  /*
+  * API Key is set on above
+  * mantiumAi.api_key=`key`
+  * so we can call these method directly now
+  */
+})();
+```
+#### Example of a successful API response
+```js
+{
+  data: [
+    {
+      id: 'policy_id',
+      type: 'security_policy',
+      attributes: [{
+        id: 'policy_id',
+        type: 'security_policy',
+        attributes: {
+          policy_id: '07af5486-f77c-48c2-9ccf-318c81643736',
+          name: 'some policyname',
+          description: 'some description for policy',
+          rules: [ [Object] ],
+          actions: [ [Object], [Object], [Object] ],
+          organization_id: 'c68c07c9-d11a-4b54-8823-1dff6792916d',
+          organization_name: ' ',
+          created_by_name: ' ',
+          created_by_email: 'kedman1234@gmail.com',
+          updated_by_name: '',
+          updated_by_email: null
+        },
+        relationships: { notifications: { data: [] } }
+      },
+      {
+        id: 'policy_id',
+        type: 'security_policy',
+        attributes: {
+          policy_id: '052059b8-d9e7-4fda-b8c7-13fb02103b4c',
+          name: 'must be policyname new',
+          description: '',
+          rules: [ [Object] ],
+          actions: [ [Object], [Object], [Object] ],
+          organization_id: 'c68c07c9-d11a-4b54-8823-1dff6792916d',
+          organization_name: ' ',
+          created_by_name: ' ',
+          created_by_email: 'kedman1234@gmail.com',
+          updated_by_name: '',
+          updated_by_email: null
+        },
+        relationships: { notifications: { data: [] } }
+    }],
+      relationships: [Object]
+    },
+    {
+      id: 'policy_id',
+      type: 'security_policy',
+      attributes: [Object],
+      relationships: [Object]
+    }
+  ],
+  included: null,
+  meta: null,
+  links: { total_items: 34, current_page: 1, next_page: 2 }
+}
+```
+[Go to Table of Contents](#table-of-contents)
+
+#### Get policy
+
+Get a specific Security Policy for your selected organization  
+
+`id`* (string) required parameter, The policy ID  
+
+
+[Document link](https://developer.mantiumai.com/reference/get_policy_v1_security_policy__policy_id__get)
+
+```js
+const mantiumAi = require('mantiumclient-js');
+
+(async () => {
+  await mantiumAi.Auth().accessTokenLogin({
+    username: 'useremail@somedomain.com',
+    password: 'p@ssWord!'
+  })
+    .then((response) => {
+      // get bearer_id and set to default
+      mantiumAi.api_key = response.data.attributes.bearer_id;
+    });
+
+  /*
+  * API Key is set on above
+  * mantiumAi.api_key=`key`
+  * so we can call these method directly now
+  */
+  await mantiumAi
+    .Security()
+    .policy('39a17204-aa6c-46c7-ae0c-fe664f6397b0')
+    .then((response) => {
+      console.log('*********** policy response *********');
+      console.log(response);
+    });
+})();
+```
+#### Example of a successful API response
+```js
+{
+  data: [{
+    attributes: {
+      policy_id: '39a17204-aa6c-46c7-ae0c-fe664f6397b0',
+      name: 'max char 2 policy',
+      description: 'max char 2 policy',
+      rules: [Array],
+      actions: [Array],
+      organization_id: 'c68c07c9-d11a-4b54-8823-1dff6792916d',
+      organization_name: ' ',
+      created_by_name: ' ',
+      created_by_email: 'kedman1234@gmail.com',
+      updated_by_name: '',
+      updated_by_email: null
+    },
+    relationships: { notifications: [Object] },
+    type: 'security_policy',
+    id: 'policy_id'
+  }]
+}
+```
+[Go to Table of Contents](#table-of-contents)
+
+#### Get policy using ID url
+
+Get a specific Security Policy for your selected organization  
+
+`id`* (string) required parameter, The policy ID  
+
+[Document link](https://developer.mantiumai.com/reference/get_policy_v1_security_policies_id__policy_id__get)
+
+```js
+const mantiumAi = require('mantiumclient-js');
+
+(async () => {
+  await mantiumAi.Auth().accessTokenLogin({
+    username: 'useremail@somedomain.com',
+    password: 'p@ssWord!'
+  })
+    .then((response) => {
+      // get bearer_id and set to default
+      mantiumAi.api_key = response.data.attributes.bearer_id;
+    });
+
+  /*
+  * API Key is set on above
+  * mantiumAi.api_key=`key`
+  * so we can call these method directly now
+  */
+  await mantiumAi
+    .Security()
+    .policyId('39a17204-aa6c-46c7-ae0c-fe664f6397b0')
+    .then((response) => {
+      console.log('*********** retrievePolicy response *********');
+      console.log(response);
+    });
+})();
+```
+#### Example of a successful API response
+```js
+{
+  data: [{
+    attributes: {
+      policy_id: '39a17204-aa6c-46c7-ae0c-fe664f6397b0',
+      name: 'max char 2 policy',
+      description: 'max char 2 policy',
+      rules: [Array],
+      actions: [Array],
+      organization_id: 'c68c07c9-d11a-4b54-8823-1dff6792916d',
+      organization_name: ' ',
+      created_by_name: ' ',
+      created_by_email: 'kedman1234@gmail.com',
+      updated_by_name: '',
+      updated_by_email: null
+    },
+    relationships: { notifications: [Object] },
+    type: 'security_policy',
+    id: 'policy_id'
+  }]
+}
+```
+[Go to Table of Contents](#table-of-contents)
+
+#### List Rules
+
+List available Security Rules  
+
+Query Params  
+`Page` Page number  
+`Size` Page size. If not supplied, returns all the results in a single page for certain APIs.  
+
+[Document link](https://developer.mantiumai.com/reference/list_rules_v1_security_rules_get)
+
+```js
+const mantiumAi = require('mantiumclient-js');
+
+(async () => {
+  await mantiumAi.Auth().accessTokenLogin({
+    username: 'useremail@somedomain.com',
+    password: 'p@ssWord!'
+  })
+    .then((response) => {
+      // get bearer_id and set to default
+      mantiumAi.api_key = response.data.attributes.bearer_id;
+    });
+
+  /*
+  * API Key is set on above
+  * mantiumAi.api_key=`key`
+  * so we can call these method directly now
+  */
+  await mantiumAi
+    .Security()
+    .listRules({ page: 1, size: 2 })
+    .then((response) => {
+      console.log('*********** listRules response *********');
+      console.log(response);
+    });
+})();
+```
+#### Example of a successful API response
+```js
+{
+  data: [
+    {
+      id: '0a3e489e-aa59-634b-82bf-c2f81dd67608',
+      type: 'security_rule',
+      attributes: [Object],
+      relationships: {}
+    },
+    {
+      id: '6a8282b9-03d1-4a89-0291-73709998efab',
+      type: 'security_rule',
+      attributes: [Object],
+      relationships: {}
+    }
+  ],
+  included: null,
+  meta: null,
+  links: { total_items: 15, current_page: 1, next_page: 2 }
+}
+```
+[Go to Table of Contents](#table-of-contents)
+
+#### Get rule
+
+Get a specific Security Rule  
+
+`id`* (string) required parameter, The rule ID  
+
+[Document link](https://developer.mantiumai.com/reference/get_rule_v1_security_rule__rule_id__get)
+
+```js
+const mantiumAi = require('mantiumclient-js');
+
+(async () => {
+  await mantiumAi.Auth().accessTokenLogin({
+    username: 'useremail@somedomain.com',
+    password: 'p@ssWord!'
+  })
+    .then((response) => {
+      // get bearer_id and set to default
+      mantiumAi.api_key = response.data.attributes.bearer_id;
+    });
+
+  /*
+  * API Key is set on above
+  * mantiumAi.api_key=`key`
+  * so we can call these method directly now
+  */
+  await mantiumAi
+    .Security()
+    .rule('0a3e489e-aa59-634b-82bf-c2f81dd67608')
+    .then((response) => {
+      console.log('*********** rule response *********');
+      console.log(response);
+    });
+})();
+```
+#### Example of a successful API response
+```js
+{
+  data: {
+    id: '0a3e489e-aa59-634b-82bf-c2f81dd67608',
+    type: 'security_rule',
+    attributes: {
+      rule_id: '0a3e489e-aa59-634b-82bf-c2f81dd67608',
+      name: 'Ai21 Input Characters',
+      description: 'Maximum Input Characters for a given prompt',
+      ai_provider: 'Ai21',
+      preprocessor: true,
+      postprocessor: false,
+      parameter_template: [Array]
+    },
+    relationships: {}
+  },
+  included: [],
+  meta: {},
+  links: {}
+}
+```
+[Go to Table of Contents](#table-of-contents)
+
+#### Get rule using ID url
+
+Get a specific Security Rule  
+
+`id`* (string) required parameter, The rule ID  
+
+[Document link](https://developer.mantiumai.com/reference#access_token_login_v1_auth_login_access_token_post)
+
+```js
+const mantiumAi = require('mantiumclient-js');
+
+(async () => {
+  await mantiumAi.Auth().accessTokenLogin({
+    username: 'useremail@somedomain.com',
+    password: 'p@ssWord!'
+  })
+    .then((response) => {
+      // get bearer_id and set to default
+      mantiumAi.api_key = response.data.attributes.bearer_id;
+    });
+
+  /*
+  * API Key is set on above
+  * mantiumAi.api_key=`key`
+  * so we can call these method directly now
+  */
+  await mantiumAi
+    .Security()
+    .ruleId('0a3e489e-aa59-634b-82bf-c2f81dd67608')
+    .then((response) => {
+      console.log('*********** ruleId response *********');
+      console.log(response);
+    });
+})();
+```
+#### Example of a successful API response
+```js
+{
+  data: {
+    id: '0a3e489e-aa59-634b-82bf-c2f81dd67608',
+    type: 'security_rule',
+    attributes: {
+      rule_id: '0a3e489e-aa59-634b-82bf-c2f81dd67608',
+      name: 'Ai21 Input Characters',
+      description: 'Maximum Input Characters for a given prompt',
+      ai_provider: 'Ai21',
+      preprocessor: true,
+      postprocessor: false,
+      parameter_template: [Array]
+    },
+    relationships: {}
+  },
+  included: [],
+  meta: {},
+  links: {}
+}
+```
+[Go to Table of Contents](#table-of-contents)
+
+#### List Action Types
+
+List available Security Action Types  
+
+These are added to a Security Policy to tell it what to do after a Security Rule is violated.  
+
+Query Params  
+`Page` Page number  
+`Size` Page size. If not supplied, returns all the results in a single page for certain APIs.  
+
+[Document link](https://developer.mantiumai.com/reference/list_action_types_v1_security_action_types_get)
+
+```js
+const mantiumAi = require('mantiumclient-js');
+
+(async () => {
+  await mantiumAi.Auth().accessTokenLogin({
+    username: 'useremail@somedomain.com',
+    password: 'p@ssWord!'
+  })
+    .then((response) => {
+      // get bearer_id and set to default
+      mantiumAi.api_key = response.data.attributes.bearer_id;
+    });
+
+  /*
+  * API Key is set on above
+  * mantiumAi.api_key=`key`
+  * so we can call these method directly now
+  */
+  await mantiumAi
+    .Security()
+    .listActionTypes({ page: 1, size: 2 })
+    .then((response) => {
+      console.log('*********** listActionTypes response *********');
+      console.log(response);
+      console.log(response.data);
+    });
+})();
+```
+#### Example of a successful API response
+```js
+{
+  data: [
+    {
+      id: '1e378559-7015-4271-a3f1-abcd2c663c40',
+      type: 'action_type',
+      attributes: {
+        action_type_id: '1e378559-7015-4271-a3f1-abcd2c663c40',
+        name: 'Log Warning',
+        description: 'Record a Warning in the logs',
+        configurable: false
+      },
+      relationships: { parameter_template: [Object] }
+    },
+    {
+      id: 'a49e30e3-da97-49a1-b501-7840358825ba',
+      type: 'action_type',
+      attributes: {
+        action_type_id: 'a49e30e3-da97-49a1-b501-7840358825ba',
+        name: 'Halt Processing',
+        description: 'Immediately stop processing the prompt',
+        configurable: false
+      },
+      relationships: { parameter_template: [Object] }
+    }
+  ],
+  included: null,
+  meta: null,
+  links: { total_items: 5, current_page: 1, next_page: 2 }
+}
+```
+[Go to Table of Contents](#table-of-contents)
+
+#### Get Action Type
+
+Get a specific Security ActionType  
+
+`id`* (string) required parameter, The action_type_id  
+
+[Document link](https://developer.mantiumai.com/reference/get_action_type_v1_security_action_type__action_type_id__get)
+
+```js
+const mantiumAi = require('mantiumclient-js');
+
+(async () => {
+  await mantiumAi.Auth().accessTokenLogin({
+    username: 'useremail@somedomain.com',
+    password: 'p@ssWord!'
+  })
+    .then((response) => {
+      // get bearer_id and set to default
+      mantiumAi.api_key = response.data.attributes.bearer_id;
+    });
+
+  /*
+  * API Key is set on above
+  * mantiumAi.api_key=`key`
+  * so we can call these method directly now
+  */
+  await mantiumAi
+    .Security()
+    .actionType('1e378559-7015-4271-a3f1-abcd2c663c40')
+    .then((response) => {
+      console.log('*********** actionType response *********');
+      console.log(response);
+    });
+})();
+```
+#### Example of a successful API response
+```js
+{
+  data: {
+    id: '1e378559-7015-4271-a3f1-abcd2c663c40',
+    type: 'action_type',
+    attributes: {
+      action_type_id: '1e378559-7015-4271-a3f1-abcd2c663c40',
+      name: 'Log Warning',
+      description: 'Record a Warning in the logs',
+      configurable: false
+    },
+    relationships: { parameter_template: [Object] }
+  },
+  included: [],
+  meta: {},
+  links: {}
+}
+```
+[Go to Table of Contents](#table-of-contents)
+
+#### Get Action Type using ID url
+
+Get a specific Security ActionType  
+
+`id`* (string) required parameter, The action_type_id  
+
+[Document link](https://developer.mantiumai.com/reference/get_action_type_v1_security_action_types_id__action_type_id__get)
+
+```js
+const mantiumAi = require('mantiumclient-js');
+
+(async () => {
+  await mantiumAi.Auth().accessTokenLogin({
+    username: 'useremail@somedomain.com',
+    password: 'p@ssWord!'
+  })
+    .then((response) => {
+      // get bearer_id and set to default
+      mantiumAi.api_key = response.data.attributes.bearer_id;
+    });
+
+  /*
+  * API Key is set on above
+  * mantiumAi.api_key=`key`
+  * so we can call these method directly now
+  */
+  await mantiumAi
+    .Security()
+    .actionTypeId('1e378559-7015-4271-a3f1-abcd2c663c40')
+    .then((response) => {
+      console.log('*********** actionTypeId response *********');
+      console.log(response);
+    });  
+})();
+```
+#### Example of a successful API response
+```js
+{
+  data: {
+    id: '1e378559-7015-4271-a3f1-abcd2c663c40',
+    type: 'action_type',
+    attributes: {
+      action_type_id: '1e378559-7015-4271-a3f1-abcd2c663c40',
+      name: 'Log Warning',
+      description: 'Record a Warning in the logs',
+      configurable: false
+    },
+    relationships: { parameter_template: [Object] }
   },
   included: [],
   meta: {},
