@@ -8,6 +8,8 @@ const mantiumAi = require('../src/index');
 
 if (!username && !password) throw new Error(msg.errorMessages().env_missing);
 
+let mantiumAiToken = '';
+
 // root hook to run before every test (even in other files)
 beforeEach(async function () {
   await mantiumAi
@@ -17,6 +19,9 @@ beforeEach(async function () {
       password,
     })
     .then((response) => {
-      mantiumAi.api_key = response.data.attributes.bearer_id;
+      if(mantiumAiToken === '') {
+        mantiumAiToken = response.data?.attributes ? response.data.attributes.bearer_id || '' : '';
+        mantiumAi.api_key = mantiumAiToken;
+      }
     });
 });

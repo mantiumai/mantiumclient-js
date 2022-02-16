@@ -7,29 +7,33 @@ module.exports = function (headers, opt) {
   if (!headers.api_key)
     throw new Error(msg.errorMessages().access_token_missing);
 
-  // in HITL Post must have id as ID is refer as prompt_execution_id and it required in the URL
   if (
-    ['GET', 'PATCH', 'DELETE', 'POST'].includes(opt.method) &&
+    ['GET', 'PATCH', 'DELETE'].includes(opt.method) &&
     utils.isNil(opt.id) &&
     opt.io_type === 'item'
   )
     throw new Error(msg.errorMessages().id_missing);
 
-    const id = utils.isNotNil(opt.id) ? '/' + opt.id : '';
-    const action = utils.isNotNil(opt.action_type) ? '/' + opt.action_type : '';
+  if (['POST', 'PATCH'].includes(opt.method) && utils.isNil(opt.name))
+    throw new Error(msg.errorMessages().policy_name_missing);
+
+  const id = utils.isNotNil(opt.id) ? '/' + opt.id : '';
 
   let options = {
     method: opt.method,
     url: config
-      .hitlURL(opt.isIdURL)
-      .concat(id, utils.objToQueryStr(opt.queryParam), action),
+      .securityURL(opt.isIdURL, opt.subUrl)
+      .concat(id, utils.objToQueryStr(opt.queryParam)),
     headers: headers.getHeaders(),
   };
 
   if (['POST', 'PATCH', 'PUT'].includes(opt.method) && opt.io_type !== 'list') {
-    options['body'] = JSON.stringify(opt.bodyPaylod);
+    delete opt.io_type; // internal use only
+    delete opt.isIdURL; // internal use only
+    delete opt.subUrl; // internal use only
+    delete opt.method; // internal use only
+    options['body'] = JSON.stringify(opt);
   }
 
-  console.log('options :::', options)
   return fetch(options);
 };

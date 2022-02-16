@@ -65,7 +65,7 @@ describe('Intelets', function () {
     expect(methodResponse.data).to.be.an('object');
     assert.equal(
       methodResponse.data.type,
-      'intelet_view',
+      'intelet',
       'intelet type object received'
     );
     assert.equal(
@@ -101,7 +101,7 @@ describe('Intelets', function () {
     expect(methodResponse.data).to.be.an('object');
     assert.equal(
       methodResponse.data.type,
-      'intelet_view',
+      'intelet',
       'intelet type object received'
     );
     assert.equal(
