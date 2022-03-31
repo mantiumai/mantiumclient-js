@@ -15,8 +15,8 @@ module.exports = function (headers, opt) {
   )
     throw new Error(msg.errorMessages().id_missing);
 
-    const id = utils.isNotNil(opt.id) ? '/' + opt.id : '';
-    const action = utils.isNotNil(opt.action_type) ? '/' + opt.action_type : '';
+  const id = utils.isNotNil(opt.id) ? '/' + opt.id : '';
+  const action = utils.isNotNil(opt.action_type) ? '/' + opt.action_type : '';
 
   let options = {
     method: opt.method,
@@ -30,6 +30,5 @@ module.exports = function (headers, opt) {
     options['body'] = JSON.stringify(opt.bodyPaylod);
   }
 
-  console.log('options :::', options)
   return fetch(options);
 };

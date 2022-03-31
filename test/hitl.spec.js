@@ -11,6 +11,7 @@ describe('Human in the Loop', function () {
   let ruleId = undefined;
   let actionTypeId = undefined;
   let promptExecutionId = undefined;
+  const promptInput = 'This is my testing execute prompt';
   let samplePolicy = {
     name: 'some policyname',
     description: 'some description for policy',
@@ -101,10 +102,48 @@ describe('Human in the Loop', function () {
     assert.typeOf(policyID, 'string', 'id received');
   });
 
-  it('HITL Step 2: Create a Prompt using policy', async function () {
-    const methodResponse = await mantiumAi
+  async function runPromptExectue() {
+    await mantiumAi
       .Prompts(aiProvider)
       .create(samplePrompt)
+      .then(async (response) => {
+        promptID = response.data.attributes.prompt_id;
+        await mantiumAi
+          .Prompts(aiProvider)
+          .execute({
+            id: promptID,
+            input: promptInput,
+          })
+          .then(async (response) => {
+            response.should.be.an('object');
+            promptExecutionId = response?.prompt_execution_id;
+            await mantiumAi
+              .Prompts(aiProvider)
+              .result(promptExecutionId)
+              .then((response) => {
+                response.should.be.an('object');
+                return response;
+              })
+              .catch((err) => {
+                should.not.exist(err);
+              });
+            return response;
+          })
+          .catch((err) => {
+            should.not.exist(err);
+          });
+        return response;
+      })
+      .catch((err) => {
+        should.not.exist(err);
+      });
+    return false;
+  }
+
+  async function clearPrompt() {
+    await mantiumAi
+      .Prompts()
+      .remove(promptID)
       .then((response) => {
         response.should.be.an('object');
         return response;
@@ -112,92 +151,30 @@ describe('Human in the Loop', function () {
       .catch((err) => {
         should.not.exist(err);
       });
-
-    promptID = methodResponse.data.attributes.prompt_id;
-    expect(methodResponse).to.have.property('data');
-    expect(methodResponse.data).to.be.an('object');
-    assert.equal(
-      methodResponse.data.type,
-      'prompt',
-      'prompt type object received'
-    );
-    assert.equal(
-      methodResponse.data.attributes.name,
-      samplePrompt.name,
-      'Name is matched'
-    );
-    assert.equal(
-      methodResponse.data.attributes.description,
-      samplePrompt.description,
-      'Description is matched'
-    );
-    assert.equal(
-      methodResponse.data.attributes.ai_provider,
-      aiProvider,
-      'AI Provider is matched'
-    );
-    assert.typeOf(promptID, 'string', 'id received');
-  });
-
-  it('HITL Step 3: Execute a specific Prompt', async function () {
-    let input = 'This is my testing execute prompt';
-    const methodResponse = await mantiumAi
-      .Prompts(aiProvider)
-      .execute({
-        id: promptID,
-        input,
-      })
-      .then((response) => {
-        response.should.be.an('object');
-        promptExecutionId = response?.prompt_execution_id;
-        return response;
-      })
-      .catch((err) => {
-        should.not.exist(err);
-      });
-    expect(methodResponse).should.be.an('object');
-    expect(methodResponse).to.have.property('status');
-    assert.equal(methodResponse.input, input, 'input is matched');
-  });
-
-  it('HITL Step 4: Get a Result using Prompt Execution ID', async function () {
-    let input = 'This is my testing execute prompt';
-
-    const methodResponse = await mantiumAi
-      .Prompts(aiProvider)
-      .result(promptExecutionId)
-      .then((response) => {
-        response.should.be.an('object');
-        return response;
-      })
-      .catch((err) => {
-        should.not.exist(err);
-      });
-    expect(methodResponse).should.be.an('object');
-    expect(methodResponse).to.have.property('status');
-    expect(methodResponse).to.have.property('output');
-    assert.equal(methodResponse.input, input, 'input is matched');
-  });
+    promptID = promptExecutionId = '';
+  }
 
   it('should return the list of all HITL', async function () {
+    await runPromptExectue();
     const methodResponse = await mantiumAi
       .HITL()
       .list({ page: 1, size: 2 })
       .then((response) => {
-        // response.should.be.an('object');
+        expect(response).to.be.an('array');
         return response;
       })
       .catch((err) => {
         should.not.exist(err);
       });
-    // expect(methodResponse).to.have.property('data');
     const firstResponse = methodResponse[0];
     expect(methodResponse).to.be.an('array');
     expect(firstResponse).to.have.property('status');
     assert.equal(firstResponse.status, 'INTERRUPTED', 'HITL INTERRUPTED');
+    await clearPrompt();
   });
 
   it('should fail modify output HITL, if provide wrong prompt execution ID', async function () {
+    await runPromptExectue();
     const methodResponse = await mantiumAi
       .HITL()
       .modifyOutput({
@@ -217,33 +194,163 @@ describe('Human in the Loop', function () {
       `Prompt execution ID ${promptID} isn't part of HITL`,
       'modifyOutput: provide wrong prompt execution ID'
     );
+    await clearPrompt();
   });
 
   it('should modify output HITL', async function () {
+    await runPromptExectue();
+    const new_output = 'after interrupted updated new result';
     const methodResponse = await mantiumAi
       .HITL()
       .modifyOutput({
         id: promptExecutionId,
-        new_output: 'after interrupted updated new result',
+        new_output,
       })
       .then((response) => {
-        console.log('HITL modifyOutput ', response);
         response.should.be.an('object');
         return response;
       })
       .catch((err) => {
         should.not.exist(err);
       });
-    // promptExecutionId
-    // expect(methodResponse).to.have.property('data');
-    // const firstResponse = methodResponse[0];
-    // expect(methodResponse).to.be.an('array');
+    assert.equal(methodResponse.input, promptInput, 'input is matched');
+    assert.equal(methodResponse.output, new_output, 'new output is matched');
+    expect([
+      'COMPLETED',
+      'REJECTED',
+      'INTERRUPTED',
+      'ERRORED',
+      'QUEUED',
+    ]).to.include(methodResponse.status);
+    assert.equal(methodResponse.prompt_id, promptID, 'prompt ID is matched');
+    assert.equal(
+      methodResponse.prompt_execution_id,
+      promptExecutionId,
+      'Prompt execution Id is matched'
+    );
+    await clearPrompt();
+  });
 
-    // expect(methodResponse).to.have.property('detail');
-    // assert.equal(
-    //   methodResponse.detail,
-    //   `Prompt execution ID ${promptID} isn't part of HITL`,
-    //   'modifyOutput: provide wrong prompt execution ID'
-    // );
+  it('should fail modify input HITL, if provide wrong prompt execution ID', async function () {
+    await runPromptExectue();
+    const methodResponse = await mantiumAi
+      .HITL()
+      .modifyInput({
+        id: promptID,
+        new_input: 'Le',
+      })
+      .then((response) => {
+        response.should.be.an('object');
+        return response;
+      })
+      .catch((err) => {
+        should.not.exist(err);
+      });
+    expect(methodResponse).to.have.property('detail');
+    assert.equal(
+      methodResponse.detail,
+      `Prompt execution ID ${promptID} isn't part of HITL`,
+      'modifyInput: provide wrong prompt execution ID'
+    );
+    await clearPrompt();
+  });
+
+  it('should modify input HITL', async function () {
+    await runPromptExectue();
+    const new_input = 'Le';
+    const methodResponse = await mantiumAi
+      .HITL()
+      .modifyInput({
+        id: promptExecutionId,
+        new_input,
+      })
+      .then((response) => {
+        response.should.be.an('object');
+        return response;
+      })
+      .catch((err) => {
+        should.not.exist(err);
+      });
+    assert.equal(methodResponse.input, new_input, 'input is matched');
+    expect([
+      'COMPLETED',
+      'REJECTED',
+      'INTERRUPTED',
+      'ERRORED',
+      'QUEUED',
+    ]).to.include(methodResponse.status);
+    assert.equal(methodResponse.prompt_id, promptID, 'prompt ID is matched');
+    assert.equal(
+      methodResponse.prompt_execution_id,
+      promptExecutionId,
+      'Prompt execution Id is matched'
+    );
+    await clearPrompt();
+  });
+
+  it('should fail when accept HITL, if provide wrong prompt execution ID', async function () {
+    await runPromptExectue();
+    const methodResponse = await mantiumAi
+      .HITL()
+      .accept(promptID)
+      .then((response) => {
+        response.should.be.an('object');
+        return response;
+      })
+      .catch((err) => {
+        should.not.exist(err);
+      });
+    expect(methodResponse).to.have.property('detail');
+    assert.equal(
+      methodResponse.detail,
+      `Prompt execution ID ${promptID} isn't part of HITL`,
+      'accept: provide wrong prompt execution ID'
+    );
+    await clearPrompt();
+  });
+
+  it('should accept HITL', async function () {
+    await runPromptExectue();
+
+    const methodResponse = await mantiumAi
+      .HITL()
+      .accept(promptExecutionId)
+      .then((response) => {
+        response.should.be.an('object');
+        return response;
+      })
+      .catch((err) => {
+        should.not.exist(err);
+      });
+    assert.equal(methodResponse.prompt_id, promptID, 'prompt ID is matched');
+    assert.equal(
+      methodResponse.prompt_execution_id,
+      promptExecutionId,
+      'prompt executionId ID is matched'
+    );
+
+    await clearPrompt();
+  });
+
+  it('should reject HITL', async function () {
+    await runPromptExectue();
+
+    const methodResponse = await mantiumAi
+      .HITL()
+      .reject(promptExecutionId)
+      .then((response) => {
+        response.should.be.an('object');
+        return response;
+      })
+      .catch((err) => {
+        should.not.exist(err);
+      });
+    assert.equal(methodResponse.prompt_id, promptID, 'prompt ID is matched');
+    assert.equal(
+      methodResponse.prompt_execution_id,
+      promptExecutionId,
+      'prompt executionId ID is matched'
+    );
+    await clearPrompt();
   });
 });
