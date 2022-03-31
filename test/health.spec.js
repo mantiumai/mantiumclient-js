@@ -1,10 +1,7 @@
 const mantiumAi = require('../src/index');
 const expect = require('chai').expect;
-const should = require('chai').should();
 
 describe('Health', function () {
-  let response = undefined;
-
   it('should return the health status of api', async function () {
     const healthResponse = await mantiumAi
       .Health()
@@ -13,7 +10,7 @@ describe('Health', function () {
         return response;
       })
       .catch((err) => {
-        should.not.exist(err);
+        throw new Error(err);
       });
     expect(healthResponse)
       .to.be.a('string')

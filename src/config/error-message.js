@@ -18,8 +18,8 @@ module.exports = {
       },
       HITL: {
         new_output_missing: '`new_output` is required, used for Updated result',
-        new_input_missing: '`new_input` is required, used for Updated input'
-      }
+        new_input_missing: '`new_input` is required, used for Updated input',
+      },
     };
   },
 };

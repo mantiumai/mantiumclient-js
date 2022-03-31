@@ -3,7 +3,6 @@ require('./setup');
 const mantiumAi = require('../src/index');
 const assert = require('chai').assert;
 const expect = require('chai').expect;
-const should = require('chai').should();
 
 describe('Prompts', function () {
   let aiProvider = 'OpenAI';
@@ -48,7 +47,7 @@ describe('Prompts', function () {
         return response;
       })
       .catch((err) => {
-        should.not.exist(err);
+        throw new Error(err);
       });
 
     promptID = methodResponse.data.attributes.prompt_id;
@@ -86,7 +85,7 @@ describe('Prompts', function () {
         return response;
       })
       .catch((err) => {
-        should.not.exist(err);
+        throw new Error(err);
       });
     expect(methodResponse).to.have.property('data');
     expect(methodResponse.data).to.be.an('object');
@@ -127,7 +126,7 @@ describe('Prompts', function () {
         return response;
       })
       .catch((err) => {
-        should.not.exist(err);
+        throw new Error(err);
       });
     expect(methodResponse).to.have.property('data');
     expect(methodResponse.data).to.be.an('object');
@@ -178,7 +177,7 @@ describe('Prompts', function () {
         return response;
       })
       .catch((err) => {
-        should.not.exist(err);
+        throw new Error(err);
       });
 
     promptID = methodResponse.data.attributes.prompt_id;
@@ -226,7 +225,7 @@ describe('Prompts', function () {
         return response;
       })
       .catch((err) => {
-        should.not.exist(err);
+        throw new Error(err);
       });
     expect(methodResponse).to.have.property('data');
     expect(methodResponse.data).to.be.an('array');
@@ -247,7 +246,7 @@ describe('Prompts', function () {
         return response;
       })
       .catch((err) => {
-        should.not.exist(err);
+        throw new Error(err);
       });
     expect(methodResponse).should.be.an('object');
     expect(methodResponse).to.have.property('status');
@@ -265,7 +264,7 @@ describe('Prompts', function () {
         return response;
       })
       .catch((err) => {
-        should.not.exist(err);
+        throw new Error(err);
       });
     expect(methodResponse).should.be.an('object');
     expect(methodResponse).to.have.property('status');
@@ -282,7 +281,7 @@ describe('Prompts', function () {
         return response;
       })
       .catch((err) => {
-        should.not.exist(err);
+        throw new Error(err);
       });
     expect(methodResponse).should.be.an('object');
     expect(methodResponse).to.be.empty;

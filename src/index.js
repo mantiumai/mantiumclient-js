@@ -1,3 +1,6 @@
+require('dotenv').config();
+const sleepTime = process.env.API_CALL_SLEEP_TIME || 800;
+
 const getOrigin = () => {
   return module.exports.ORIGIN;
 };
@@ -506,9 +509,13 @@ module.exports = {
       ).then(function checkResponse(res) {
         if (
           res &&
-          !['COMPLETED', 'REJECTED', 'INTERRUPTED', 'ERRORED'].includes(
-            res.status
-          )
+          ![
+            'COMPLETED',
+            'REJECTED',
+            'INTERRUPTED',
+            'ERRORED',
+            'QUEUED',
+          ].includes(res.status)
         ) {
           return Prompt(
             new Headers(module.exports.api_key, module.exports.organization),
@@ -520,7 +527,12 @@ module.exports = {
               action: 'result',
               isWithInterval,
             }
-          ).then((response) => checkResponse(response));
+          ).then((data) => {
+            // sleep to avoid continue call to MantiumAI API as some time the Process is not done
+            setTimeout(() => {
+              checkResponse(data);
+            }, sleepTime);
+          });
         } else {
           return res;
         }
@@ -791,9 +803,13 @@ module.exports = {
       ).then(function checkResponse(res) {
         if (
           res &&
-          !['COMPLETED', 'REJECTED', 'INTERRUPTED', 'ERRORED'].includes(
-            res.status
-          )
+          ![
+            'COMPLETED',
+            'REJECTED',
+            'INTERRUPTED',
+            'ERRORED',
+            'QUEUED',
+          ].includes(res.status)
         ) {
           return Intelet(
             new Headers(module.exports.api_key, module.exports.organization),
@@ -804,7 +820,12 @@ module.exports = {
               action: 'result',
               isWithInterval,
             }
-          ).then((response) => checkResponse(response));
+          ).then((data) => {
+            // sleep to avoid continue call to MantiumAI API as some time the Process is not done
+            setTimeout(() => {
+              checkResponse(data);
+            }, sleepTime);
+          });
         } else {
           return res;
         }
@@ -1294,7 +1315,6 @@ module.exports = {
       );
     }
 
-
     function accept(id) {
       return HITL(
         new Headers(module.exports.api_key, module.exports.organization),
@@ -1305,33 +1325,43 @@ module.exports = {
     function reject(id) {
       return HITL(
         new Headers(module.exports.api_key, module.exports.organization),
-        { io_type: 'item', method: 'POST', id, action_type: 'accept' }
+        { io_type: 'item', method: 'POST', id, action_type: 'reject' }
       );
     }
 
     function modifyOutput(data) {
-
-      if(utils.isNil(data?.new_output))
+      if (utils.isNil(data?.new_output))
         throw new Error(msg.errorMessages().HITL.new_output_missing);
 
-      const bodyPaylod =  { new_output: data.new_output };
+      const bodyPaylod = { new_output: data.new_output };
 
       return HITL(
         new Headers(module.exports.api_key, module.exports.organization),
-        { io_type: 'item', method: 'POST', id: data.id, bodyPaylod, action_type: 'modify_output' }
+        {
+          io_type: 'item',
+          method: 'POST',
+          id: data.id,
+          bodyPaylod,
+          action_type: 'modify_output',
+        }
       );
     }
 
     function modifyInput(data) {
-
-      if(utils.isNil(data?.new_input))
+      if (utils.isNil(data?.new_input))
         throw new Error(msg.errorMessages().HITL.new_input_missing);
 
-      const bodyPaylod =  { new_input: data.new_input };
+      const bodyPaylod = { new_input: data.new_input };
 
       return HITL(
         new Headers(module.exports.api_key, module.exports.organization),
-        { io_type: 'item', method: 'POST', id: data.id, bodyPaylod, action_type: 'modify_input' }
+        {
+          io_type: 'item',
+          method: 'POST',
+          id: data.id,
+          bodyPaylod,
+          action_type: 'modify_input',
+        }
       );
     }
 

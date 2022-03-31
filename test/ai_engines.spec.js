@@ -3,7 +3,6 @@ require('./setup');
 const mantiumAi = require('../src/index');
 const assert = require('chai').assert;
 const expect = require('chai').expect;
-const should = require('chai').should();
 
 describe('AI Engines', function () {
   it('should return the list of all AI Engines', async function () {
@@ -15,7 +14,7 @@ describe('AI Engines', function () {
         return response;
       })
       .catch((err) => {
-        should.not.exist(err);
+        throw new Error(err);
       });
     expect(AiEnginesResponse).to.have.property('data');
     expect(AiEnginesResponse.data).to.be.an('array');
@@ -30,7 +29,7 @@ describe('AI Engines', function () {
         return response;
       })
       .catch((err) => {
-        should.not.exist(err);
+        throw new Error(err);
       });
     expect(specificEngine).to.have.property('data');
     expect(specificEngine.data).to.be.an('object');
@@ -50,7 +49,7 @@ describe('AI Engines', function () {
         return response;
       })
       .catch((err) => {
-        should.not.exist(err);
+        throw new Error(err);
       });
     expect(byProvider).to.have.property('data');
     expect(byProvider.data).to.be.an('array');

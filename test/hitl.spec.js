@@ -5,14 +5,13 @@ const assert = require('chai').assert;
 const expect = require('chai').expect;
 const should = require('chai').should();
 
-describe('Human in the Loop', function () {
-  let aiProvider = 'OpenAI';
+describe('Human in the Loop', async function () {
+  var aiProvider = 'OpenAI';
   let policyID = undefined;
-  let ruleId = undefined;
-  let actionTypeId = undefined;
-  let promptExecutionId = undefined;
+  var promptExecutionId = undefined;
+  var promptID = undefined;
   const promptInput = 'This is my testing execute prompt';
-  let samplePolicy = {
+  var samplePolicy = {
     name: 'some policyname',
     description: 'some description for policy',
     rules: [
@@ -114,44 +113,41 @@ describe('Human in the Loop', function () {
             id: promptID,
             input: promptInput,
           })
-          .then(async (response) => {
-            response.should.be.an('object');
-            promptExecutionId = response?.prompt_execution_id;
-            await mantiumAi
+          .then(async (res) => {
+            promptExecutionId = res?.prompt_execution_id;
+            return await mantiumAi
               .Prompts(aiProvider)
               .result(promptExecutionId)
-              .then((response) => {
-                response.should.be.an('object');
-                return response;
-              })
               .catch((err) => {
-                should.not.exist(err);
+                console.log(err);
               });
-            return response;
           })
           .catch((err) => {
-            should.not.exist(err);
+            console.log(err);
           });
         return response;
       })
       .catch((err) => {
-        should.not.exist(err);
+        console.log(err);
       });
     return false;
   }
 
-  async function clearPrompt() {
+  async function clearAllTestNotifications() {
     await mantiumAi
-      .Prompts()
-      .remove(promptID)
+      .HITL()
+      .list({ page: 1, size: 2 })
       .then((response) => {
-        response.should.be.an('object');
+        response.forEach(async (note) => {
+          await mantiumAi.HITL().reject(note.prompt_execution_id);
+          await mantiumAi.Prompts().remove(note.prompt_id);
+        });
         return response;
       })
       .catch((err) => {
-        should.not.exist(err);
+        console.log(err);
       });
-    promptID = promptExecutionId = '';
+    return false;
   }
 
   it('should return the list of all HITL', async function () {
@@ -170,7 +166,7 @@ describe('Human in the Loop', function () {
     expect(methodResponse).to.be.an('array');
     expect(firstResponse).to.have.property('status');
     assert.equal(firstResponse.status, 'INTERRUPTED', 'HITL INTERRUPTED');
-    await clearPrompt();
+    await clearAllTestNotifications();
   });
 
   it('should fail modify output HITL, if provide wrong prompt execution ID', async function () {
@@ -194,7 +190,7 @@ describe('Human in the Loop', function () {
       `Prompt execution ID ${promptID} isn't part of HITL`,
       'modifyOutput: provide wrong prompt execution ID'
     );
-    await clearPrompt();
+    await clearAllTestNotifications();
   });
 
   it('should modify output HITL', async function () {
@@ -228,7 +224,7 @@ describe('Human in the Loop', function () {
       promptExecutionId,
       'Prompt execution Id is matched'
     );
-    await clearPrompt();
+    await clearAllTestNotifications();
   });
 
   it('should fail modify input HITL, if provide wrong prompt execution ID', async function () {
@@ -252,7 +248,7 @@ describe('Human in the Loop', function () {
       `Prompt execution ID ${promptID} isn't part of HITL`,
       'modifyInput: provide wrong prompt execution ID'
     );
-    await clearPrompt();
+    await clearAllTestNotifications();
   });
 
   it('should modify input HITL', async function () {
@@ -285,7 +281,7 @@ describe('Human in the Loop', function () {
       promptExecutionId,
       'Prompt execution Id is matched'
     );
-    await clearPrompt();
+    await clearAllTestNotifications();
   });
 
   it('should fail when accept HITL, if provide wrong prompt execution ID', async function () {
@@ -306,7 +302,7 @@ describe('Human in the Loop', function () {
       `Prompt execution ID ${promptID} isn't part of HITL`,
       'accept: provide wrong prompt execution ID'
     );
-    await clearPrompt();
+    await clearAllTestNotifications();
   });
 
   it('should accept HITL', async function () {
@@ -329,12 +325,11 @@ describe('Human in the Loop', function () {
       'prompt executionId ID is matched'
     );
 
-    await clearPrompt();
+    await clearAllTestNotifications();
   });
 
   it('should reject HITL', async function () {
     await runPromptExectue();
-
     const methodResponse = await mantiumAi
       .HITL()
       .reject(promptExecutionId)
@@ -343,7 +338,7 @@ describe('Human in the Loop', function () {
         return response;
       })
       .catch((err) => {
-        should.not.exist(err);
+        throw new Error(err);
       });
     assert.equal(methodResponse.prompt_id, promptID, 'prompt ID is matched');
     assert.equal(
@@ -351,6 +346,7 @@ describe('Human in the Loop', function () {
       promptExecutionId,
       'prompt executionId ID is matched'
     );
-    await clearPrompt();
+    // clear last test notifications
+    await clearAllTestNotifications();
   });
 });

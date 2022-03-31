@@ -65,6 +65,13 @@
     - [List Action Types](#list-action-types)
     - [Get Action Type](#get-action-type)
     - [Get Action Type using ID url](#get-action-type-using-id-url)
+  - [Human in the Loop](#human-in-the-loop)
+    - [List HITL](#list-hitl)
+    - [Accept HITL](#accept-hitl)
+    - [Reject HITL](#reject-hitl)
+    - [Modify Output HITL](#modify-output-hitl)
+    - [Modify Input HITL](#modify-input-hitl)
+
 ## Quickstart:
 
 Read the [getting started guide](https://developer.mantiumai.com/docs) for more information on how to use Mantium.
@@ -2782,28 +2789,28 @@ const mantiumAi = require('@mantium/mantiumapi');
 [Go to Table of Contents](#table-of-contents)
 
 
-### security  
+### security
 
-Security Policies  
-You can manage your security policies using these methods.  
+Security Policies
+You can manage your security policies using these methods.
 
 #### Create Policy
 
-Create a Security Policy. We only create one policy at a time.  
+Create a Security Policy. We only create one policy at a time.
 
-There is no need to support posting a list of polices at once  
+There is no need to support posting a list of polices at once
 
-Requirements:  
+Requirements:
 
-`name`* (string) required parameter, The name of the security policy.  
+`name`* (string) required parameter, The name of the security policy.
 
-`description` (string)  A description of this security policy.  
+`description` (string)  A description of this security policy.
 
-`rules`  (array) A list of JSON rules objects to attach to the policy.  
+`rules`  (array) A list of JSON rules objects to attach to the policy.
 
-`notifications` (array) A list of Notifications to send when any one of the rules are violated.  
+`notifications` (array) A list of Notifications to send when any one of the rules are violated.
 
-`actions` (array) A list of Security Actions to take when any one of the rules are violated.  
+`actions` (array) A list of Security Actions to take when any one of the rules are violated.
 
 [Document link](https://developer.mantiumai.com/reference/post_policy_v1_security_policy_post)
 
@@ -2904,23 +2911,23 @@ const mantiumAi = require('mantiumclient-js');
 
 #### Update Policy
 
-Update the existing policy with the contents of the payload  
+Update the existing policy with the contents of the payload
 
-The UUID in the path is to specify the Security Policy to be updated  
+The UUID in the path is to specify the Security Policy to be updated
 
-Requirements:  
+Requirements:
 
-`id`* (string) required parameter, The policy ID which need to update.  
+`id`* (string) required parameter, The policy ID which need to update.
 
-`name`* (string) required parameter, The name of the security policy.  
+`name`* (string) required parameter, The name of the security policy.
 
-`description` (string)  A description of this security policy.  
+`description` (string)  A description of this security policy.
 
-`rules`  (array) A list of JSON rules objects to attach to the policy.  
+`rules`  (array) A list of JSON rules objects to attach to the policy.
 
-`notifications` (array) A list of Notifications to send when any one of the rules are violated.  
+`notifications` (array) A list of Notifications to send when any one of the rules are violated.
 
-`actions` (array) A list of Security Actions to take when any one of the rules are violated.  
+`actions` (array) A list of Security Actions to take when any one of the rules are violated.
 
 [Document link](https://developer.mantiumai.com/reference/patch_policy_v1_security_policy__policy_id__patch)
 
@@ -3003,7 +3010,7 @@ const mantiumAi = require('mantiumclient-js');
 [Go to Table of Contents](#table-of-contents)
 #### Remove Policy
 
-Deletes an existing policy for an organization  
+Deletes an existing policy for an organization
 
 `id`* (string) required parameter, The policy ID
 
@@ -3058,11 +3065,11 @@ const mantiumAi = require('mantiumclient-js');
 
 #### List Policies
 
-Get all of your selected organization's security policies  
+Get all of your selected organization's security policies
 
-Query Params  
-`Page` Page number  
-`Size` Page size. If not supplied, returns all the results in a single page for certain APIs.  
+Query Params
+`Page` Page number
+`Size` Page size. If not supplied, returns all the results in a single page for certain APIs.
 
 [Document link](https://developer.mantiumai.com/reference/list_policies_v1_security_policies_get)
 
@@ -3153,9 +3160,9 @@ const mantiumAi = require('mantiumclient-js');
 
 #### Get policy
 
-Get a specific Security Policy for your selected organization  
+Get a specific Security Policy for your selected organization
 
-`id`* (string) required parameter, The policy ID  
+`id`* (string) required parameter, The policy ID
 
 
 [Document link](https://developer.mantiumai.com/reference/get_policy_v1_security_policy__policy_id__get)
@@ -3214,9 +3221,9 @@ const mantiumAi = require('mantiumclient-js');
 
 #### Get policy using ID url
 
-Get a specific Security Policy for your selected organization  
+Get a specific Security Policy for your selected organization
 
-`id`* (string) required parameter, The policy ID  
+`id`* (string) required parameter, The policy ID
 
 [Document link](https://developer.mantiumai.com/reference/get_policy_v1_security_policies_id__policy_id__get)
 
@@ -3274,11 +3281,11 @@ const mantiumAi = require('mantiumclient-js');
 
 #### List Rules
 
-List available Security Rules  
+List available Security Rules
 
-Query Params  
-`Page` Page number  
-`Size` Page size. If not supplied, returns all the results in a single page for certain APIs.  
+Query Params
+`Page` Page number
+`Size` Page size. If not supplied, returns all the results in a single page for certain APIs.
 
 [Document link](https://developer.mantiumai.com/reference/list_rules_v1_security_rules_get)
 
@@ -3335,9 +3342,9 @@ const mantiumAi = require('mantiumclient-js');
 
 #### Get rule
 
-Get a specific Security Rule  
+Get a specific Security Rule
 
-`id`* (string) required parameter, The rule ID  
+`id`* (string) required parameter, The rule ID
 
 [Document link](https://developer.mantiumai.com/reference/get_rule_v1_security_rule__rule_id__get)
 
@@ -3394,9 +3401,9 @@ const mantiumAi = require('mantiumclient-js');
 
 #### Get rule using ID url
 
-Get a specific Security Rule  
+Get a specific Security Rule
 
-`id`* (string) required parameter, The rule ID  
+`id`* (string) required parameter, The rule ID
 
 [Document link](https://developer.mantiumai.com/reference#access_token_login_v1_auth_login_access_token_post)
 
@@ -3453,13 +3460,13 @@ const mantiumAi = require('mantiumclient-js');
 
 #### List Action Types
 
-List available Security Action Types  
+List available Security Action Types
 
-These are added to a Security Policy to tell it what to do after a Security Rule is violated.  
+These are added to a Security Policy to tell it what to do after a Security Rule is violated.
 
-Query Params  
-`Page` Page number  
-`Size` Page size. If not supplied, returns all the results in a single page for certain APIs.  
+Query Params
+`Page` Page number
+`Size` Page size. If not supplied, returns all the results in a single page for certain APIs.
 
 [Document link](https://developer.mantiumai.com/reference/list_action_types_v1_security_action_types_get)
 
@@ -3527,9 +3534,9 @@ const mantiumAi = require('mantiumclient-js');
 
 #### Get Action Type
 
-Get a specific Security ActionType  
+Get a specific Security ActionType
 
-`id`* (string) required parameter, The action_type_id  
+`id`* (string) required parameter, The action_type_id
 
 [Document link](https://developer.mantiumai.com/reference/get_action_type_v1_security_action_type__action_type_id__get)
 
@@ -3583,9 +3590,9 @@ const mantiumAi = require('mantiumclient-js');
 
 #### Get Action Type using ID url
 
-Get a specific Security ActionType  
+Get a specific Security ActionType
 
-`id`* (string) required parameter, The action_type_id  
+`id`* (string) required parameter, The action_type_id
 
 [Document link](https://developer.mantiumai.com/reference/get_action_type_v1_security_action_types_id__action_type_id__get)
 
@@ -3613,7 +3620,7 @@ const mantiumAi = require('mantiumclient-js');
     .then((response) => {
       console.log('*********** actionTypeId response *********');
       console.log(response);
-    });  
+    });
 })();
 ```
 #### Example of a successful API response
@@ -3636,3 +3643,255 @@ const mantiumAi = require('mantiumclient-js');
 }
 ```
 [Go to Table of Contents](#table-of-contents)
+
+
+### Human in the Loop
+
+#### List HITL
+
+[Document link](https://developer.mantiumai.com/reference/get_all_hitl_prompt_executions_v1_hitl__get)
+
+```js
+const mantiumAi = require('mantiumclient-js');
+
+(async () => {
+  await mantiumAi.Auth().accessTokenLogin({
+    username: 'useremail@somedomain.com',
+    password: 'p@ssWord!'
+  })
+    .then((response) => {
+      // get bearer_id and set to default
+      mantiumAi.api_key = response.data.attributes.bearer_id;
+    });
+
+  /*
+  * API Key is set on above
+  * mantiumAi.api_key=`key`
+  * so we can call these method directly now
+  */
+  await mantiumAi
+    .HITL()
+    .list({ page: 1, size: 2 })
+    .then((response) => {
+      console.log('*********** HITL list response *********');
+      console.log(response);
+    });
+})();
+```
+#### Example of a successful API response
+```js
+[
+  {
+    prompt_id: 'f467db9a-fb96-4353-bb65-63a113d134a1',
+    prompt_execution_id: '5e0beb8d-e4b4-4ad5-95e6-cd371981fe83',
+    input: 'Le',
+    output: 'icester won the last premier league. Is this true?\n' +
+      'AI: Yes, Leicester City Football Club won the 2015–16 Premier League, defeating pre-match favourites Arsenal 3–1 in the 2016 UEFA Champions League Final \n',
+    error: '',
+    status: 'INTERRUPTED',
+    reason: 'Max Total Characters rule violation: (prompt + input + output) characters > max_total_characters'
+  },
+  {
+    prompt_id: 'f467db9a-fb96-4353-bb65-63a113d134a1',
+    prompt_execution_id: '7b7c698c-d538-46e6-9a22-7276e754c421',
+    input: "Writing The Perfect Valentine's Day Card Has Never Been Easier",
+    output: '. What is the best valentine’s gift for a woman?\n' +
+      'AI: A necklace. It will let her know that you are thinking of her. Plus, she can wear it and think of you while she is away from you, which will make both of you happy.\n',
+    error: '',
+    status: 'INTERRUPTED',
+    reason: 'Max Total Characters rule violation: (prompt + input + output) characters > max_total_characters'
+  },
+  {
+    prompt_id: 'ea79010c-a641-4282-9719-5ef78f560d24',
+    prompt_execution_id: '258e7dcc-d463-4699-a756-62593ef6e765',
+    input: 'This is my testing execute prompt',
+    output: '',
+    error: '',
+    status: 'INTERRUPTED',
+    reason: 'The total number of input characters (input + prompt) exceeds the limit set in the security rule.'
+  }
+]
+```
+
+#### Accept HITL
+
+[Document link](https://developer.mantiumai.com/reference/hitl_accept_v1_hitl__prompt_execution_id__accept_post)
+
+```js
+const mantiumAi = require('mantiumclient-js');
+
+(async () => {
+  await mantiumAi.Auth().accessTokenLogin({
+    username: 'useremail@somedomain.com',
+    password: 'p@ssWord!'
+  })
+    .then((response) => {
+      // get bearer_id and set to default
+      mantiumAi.api_key = response.data.attributes.bearer_id;
+    });
+
+  /*
+  * API Key is set on above
+  * mantiumAi.api_key=`key`
+  * so we can call these method directly now
+  */
+  await mantiumAi
+    .HITL()
+    .accept('7c18c7d1-d375-4410-a4a5-fa20c49f1f61')
+    .then((response) => {
+      console.log('*********** HITL accept response *********');
+      console.log(response);
+    });
+})();
+```
+#### Example of a successful API response
+```js
+{
+  prompt_id: 'a4965b19-94e6-4c12-b1f7-2048708e6f53',
+  prompt_execution_id: '7c18c7d1-d375-4410-a4a5-fa20c49f1f61',
+  input: 'This is my testing execute prompt',
+  output: '',
+  error: '',
+  status: 'QUEUED',
+  reason: 'The total number of input characters (input + prompt) exceeds the limit set in the security rule.'
+}
+```
+
+#### Reject HITL
+
+[Document link](https://developer.mantiumai.com/reference/hitl_reject_v1_hitl__prompt_execution_id__reject_post)
+
+```js
+const mantiumAi = require('mantiumclient-js');
+
+(async () => {
+  await mantiumAi.Auth().accessTokenLogin({
+    username: 'useremail@somedomain.com',
+    password: 'p@ssWord!'
+  })
+    .then((response) => {
+      // get bearer_id and set to default
+      mantiumAi.api_key = response.data.attributes.bearer_id;
+    });
+
+  /*
+  * API Key is set on above
+  * mantiumAi.api_key=`key`
+  * so we can call these method directly now
+  */
+  await mantiumAi
+    .HITL()
+    .reject('a18e5887-3ed0-42b9-a9b5-b0fda4797b84')
+    .then((response) => {
+      console.log('*********** HITL reject response *********');
+      console.log(response);
+    });
+})();
+```
+#### Example of a successful API response
+```js
+{
+  prompt_id: 'a708ddf6-f813-4d63-9e71-2fdfd6bbcf31',
+  prompt_execution_id: '3b547055-3edc-4cc5-9afe-bea7c4ddc53c',
+  input: 'This is my testing execute prompt',
+  output: '',
+  error: '',
+  status: 'REJECTED',
+  reason: 'The total number of input characters (input + prompt) exceeds the limit set in the security rule.'
+}
+```
+
+#### Modify Output HITL
+
+[Document link](https://developer.mantiumai.com/reference/hitl_modify_output_v1_hitl__prompt_execution_id__modify_output_post)
+
+```js
+const mantiumAi = require('mantiumclient-js');
+
+(async () => {
+  await mantiumAi.Auth().accessTokenLogin({
+    username: 'useremail@somedomain.com',
+    password: 'p@ssWord!'
+  })
+    .then((response) => {
+      // get bearer_id and set to default
+      mantiumAi.api_key = response.data.attributes.bearer_id;
+    });
+
+  /*
+  * API Key is set on above
+  * mantiumAi.api_key=`key`
+  * so we can call these method directly now
+  */
+  await mantiumAi
+    .HITL()
+    .modifyOutput({
+      id: '4ccda50e-5757-49f2-a180-367bbf3a0cae',
+      new_output: 'The black book is on left',
+    })
+    .then((response) => {
+      console.log('*********** HITL modify output response *********');
+      console.log(response);
+    });
+})();
+```
+#### Example of a successful API response
+```js
+{
+  prompt_id: 'dacef118-4ebf-4242-b646-b4f88d71a1a0',
+  prompt_execution_id: '4ccda50e-5757-49f2-a180-367bbf3a0cae',
+  input: 'This is my testing execute prompt',
+  output: 'The black book is on left',
+  error: '',
+  status: 'COMPLETED',
+  reason: 'The total number of input characters (input + prompt) exceeds the limit set in the security rule.'
+}
+```
+
+
+#### Modify Input HITL
+
+[Document link](https://developer.mantiumai.com/reference/hitl_modify_input_v1_hitl__prompt_execution_id__modify_input_post)
+
+```js
+const mantiumAi = require('mantiumclient-js');
+
+(async () => {
+  await mantiumAi.Auth().accessTokenLogin({
+    username: 'useremail@somedomain.com',
+    password: 'p@ssWord!'
+  })
+    .then((response) => {
+      // get bearer_id and set to default
+      mantiumAi.api_key = response.data.attributes.bearer_id;
+    });
+
+  /*
+  * API Key is set on above
+  * mantiumAi.api_key=`key`
+  * so we can call these method directly now
+  */
+    await mantiumAi
+    .HITL()
+    .modifyInput({
+      id: 'a0e56fee-b338-40a0-810f-a40031eb2bcd',
+      new_input: 'Le',
+    })
+    .then((response) => {
+      console.log('*********** HITL modify input response *********');
+      console.log(response);
+    });
+})();
+```
+#### Example of a successful API response
+```js
+{
+  prompt_id: 'eb67691d-d4ac-4b81-9b69-fcc1cd09df3f',
+  prompt_execution_id: 'a0e56fee-b338-40a0-810f-a40031eb2bcd',
+  input: 'Le',
+  output: '',
+  error: '',
+  status: 'QUEUED',
+  reason: 'The total number of input characters (input + prompt) exceeds the limit set in the security rule.'
+}
+```

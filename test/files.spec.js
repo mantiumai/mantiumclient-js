@@ -2,7 +2,6 @@ require('./setup');
 
 const mantiumAi = require('../src/index');
 const expect = require('chai').expect;
-const should = require('chai').should();
 
 describe('Files', function () {
   it('should return the list of all Files', async function () {
@@ -14,7 +13,7 @@ describe('Files', function () {
         return response;
       })
       .catch((err) => {
-        should.not.exist(err);
+        throw new Error(err);
       });
     expect(filesResponse).to.have.property('data');
   });

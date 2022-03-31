@@ -3,7 +3,6 @@ require('./setup');
 const mantiumAi = require('../src/index');
 const assert = require('chai').assert;
 const expect = require('chai').expect;
-const should = require('chai').should();
 
 describe('Securities', function () {
   let policyID = undefined;
@@ -46,7 +45,7 @@ describe('Securities', function () {
         return response;
       })
       .catch((err) => {
-        should.not.exist(err);
+        throw new Error(err);
       });
 
     policyID = policy.attributes.policy_id;
@@ -78,7 +77,7 @@ describe('Securities', function () {
         return response;
       })
       .catch((err) => {
-        should.not.exist(err);
+        throw new Error(err);
       });
     expect(response).to.have.property('data');
     expect(response.data).to.be.an('array');
@@ -107,7 +106,7 @@ describe('Securities', function () {
         return response;
       })
       .catch((err) => {
-        should.not.exist(err);
+        throw new Error(err);
       });
     expect(response).to.have.property('data');
     expect(response.data).to.be.an('array');
@@ -143,7 +142,7 @@ describe('Securities', function () {
         return response;
       })
       .catch((err) => {
-        should.not.exist(err);
+        throw new Error(err);
       });
 
     expect(response).to.have.property('data');
@@ -175,7 +174,7 @@ describe('Securities', function () {
         return response;
       })
       .catch((err) => {
-        should.not.exist(err);
+        throw new Error(err);
       });
     expect(response).to.have.property('data');
     expect(response.data).to.be.an('array');
@@ -190,7 +189,7 @@ describe('Securities', function () {
         return response;
       })
       .catch((err) => {
-        should.not.exist(err);
+        throw new Error(err);
       });
     expect(response).to.have.property('data');
     expect(response.data).to.be.an('object');
@@ -206,7 +205,7 @@ describe('Securities', function () {
         return response;
       })
       .catch((err) => {
-        should.not.exist(err);
+        throw new Error(err);
       });
     expect(response).to.have.property('data');
     expect(response.data).to.be.an('array');
@@ -221,7 +220,7 @@ describe('Securities', function () {
         return response;
       })
       .catch((err) => {
-        should.not.exist(err);
+        throw new Error(err);
       });
     assert.typeOf(response.data.id, 'string', 'id received');
     assert.equal(response.data.id, ruleId, 'ID is matched');
@@ -242,7 +241,7 @@ describe('Securities', function () {
         return response;
       })
       .catch((err) => {
-        should.not.exist(err);
+        throw new Error(err);
       });
     assert.typeOf(response.data.id, 'string', 'id received');
     assert.equal(response.data.id, ruleId, 'ID is matched');
@@ -264,7 +263,7 @@ describe('Securities', function () {
         return response;
       })
       .catch((err) => {
-        should.not.exist(err);
+        throw new Error(err);
       });
     expect(response).to.have.property('data');
     expect(response.data).to.be.an('array');
@@ -279,7 +278,7 @@ describe('Securities', function () {
         return response;
       })
       .catch((err) => {
-        should.not.exist(err);
+        throw new Error(err);
       });
     assert.typeOf(response.data.id, 'string', 'id received');
     assert.equal(response.data.id, actionTypeId, 'ID is matched');
@@ -300,7 +299,7 @@ describe('Securities', function () {
         return response;
       })
       .catch((err) => {
-        should.not.exist(err);
+        throw new Error(err);
       });
     assert.typeOf(response.data.id, 'string', 'id received');
     assert.equal(response.data.id, actionTypeId, 'ID is matched');

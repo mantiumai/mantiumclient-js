@@ -30,8 +30,8 @@ module.exports = function (
             index.getResultStatusInterval()
           );
         } else {
-          if(['Internal Server Error'].includes(response.body)) {
-            throw new Error('Internal Server Error')
+          if (['Internal Server Error'].includes(response.body)) {
+            throw new Error('Internal Server Error');
           } else {
             resolve(JSON.parse(response.body || {}));
           }

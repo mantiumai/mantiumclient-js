@@ -3,7 +3,6 @@ require('./setup');
 const mantiumAi = require('../src/index');
 const assert = require('chai').assert;
 const expect = require('chai').expect;
-const should = require('chai').should();
 
 describe('Tags', function () {
   let tagID = undefined;
@@ -21,7 +20,7 @@ describe('Tags', function () {
         return response;
       })
       .catch((err) => {
-        should.not.exist(err);
+        throw new Error(err);
       });
 
     tagID = tagsResponse.data.attributes.tag_id;
@@ -50,7 +49,7 @@ describe('Tags', function () {
         return response;
       })
       .catch((err) => {
-        should.not.exist(err);
+        throw new Error(err);
       });
     expect(tagsResponse).to.have.property('data');
     expect(tagsResponse.data).to.be.an('object');
@@ -77,7 +76,7 @@ describe('Tags', function () {
         return response;
       })
       .catch((err) => {
-        should.not.exist(err);
+        throw new Error(err);
       });
     expect(tagsResponse).to.have.property('data');
     expect(tagsResponse.data).to.be.an('object');
@@ -108,7 +107,7 @@ describe('Tags', function () {
         return response;
       })
       .catch((err) => {
-        should.not.exist(err);
+        throw new Error(err);
       });
     expect(tagsResponse).to.have.property('data');
     expect(tagsResponse.data).to.be.an('object');
@@ -135,7 +134,7 @@ describe('Tags', function () {
         return response;
       })
       .catch((err) => {
-        should.not.exist(err);
+        throw new Error(err);
       });
     expect(tagsResponse).to.have.property('data');
     expect(tagsResponse.data).to.be.an('array');
@@ -150,7 +149,7 @@ describe('Tags', function () {
         return response;
       })
       .catch((err) => {
-        should.not.exist(err);
+        throw new Error(err);
       });
     expect(tagsResponse).to.have.property('data');
     expect(tagsResponse.data).to.be.an('object');

@@ -7,8 +7,7 @@ const mantiumAi = require('../src/index');
 
 const assert = require('chai').assert;
 
-if (!username && !password)
-  throw new Error(msg.errorMessages().env_missing);
+if (!username && !password) throw new Error(msg.errorMessages().env_missing);
 
 describe('Auth methods', function () {
   it('should login and return the token', async function () {

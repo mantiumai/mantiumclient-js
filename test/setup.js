@@ -19,8 +19,10 @@ beforeEach(async function () {
       password,
     })
     .then((response) => {
-      if(mantiumAiToken === '') {
-        mantiumAiToken = response.data?.attributes ? response.data.attributes.bearer_id || '' : '';
+      if (mantiumAiToken === '') {
+        mantiumAiToken = response.data?.attributes
+          ? response.data.attributes.bearer_id || ''
+          : '';
         mantiumAi.api_key = mantiumAiToken;
       }
     });
