@@ -127,4 +127,12 @@ module.exports = {
       isIdURL ? '/id' : ''
     }`;
   },
+
+  /*
+   * API HITL
+   * https://developer.mantiumai.com/reference/get_all_hitl_prompt_executions_v1_hitl__get
+   */
+  hitlURL() {
+    return `${this.baseURL()}/hitl`;
+  },
 };

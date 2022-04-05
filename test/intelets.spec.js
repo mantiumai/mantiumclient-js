@@ -3,7 +3,6 @@ require('./setup');
 const mantiumAi = require('../src/index');
 const assert = require('chai').assert;
 const expect = require('chai').expect;
-const should = require('chai').should();
 
 describe('Intelets', function () {
   let inteletID = undefined;
@@ -26,7 +25,7 @@ describe('Intelets', function () {
         return response;
       })
       .catch((err) => {
-        should.not.exist(err);
+        throw new Error(err);
       });
 
     inteletID = methodResponse.data.attributes.intelet_id;
@@ -59,13 +58,13 @@ describe('Intelets', function () {
         return response;
       })
       .catch((err) => {
-        should.not.exist(err);
+        throw new Error(err);
       });
     expect(methodResponse).to.have.property('data');
     expect(methodResponse.data).to.be.an('object');
     assert.equal(
       methodResponse.data.type,
-      'intelet_view',
+      'intelet',
       'intelet type object received'
     );
     assert.equal(
@@ -95,13 +94,13 @@ describe('Intelets', function () {
         return response;
       })
       .catch((err) => {
-        should.not.exist(err);
+        throw new Error(err);
       });
     expect(methodResponse).to.have.property('data');
     expect(methodResponse.data).to.be.an('object');
     assert.equal(
       methodResponse.data.type,
-      'intelet_view',
+      'intelet',
       'intelet type object received'
     );
     assert.equal(
@@ -135,7 +134,7 @@ describe('Intelets', function () {
         return response;
       })
       .catch((err) => {
-        should.not.exist(err);
+        throw new Error(err);
       });
 
     inteletID = methodResponse.data.attributes.intelet_id;
@@ -168,7 +167,7 @@ describe('Intelets', function () {
         return response;
       })
       .catch((err) => {
-        should.not.exist(err);
+        throw new Error(err);
       });
     expect(methodResponse).to.have.property('data');
     expect(methodResponse.data).to.be.an('array');
@@ -189,7 +188,7 @@ describe('Intelets', function () {
         return response;
       })
       .catch((err) => {
-        should.not.exist(err);
+        throw new Error(err);
       });
     expect(methodResponse).should.be.an('object');
     expect(methodResponse).to.have.property('status');
@@ -207,7 +206,7 @@ describe('Intelets', function () {
         return response;
       })
       .catch((err) => {
-        should.not.exist(err);
+        throw new Error(err);
       });
     expect(methodResponse).should.be.an('object');
     expect(methodResponse).to.have.property('status');
@@ -223,7 +222,7 @@ describe('Intelets', function () {
         return response;
       })
       .catch((err) => {
-        should.not.exist(err);
+        throw new Error(err);
       });
     assert.equal(methodResponse, 'Intelet Deleted', 'Intelet is Deleted');
   });

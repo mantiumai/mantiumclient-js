@@ -1,3 +1,6 @@
+require('dotenv').config();
+const sleepTime = process.env.API_CALL_SLEEP_TIME || 800;
+
 const getOrigin = () => {
   return module.exports.ORIGIN;
 };
@@ -18,6 +21,7 @@ exports.getResultStatusInterval = getResultStatusInterval;
 const Headers = require('./methods/Headers');
 
 const utils = require('./methods/utility');
+const msg = require('./config/error-message');
 
 // Auth
 const Login = require('./methods/auth/Login');
@@ -53,6 +57,9 @@ const FileSubmitAWS = require('./methods/files/FileSubmitAWS');
 
 // Security
 const Security = require('./methods/security/Security');
+
+// HITL
+const HITL = require('./methods/hitl/Hitl');
 
 module.exports = {
   ORIGIN: 'https://api.mantiumai.com',
@@ -502,9 +509,13 @@ module.exports = {
       ).then(function checkResponse(res) {
         if (
           res &&
-          !['COMPLETED', 'REJECTED', 'INTERRUPTED', 'ERRORED'].includes(
-            res.status
-          )
+          ![
+            'COMPLETED',
+            'REJECTED',
+            'INTERRUPTED',
+            'ERRORED',
+            'QUEUED',
+          ].includes(res.status)
         ) {
           return Prompt(
             new Headers(module.exports.api_key, module.exports.organization),
@@ -516,7 +527,12 @@ module.exports = {
               action: 'result',
               isWithInterval,
             }
-          ).then((response) => checkResponse(response));
+          ).then((data) => {
+            // sleep to avoid continue call to MantiumAI API as some time the Process is not done
+            setTimeout(() => {
+              checkResponse(data);
+            }, sleepTime);
+          });
         } else {
           return res;
         }
@@ -787,9 +803,13 @@ module.exports = {
       ).then(function checkResponse(res) {
         if (
           res &&
-          !['COMPLETED', 'REJECTED', 'INTERRUPTED', 'ERRORED'].includes(
-            res.status
-          )
+          ![
+            'COMPLETED',
+            'REJECTED',
+            'INTERRUPTED',
+            'ERRORED',
+            'QUEUED',
+          ].includes(res.status)
         ) {
           return Intelet(
             new Headers(module.exports.api_key, module.exports.organization),
@@ -800,7 +820,12 @@ module.exports = {
               action: 'result',
               isWithInterval,
             }
-          ).then((response) => checkResponse(response));
+          ).then((data) => {
+            // sleep to avoid continue call to MantiumAI API as some time the Process is not done
+            setTimeout(() => {
+              checkResponse(data);
+            }, sleepTime);
+          });
         } else {
           return res;
         }
@@ -1270,6 +1295,102 @@ module.exports = {
     main.listActionTypes = listActionTypes;
     main.actionType = actionType;
     main.actionTypeId = actionTypeId;
+
+    return main;
+  })(),
+
+  HITL: (function () {
+    /**
+     * Summary: List all Hitl.
+     *
+     * This method requires Header `Authorization: Bearer {bearer_id}`, you can obtain `bearer_id` using `.Auth().accessTokenLogin()` method.
+     * @param {object} object {"page":"1","size":"20","after_date":"jan","before_date":"jan","log_type":"DEFAULT","log_level":"top","log_status":"completed"};
+     *
+     * @return {Array} Provide method list in array format.
+     */
+    function list(data) {
+      return HITL(
+        new Headers(module.exports.api_key, module.exports.organization),
+        { io_type: 'list', method: 'GET', queryParam: data }
+      );
+    }
+
+    function accept(id) {
+      return HITL(
+        new Headers(module.exports.api_key, module.exports.organization),
+        { io_type: 'item', method: 'POST', id, action_type: 'accept' }
+      );
+    }
+
+    function reject(id) {
+      return HITL(
+        new Headers(module.exports.api_key, module.exports.organization),
+        { io_type: 'item', method: 'POST', id, action_type: 'reject' }
+      );
+    }
+
+    function modifyOutput(data) {
+      if (utils.isNil(data?.new_output))
+        throw new Error(msg.errorMessages().HITL.new_output_missing);
+
+      const bodyPaylod = { new_output: data.new_output };
+
+      return HITL(
+        new Headers(module.exports.api_key, module.exports.organization),
+        {
+          io_type: 'item',
+          method: 'POST',
+          id: data.id,
+          bodyPaylod,
+          action_type: 'modify_output',
+        }
+      );
+    }
+
+    function modifyInput(data) {
+      if (utils.isNil(data?.new_input))
+        throw new Error(msg.errorMessages().HITL.new_input_missing);
+
+      const bodyPaylod = { new_input: data.new_input };
+
+      return HITL(
+        new Headers(module.exports.api_key, module.exports.organization),
+        {
+          io_type: 'item',
+          method: 'POST',
+          id: data.id,
+          bodyPaylod,
+          action_type: 'modify_input',
+        }
+      );
+    }
+
+    /**
+     * Summary: Files related operations.
+     *
+     * This method requires Header `Authorization: Bearer {bearer_id}`, you can obtain `bearer_id` using `.Auth().accessTokenLogin()` method.
+     *
+     * @return {Method} Get the list of files currently loaded at OpenAI.
+     * - list
+     * - accept
+     * - reject
+     * - modifyOutput
+     */
+    function main() {
+      return {
+        list: list,
+        accept: accept,
+        reject: reject,
+        modifyOutput: modifyOutput,
+        modifyInput: modifyInput,
+      };
+    }
+
+    main.list = list;
+    main.accept = accept;
+    main.reject = reject;
+    main.modifyOutput = modifyOutput;
+    main.modifyInput = modifyInput;
 
     return main;
   })(),

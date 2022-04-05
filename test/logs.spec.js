@@ -3,7 +3,6 @@ require('./setup');
 const mantiumAi = require('../src/index');
 const assert = require('chai').assert;
 const expect = require('chai').expect;
-const should = require('chai').should();
 
 describe('Logs', function () {
   let logID = undefined;
@@ -18,7 +17,7 @@ describe('Logs', function () {
         return response;
       })
       .catch((err) => {
-        should.not.exist(err);
+        throw new Error(err);
       });
     expect(logsResponse).to.have.property('data');
     expect(logsResponse.data).to.be.an('array');
@@ -33,7 +32,7 @@ describe('Logs', function () {
         return response;
       })
       .catch((err) => {
-        should.not.exist(err);
+        throw new Error(err);
       });
     expect(logsResponse).to.have.property('data');
     expect(logsResponse.data).to.be.an('object');
@@ -50,12 +49,11 @@ describe('Logs', function () {
         return response;
       })
       .catch((err) => {
-        should.not.exist(err);
+        throw new Error(err);
       });
     expect(logsResponse).to.have.property('data');
     expect(logsResponse.data).to.be.an('object');
     assert.equal(logsResponse.data.type, 'log', 'Log type object received');
     assert.equal(logsResponse.data.attributes.log_id, logID, 'ID is matched');
   });
-
 });
