@@ -9,7 +9,7 @@ describe('Files', function () {
       .Files()
       .list({ file_type: 'FILES_ONLY' })
       .then((response) => {
-        response.should.be.an('object');
+        expect(response).to.be.an('object');
         return response;
       })
       .catch((err) => {

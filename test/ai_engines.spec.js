@@ -10,7 +10,7 @@ describe('AI Engines', function () {
       .AiEngines()
       .all({ page: 1, size: 20 })
       .then((response) => {
-        response.should.be.an('object');
+        expect(response).to.be.an('object');
         return response;
       })
       .catch((err) => {
@@ -25,7 +25,7 @@ describe('AI Engines', function () {
       .AiEngines('davinci')
       .byName()
       .then((response) => {
-        response.should.be.an('object');
+        expect(response).to.be.an('object');
         return response;
       })
       .catch((err) => {
@@ -45,7 +45,7 @@ describe('AI Engines', function () {
       .AiEngines('openai')
       .byProvider({ page: 1, size: 20 })
       .then((response) => {
-        response.should.be.an('object');
+        expect(response).to.be.an('object');
         return response;
       })
       .catch((err) => {

@@ -12,7 +12,7 @@ describe('Logs', function () {
       .Logs()
       .list({ page: 1, size: 2 })
       .then((response) => {
-        response.should.be.an('object');
+        expect(response).to.be.an('object');
         logID = response.data[0].id;
         return response;
       })
@@ -28,7 +28,7 @@ describe('Logs', function () {
       .Logs()
       .retrieveId(logID)
       .then((response) => {
-        response.should.be.an('object');
+        expect(response).to.be.an('object');
         return response;
       })
       .catch((err) => {
@@ -45,7 +45,7 @@ describe('Logs', function () {
       .Logs()
       .retrieve(logID)
       .then((response) => {
-        response.should.be.an('object');
+        expect(response).to.be.an('object');
         return response;
       })
       .catch((err) => {

@@ -61,6 +61,11 @@ const Security = require('./methods/security/Security');
 // HITL
 const HITL = require('./methods/hitl/Hitl');
 
+// Provider Integrations
+const ProviderIntegrations = require('./methods/provider_integrations/ProviderIntegration');
+
+
+// https://api.staging.mantiumai.com
 module.exports = {
   ORIGIN: 'https://api.mantiumai.com',
   API_VERSION: 'v1',
@@ -505,38 +510,9 @@ module.exports = {
           method: 'GET',
           id: PromptExecutionId,
           action: 'result',
+          isWithInterval
         }
-      ).then(function checkResponse(res) {
-        if (
-          res &&
-          ![
-            'COMPLETED',
-            'REJECTED',
-            'INTERRUPTED',
-            'ERRORED',
-            'QUEUED',
-          ].includes(res.status)
-        ) {
-          return Prompt(
-            new Headers(module.exports.api_key, module.exports.organization),
-            {
-              ai_provider: provider,
-              io_type: 'item',
-              method: 'GET',
-              id: PromptExecutionId,
-              action: 'result',
-              isWithInterval,
-            }
-          ).then((data) => {
-            // sleep to avoid continue call to MantiumAI API as some time the Process is not done
-            setTimeout(() => {
-              checkResponse(data);
-            }, sleepTime);
-          });
-        } else {
-          return res;
-        }
-      });
+      );
     }
 
     /**
@@ -1315,6 +1291,13 @@ module.exports = {
       );
     }
 
+    /**
+     * Summary: Hitl Modify Accept
+     *
+     * This method requires Header `Authorization: Bearer {bearer_id}`, you can obtain `bearer_id` using `.Auth().accessTokenLogin()` method.
+     * @param {string} prompt_execution_id prompt execution id
+     * @return {object} Provide object type.
+     */
     function accept(id) {
       return HITL(
         new Headers(module.exports.api_key, module.exports.organization),
@@ -1322,6 +1305,13 @@ module.exports = {
       );
     }
 
+    /**
+     * Summary: Reject HITL
+     *
+     * This method requires Header `Authorization: Bearer {bearer_id}`, you can obtain `bearer_id` using `.Auth().accessTokenLogin()` method.
+     * @param {string} prompt_execution_id prompt execution id
+     * @return {object} Provide object type.
+     */
     function reject(id) {
       return HITL(
         new Headers(module.exports.api_key, module.exports.organization),
@@ -1329,6 +1319,14 @@ module.exports = {
       );
     }
 
+     /**
+     * Summary: Hitl Modify Output
+     *
+     * This method requires Header `Authorization: Bearer {bearer_id}`, you can obtain `bearer_id` using `.Auth().accessTokenLogin()` method.
+     * @param {string} prompt_execution_id prompt execution id
+     * @param {string} new_output new outout
+     * @return {object} Provide object type.
+     */
     function modifyOutput(data) {
       if (utils.isNil(data?.new_output))
         throw new Error(msg.errorMessages().HITL.new_output_missing);
@@ -1347,6 +1345,14 @@ module.exports = {
       );
     }
 
+    /**
+     * Summary: Hitl Modify Input
+     *
+     * This method requires Header `Authorization: Bearer {bearer_id}`, you can obtain `bearer_id` using `.Auth().accessTokenLogin()` method.
+     * @param {string} prompt_execution_id prompt execution id
+     * @param {string} new_input new input
+     * @return {object} Provide object type.
+     */
     function modifyInput(data) {
       if (utils.isNil(data?.new_input))
         throw new Error(msg.errorMessages().HITL.new_input_missing);
@@ -1391,6 +1397,106 @@ module.exports = {
     main.reject = reject;
     main.modifyOutput = modifyOutput;
     main.modifyInput = modifyInput;
+
+    return main;
+  })(),
+
+  ProviderIntegrations: (function () {
+    let provider = undefined;
+
+    /**
+     * Summary: List all Provider Integrations.
+     *
+     * This method requires Header `Authorization: Bearer {bearer_id}`, you can obtain `bearer_id` using `.Auth().accessTokenLogin()` method.
+     * @param {object} object {"page":"1","size":"20","after_date":"jan","before_date":"jan","log_type":"DEFAULT","log_level":"top","log_status":"completed"};
+     *
+     * @return {Array} Provide method list in array format.
+     */
+    function list(data) {
+      return ProviderIntegrations(
+        new Headers(module.exports.api_key, module.exports.organization),
+        { io_type: 'list', method: 'GET', queryParam: data, subUrl: 'api_keys' }
+      );
+    }
+
+    /**
+     * Summary: Verify Key Provider Integrations.
+     *
+     * Confirm that the API Key is valid.
+     * POST the api key in the data packet: {"api_key": "somekey"}
+     * If no API Key is provided, we will try to use the saved one
+     *
+     * @param {*} data
+     * @returns {object} object
+     */
+    function verifyKey(data) {
+      return ProviderIntegrations(
+        new Headers(module.exports.api_key, module.exports.organization),
+        { io_type: 'item', ai_provider: provider, method: 'POST', api_key: data?.api_key, subUrl: 'verify_key' }
+      );
+    }
+
+    /**
+     * Summary: Save Key Provider Integrations.
+     *
+     * Save and verify a provider api key for your selected organization - if one exists already, overwrite it.
+     * If the "verified" value in the payload is included and set to true, we will assume it is verified.
+     *
+     * @param {*} data
+     * @returns {object} object
+     */
+    function saveKey(data) {
+      return ProviderIntegrations(
+        new Headers(module.exports.api_key, module.exports.organization),
+        {
+          io_type: 'item',
+          ai_provider: provider,
+          method: 'POST',
+          api_key: data?.api_key,
+          verified: utils.isNil(data?.verified) ? true : data?.verified,
+          subUrl: 'save_key'
+        }
+      );
+    }
+
+    /**
+     * Delete Key
+     * Delete the {ai_provider} api key for your selected organization
+     *
+     * @returns {string}  Deleted 1 key
+     */
+    function removeKey() {
+      return ProviderIntegrations(
+        new Headers(module.exports.api_key, module.exports.organization),
+        { io_type: 'item', method: 'DELETE', ai_provider: provider, subUrl: 'delete_key' }
+      );
+    }
+
+    /**
+     * Summary: Files related operations.
+     *
+     * This method requires Header `Authorization: Bearer {bearer_id}`, you can obtain `bearer_id` using `.Auth().accessTokenLogin()` method.
+     *
+     * @return {Method} Get the list of files currently loaded at OpenAI.
+     * - list
+     * - verifyKey
+     * - saveKey
+     * - removeKey
+     */
+    function main(p) {
+      provider = p;
+      return {
+        list: list,
+        verifyKey: verifyKey,
+        saveKey: saveKey,
+        removeKey: removeKey,
+      };
+    }
+
+    main.list = list;
+    main.verifyKey = verifyKey;
+    main.saveKey = saveKey;
+    main.removeKey = removeKey;
 
     return main;
   })(),
