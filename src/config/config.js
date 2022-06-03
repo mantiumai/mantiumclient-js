@@ -135,4 +135,14 @@ module.exports = {
   hitlURL() {
     return `${this.baseURL()}/hitl`;
   },
+
+
+  /*
+   * Provider Integrations
+   * https://developer.mantiumai.com/reference/list_api_keys_v1_provider_api_keys_get
+   */
+  providerURL(subUrl = null) {
+    return `${this.baseURL()}/provider${subUrl ? '/' + subUrl : ''}`;
+  },
+
 };

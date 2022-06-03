@@ -21,7 +21,7 @@ describe('Intelets', function () {
       .Intelets()
       .create(sampleIntelet)
       .then((response) => {
-        response.should.be.an('object');
+        expect(response).to.be.an('object');
         return response;
       })
       .catch((err) => {
@@ -54,7 +54,7 @@ describe('Intelets', function () {
       .Intelets()
       .retrieveId(inteletID)
       .then((response) => {
-        response.should.be.an('object');
+        expect(response).to.be.an('object');
         return response;
       })
       .catch((err) => {
@@ -90,7 +90,7 @@ describe('Intelets', function () {
       .Intelets()
       .retrieve(inteletID)
       .then((response) => {
-        response.should.be.an('object');
+        expect(response).to.be.an('object');
         return response;
       })
       .catch((err) => {
@@ -130,7 +130,7 @@ describe('Intelets', function () {
         description: 'Updated new Intelet Description',
       })
       .then((response) => {
-        response.should.be.an('object');
+        expect(response).to.be.an('object');
         return response;
       })
       .catch((err) => {
@@ -163,7 +163,7 @@ describe('Intelets', function () {
       .Intelets()
       .list({ page: 1, size: 20 })
       .then((response) => {
-        response.should.be.an('object');
+        expect(response).to.be.an('object');
         return response;
       })
       .catch((err) => {
@@ -183,7 +183,7 @@ describe('Intelets', function () {
         input,
       })
       .then((response) => {
-        response.should.be.an('object');
+        expect(response).to.be.an('object');
         inteletExecutionId = response?.intelet_execution_id;
         return response;
       })
@@ -202,7 +202,7 @@ describe('Intelets', function () {
       .Intelets()
       .result(inteletExecutionId)
       .then((response) => {
-        response.should.be.an('object');
+        expect(response).to.be.an('object');
         return response;
       })
       .catch((err) => {

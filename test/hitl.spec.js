@@ -36,7 +36,11 @@ describe('Human in the Loop', async function () {
     ],
     notifications: [],
   };
+
   let samplePrompt = {
+    adults_only: false,
+    ai_engine_id: "ce6850ef-bc78-4f7a-af5f-81fb9d9fb872",
+    ai_method: "completion",
     name: 'create the Prompt for a demo policy violation',
     intelets: [],
     policies: [],
@@ -44,21 +48,21 @@ describe('Human in the Loop', async function () {
     status: 'ACTIVE',
     description: 'Basic Prompt Description',
     prompt_text: 'Endpoint Settings: Prompt Line',
-    ai_method: 'completion',
     default_engine: 'ada',
+    search_model: null,
     prompt_parameters: {
       basic_settings: {
-        temperature: '1',
-        max_tokens: '512',
-        frequency_penalty: '1',
-        presence_penalty: '1',
-        top_p: '1',
+        temperature: 1,
+        max_tokens: 16,
+        frequency_penalty: 1,
+        presence_penalty: 1,
+        top_p: 1,
         stop_seq: ['Basic Settings: Stop Sequence'],
       },
       advanced_settings: {
-        best_of: '5',
-        n: '2',
-        logprobs: '10',
+        best_of: 5,
+        n: 2,
+        logprobs: 10,
         echo: true,
         stream: true,
         logit_bias: [],
@@ -72,7 +76,7 @@ describe('Human in the Loop', async function () {
       .Security()
       .createPolicy(samplePolicy)
       .then((response) => {
-        response.should.be.an('object');
+        expect(response).to.be.an('object');
         policy = response.data[0];
         return response;
       })
@@ -106,6 +110,7 @@ describe('Human in the Loop', async function () {
       .Prompts(aiProvider)
       .create(samplePrompt)
       .then(async (response) => {
+
         promptID = response.data.attributes.prompt_id;
         await mantiumAi
           .Prompts(aiProvider)
@@ -178,7 +183,7 @@ describe('Human in the Loop', async function () {
         new_output: 'after interrupted updated new result',
       })
       .then((response) => {
-        response.should.be.an('object');
+        expect(response).to.be.an('object');
         return response;
       })
       .catch((err) => {
@@ -203,7 +208,7 @@ describe('Human in the Loop', async function () {
         new_output,
       })
       .then((response) => {
-        response.should.be.an('object');
+        expect(response).to.be.an('object');
         return response;
       })
       .catch((err) => {
@@ -236,7 +241,7 @@ describe('Human in the Loop', async function () {
         new_input: 'Le',
       })
       .then((response) => {
-        response.should.be.an('object');
+        expect(response).to.be.an('object');
         return response;
       })
       .catch((err) => {
@@ -261,7 +266,7 @@ describe('Human in the Loop', async function () {
         new_input,
       })
       .then((response) => {
-        response.should.be.an('object');
+        expect(response).to.be.an('object');
         return response;
       })
       .catch((err) => {
@@ -290,7 +295,7 @@ describe('Human in the Loop', async function () {
       .HITL()
       .accept(promptID)
       .then((response) => {
-        response.should.be.an('object');
+        expect(response).to.be.an('object');
         return response;
       })
       .catch((err) => {
@@ -312,7 +317,7 @@ describe('Human in the Loop', async function () {
       .HITL()
       .accept(promptExecutionId)
       .then((response) => {
-        response.should.be.an('object');
+        expect(response).to.be.an('object');
         return response;
       })
       .catch((err) => {
@@ -334,7 +339,7 @@ describe('Human in the Loop', async function () {
       .HITL()
       .reject(promptExecutionId)
       .then((response) => {
-        response.should.be.an('object');
+        expect(response).to.be.an('object');
         return response;
       })
       .catch((err) => {

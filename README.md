@@ -71,6 +71,11 @@
     - [Reject HITL](#reject-hitl)
     - [Modify Output HITL](#modify-output-hitl)
     - [Modify Input HITL](#modify-input-hitl)
+  - [Provider Integrations](#provider-integrations)
+    - [List Api Keys (GET)](#list-api-keys-get)
+    - [Verify Api Key (POST)](#verify-api-key-post)
+    - [Save Key (POST)](#save-key-post)
+    - [Delete Key (DELETE)](#delete-key-delete)
 
 ## Quickstart:
 
@@ -3895,3 +3900,250 @@ const mantiumAi = require('mantiumclient-js');
   reason: 'The total number of input characters (input + prompt) exceeds the limit set in the security rule.'
 }
 ```
+
+### Provider Integrations
+Managing the API keys of your selected organization.
+
+#### List API Keys (GET)
+Get a summary of the api keys your selected organization currently has configured.
+
+[Document link](https://developer.mantiumai.com/reference/list_api_keys_v1_provider_api_keys_get)
+
+```js
+const mantiumAi = require('@mantium/mantiumapi');
+
+(async () => {
+  await mantiumAi.Auth().accessTokenLogin({
+    username: 'useremail@somedomain.com',
+    password: 'p@ssWord!'
+  })
+    .then((response) => {
+      // get bearer_id and set to default
+      mantiumAi.api_key = response.data.attributes.bearer_id;
+      return response;
+    });
+
+  /*
+  * API Key is set on above
+  * mantiumAi.api_key=`key`
+  * so we can call these method directly now
+  */
+  await mantiumAi
+    .ProviderIntegrations()
+    .list({ page: 1, size: 2 })
+    .then((response) => {
+      console.log('*********** Provider Integrations list response *********');
+      console.log(response.data);
+      console.log(response.data[0].attributes);
+    });
+})();
+```
+#### Example of a successful API response
+```js
+*********** Provider Integrations list response *********
+{
+  data: [
+    {
+      id: 'Cohere',
+      type: 'api_key',
+      {
+        ai_provider: 'Cohere',
+        verified: true,
+        created: {
+          timestamp: '2021-12-30T06:25:37.444072+00:00',
+          user_id: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx',
+          full_name: ' ',
+          email: 'user@emai.com'
+        },
+        updated: null
+      },
+      relationships: {}
+    },
+    {
+      id: 'OpenAI',
+      type: 'api_key',
+      {
+        ai_provider: 'OpenAI',
+        verified: true,
+        created: {
+          timestamp: '2022-05-29T12:18:11.014818+00:00',
+          user_id: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx',
+          full_name: ' ',
+          email: 'user@emai.com'
+        },
+        updated: null
+      },
+      relationships: {}
+    }
+  ],
+  included: [],
+  meta: {},
+  links: {}
+}
+```
+[Go to Table of Contents](#table-of-contents)
+
+
+#### Verify API Key (POST)
+Confirm that the API Key is valid.
+POST the api key in the data packet: {"api_key": "somekey"}
+If no API Key is provided, we will try to use the saved one
+
+`https://api.mantiumai.com/v1/provider/verify_key/{ai_provider}`
+
+Requirements:
+- ai_provider* (string) provider name
+- api_key (string) proider api key, This is optional AI Provider API Key. If not present, then we use the saved key.
+
+[Document link](https://developer.mantiumai.com/reference/verify_api_key_v1_provider_verify_key__ai_provider__post)
+
+```js
+const mantiumAi = require('@mantium/mantiumapi');
+
+(async () => {
+  await mantiumAi.Auth().accessTokenLogin({
+    username: 'useremail@somedomain.com',
+    password: 'p@ssWord!'
+  })
+    .then((response) => {
+      // get bearer_id and set to default
+      mantiumAi.api_key = response.data.attributes.bearer_id;
+      return response;
+    });
+
+  /*
+  * API Key is set on above
+  * mantiumAi.api_key=`key`
+  * so we can call these method directly now
+  */
+  await mantiumAi
+    .ProviderIntegrations('cohere')
+    .verifyKey({ api_key: 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx' })
+    .then((response) => {
+      console.log('*********** Provider Integrations Verify Key response *********');
+      console.log(response);
+    });
+})();
+```
+#### Example of a successful API response
+```js
+*********** Provider Integrations Verify Key response *********
+[ 'The cohere api key is good!' ]
+```
+[Go to Table of Contents](#table-of-contents)
+
+
+
+#### Save Key (POST)
+Save and verify a provider api key for your selected organization - if one exists already, overwrite it.
+If the "verified" value in the payload is included and set to true, we will assume it is verified.
+
+`https://api.mantiumai.com/v1/provider/save_key/{ai_provider}`
+
+Requirements:
+- ai_provider* (string) provider name
+- api_key* (string) AI Provider API Key.
+- verified (boolean) If TRUE, we will assume the key is good and not attempt to verify it.
+
+[Document link](https://developer.mantiumai.com/reference/save_key_v1_provider_save_key__ai_provider__post)
+
+```js
+const mantiumAi = require('@mantium/mantiumapi');
+
+(async () => {
+  await mantiumAi.Auth().accessTokenLogin({
+    username: 'useremail@somedomain.com',
+    password: 'p@ssWord!'
+  })
+    .then((response) => {
+      // get bearer_id and set to default
+      mantiumAi.api_key = response.data.attributes.bearer_id;
+      return response;
+    });
+
+  /*
+  * API Key is set on above
+  * mantiumAi.api_key=`key`
+  * so we can call these method directly now
+  */
+  await mantiumAi
+    .ProviderIntegrations('openai')
+    .saveKey({ api_key: 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx', verified: false })
+    .then((response) => {
+      console.log('*********** Provider Integrations Verify Key response *********');
+      console.log(response);
+    });
+})();
+```
+#### Example of a successful API response
+```js
+*********** Provider Integrations Verify Key response *********
+{
+  data: {
+    id: 'OpenAI',
+    type: 'api_key',
+    attributes: {
+      ai_provider: 'OpenAI',
+      verified: true,
+      created: {
+        timestamp: '2022-05-29 14:27:33.147132+00:00',
+        user_id: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx',
+        full_name: ' ',
+        email: 'user@emai.com'
+      },
+      updated: null
+    },
+    relationships: {}
+  },
+  included: [],
+  meta: {},
+  links: {}
+}
+```
+[Go to Table of Contents](#table-of-contents)
+
+
+#### Delete Key (DELETE)
+Get a summary of the api keys your selected organization currently has configured.
+
+`https://api.mantiumai.com/v1/provider/delete_key/{ai_provider}`
+
+Requirements:
+- ai_provider* (string) provider name
+
+[Document link](https://developer.mantiumai.com/reference/delete_key_v1_provider_delete_key__ai_provider__delete)
+
+```js
+const mantiumAi = require('@mantium/mantiumapi');
+
+(async () => {
+  await mantiumAi.Auth().accessTokenLogin({
+    username: 'useremail@somedomain.com',
+    password: 'p@ssWord!'
+  })
+    .then((response) => {
+      // get bearer_id and set to default
+      mantiumAi.api_key = response.data.attributes.bearer_id;
+      return response;
+    });
+
+  /*
+  * API Key is set on above
+  * mantiumAi.api_key=`key`
+  * so we can call these method directly now
+  */
+  await mantiumAi
+    .ProviderIntegrations('openai')
+    .removeKey()
+    .then((response) => {
+      console.log('*********** Provider Integrations Remove Key response *********');
+      console.log(response);
+    });
+})();
+```
+#### Example of a successful API response
+```js
+*********** Provider Integrations Remove Key response *********
+Deleted 1 key
+```
+[Go to Table of Contents](#table-of-contents)

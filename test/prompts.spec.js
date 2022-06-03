@@ -8,29 +8,33 @@ describe('Prompts', function () {
   let aiProvider = 'OpenAI';
   let promptID = undefined;
   let promptExecutionId = undefined;
+
   let samplePrompt = {
-    name: 'create the Prompt',
+    adults_only: false,
+    ai_engine_id: "ce6850ef-bc78-4f7a-af5f-81fb9d9fb872",
+    ai_method: "completion",
+    name: 'create the Prompt for a demo policy violation',
     intelets: [],
     policies: [],
-    tags: ['383fb5e6-6c30-4641-9850-efeb3cdd77b8'],
+    tags: [],
     status: 'ACTIVE',
     description: 'Basic Prompt Description',
     prompt_text: 'Endpoint Settings: Prompt Line',
-    ai_method: 'completion',
     default_engine: 'ada',
+    search_model: null,
     prompt_parameters: {
       basic_settings: {
-        temperature: '1',
-        max_tokens: '512',
-        frequency_penalty: '1',
-        presence_penalty: '1',
-        top_p: '1',
+        temperature: 1,
+        max_tokens: 16,
+        frequency_penalty: 1,
+        presence_penalty: 1,
+        top_p: 1,
         stop_seq: ['Basic Settings: Stop Sequence'],
       },
       advanced_settings: {
-        best_of: '5',
-        n: '2',
-        logprobs: '10',
+        best_of: 5,
+        n: 2,
+        logprobs: 10,
         echo: true,
         stream: true,
         logit_bias: [],
@@ -43,14 +47,14 @@ describe('Prompts', function () {
       .Prompts(aiProvider)
       .create(samplePrompt)
       .then((response) => {
-        response.should.be.an('object');
+        expect(response).to.be.an('object');
         return response;
       })
       .catch((err) => {
         throw new Error(err);
       });
 
-    promptID = methodResponse.data.attributes.prompt_id;
+    promptID = methodResponse.data.id;
     expect(methodResponse).to.have.property('data');
     expect(methodResponse.data).to.be.an('object');
     assert.equal(
@@ -81,7 +85,7 @@ describe('Prompts', function () {
       .Prompts(aiProvider)
       .retrieveId(promptID)
       .then((response) => {
-        response.should.be.an('object');
+        expect(response).to.be.an('object');
         return response;
       })
       .catch((err) => {
@@ -95,7 +99,7 @@ describe('Prompts', function () {
       'prompt type object received'
     );
     assert.equal(
-      methodResponse.data.attributes.prompt_id,
+      methodResponse.data.id,
       promptID,
       'ID is matched'
     );
@@ -122,7 +126,7 @@ describe('Prompts', function () {
       .Prompts(aiProvider)
       .retrieve(promptID)
       .then((response) => {
-        response.should.be.an('object');
+        expect(response).to.be.an('object');
         return response;
       })
       .catch((err) => {
@@ -136,7 +140,7 @@ describe('Prompts', function () {
       'prompt type object received'
     );
     assert.equal(
-      methodResponse.data.attributes.prompt_id,
+      methodResponse.data.id,
       promptID,
       'ID is matched'
     );
@@ -173,14 +177,14 @@ describe('Prompts', function () {
         },
       })
       .then((response) => {
-        response.should.be.an('object');
+        expect(response).to.be.an('object');
         return response;
       })
       .catch((err) => {
         throw new Error(err);
       });
 
-    promptID = methodResponse.data.attributes.prompt_id;
+    promptID = methodResponse.data.id;
     expect(methodResponse).to.have.property('data');
     expect(methodResponse.data).to.be.an('object');
     assert.equal(
@@ -221,7 +225,7 @@ describe('Prompts', function () {
       .Prompts()
       .list({ page: 1, size: 20, show_public_shareable: false })
       .then((response) => {
-        response.should.be.an('object');
+        expect(response).to.be.an('object');
         return response;
       })
       .catch((err) => {
@@ -241,14 +245,14 @@ describe('Prompts', function () {
         input,
       })
       .then((response) => {
-        response.should.be.an('object');
+        expect(response).to.be.an('object');
         promptExecutionId = response?.prompt_execution_id;
         return response;
       })
       .catch((err) => {
         throw new Error(err);
       });
-    expect(methodResponse).should.be.an('object');
+    expect(methodResponse).to.be.an('object');
     expect(methodResponse).to.have.property('status');
     assert.equal(methodResponse.input, input, 'input is matched');
   });
@@ -259,14 +263,14 @@ describe('Prompts', function () {
     const methodResponse = await mantiumAi
       .Prompts(aiProvider)
       .result(promptExecutionId)
-      .then((response) => {
-        response.should.be.an('object');
+      .then(async (response) => {
+        expect(response).to.be.an('object');
         return response;
       })
       .catch((err) => {
         throw new Error(err);
       });
-    expect(methodResponse).should.be.an('object');
+    expect(methodResponse).to.be.an('object');
     expect(methodResponse).to.have.property('status');
     expect(methodResponse).to.have.property('output');
     assert.equal(methodResponse.input, input, 'input is matched');
@@ -277,13 +281,13 @@ describe('Prompts', function () {
       .Prompts()
       .remove(promptID)
       .then((response) => {
-        response.should.be.an('object');
+        expect(response).to.be.an('object');
         return response;
       })
       .catch((err) => {
         throw new Error(err);
       });
-    expect(methodResponse).should.be.an('object');
+    expect(methodResponse).to.be.an('object');
     expect(methodResponse).to.be.empty;
   });
 });

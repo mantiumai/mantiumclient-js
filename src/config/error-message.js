@@ -9,6 +9,7 @@ module.exports = {
       policy_name_missing: 'Missing Policy Name. required policy Name.',
       input_missing: 'Missing Input. required Input.',
       id_missing: 'ID is required.',
+      key_missing: 'Key is required.',
       Provider_missing: 'Please give `Provider` name in main calling function.',
       prompts: {
         basic_settings: {

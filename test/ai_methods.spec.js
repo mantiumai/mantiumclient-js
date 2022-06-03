@@ -10,7 +10,7 @@ describe('AI Methods', function () {
       .AiMethods('openai')
       .list({ page: 1, size: 20 })
       .then((response) => {
-        response.should.be.an('object');
+        expect(response).to.be.an('object');
         return response;
       })
       .catch((err) => {

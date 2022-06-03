@@ -3,7 +3,8 @@ const msg = require('../../config/error-message');
 const fetch = require('../fetch');
 const utils = require('../utility');
 
-module.exports = function (headers, opt) {
+module.exports = async function (headers, opt) {
+
   if (!headers.api_key)
     throw new Error(msg.errorMessages().access_token_missing);
 
@@ -63,5 +64,16 @@ module.exports = function (headers, opt) {
     options['body'] = JSON.stringify(opt);
   }
 
-  return fetch(options);
+  let checkResponse = {};
+  do {
+    checkResponse = await fetch(options)
+  } while (
+      (
+        utils.isNotNil(opt.action) && opt.action  === 'result' &&
+        !['COMPLETED',
+          'REJECTED',
+          'INTERRUPTED',
+          'ERRORED',
+        ].includes(checkResponse.status)));
+  return checkResponse;
 };

@@ -40,7 +40,7 @@ describe('Securities', function () {
       .Security()
       .createPolicy(samplePolicy)
       .then((response) => {
-        response.should.be.an('object');
+        expect(response).to.be.an('object');
         policy = response.data[0];
         return response;
       })
@@ -72,7 +72,7 @@ describe('Securities', function () {
       .Security()
       .policyId(policyID)
       .then((response) => {
-        response.should.be.an('object');
+        expect(response).to.be.an('object');
         policy = response.data[0];
         return response;
       })
@@ -101,7 +101,7 @@ describe('Securities', function () {
       .Security()
       .policy(policyID)
       .then((response) => {
-        response.should.be.an('object');
+        expect(response).to.be.an('object');
         policy = response.data[0];
         return response;
       })
@@ -137,7 +137,7 @@ describe('Securities', function () {
         notifications: [],
       })
       .then((response) => {
-        response.should.be.an('object');
+        expect(response).to.be.an('object');
         policy = response.data;
         return response;
       })
@@ -170,7 +170,7 @@ describe('Securities', function () {
       .Security()
       .listPolicies({ page: 1, size: 20 })
       .then((response) => {
-        response.should.be.an('object');
+        expect(response).to.be.an('object');
         return response;
       })
       .catch((err) => {
@@ -185,7 +185,7 @@ describe('Securities', function () {
       .Security()
       .removePolicy(policyID)
       .then((response) => {
-        response.should.be.an('object');
+        expect(response).to.be.an('object');
         return response;
       })
       .catch((err) => {
@@ -200,7 +200,7 @@ describe('Securities', function () {
       .Security()
       .listRules({ page: 1, size: 20 })
       .then((response) => {
-        response.should.be.an('object');
+        expect(response).to.be.an('object');
         ruleId = response.data[0].id;
         return response;
       })
@@ -216,7 +216,7 @@ describe('Securities', function () {
       .Security()
       .rule(ruleId)
       .then((response) => {
-        response.should.be.an('object');
+        expect(response).to.be.an('object');
         return response;
       })
       .catch((err) => {
@@ -237,7 +237,7 @@ describe('Securities', function () {
       .Security()
       .ruleId(ruleId)
       .then((response) => {
-        response.should.be.an('object');
+        expect(response).to.be.an('object');
         return response;
       })
       .catch((err) => {
@@ -258,7 +258,7 @@ describe('Securities', function () {
       .Security()
       .listActionTypes({ page: 1, size: 20 })
       .then((response) => {
-        response.should.be.an('object');
+        expect(response).to.be.an('object');
         actionTypeId = response.data[0].id;
         return response;
       })
@@ -274,7 +274,7 @@ describe('Securities', function () {
       .Security()
       .actionType(actionTypeId)
       .then((response) => {
-        response.should.be.an('object');
+        expect(response).to.be.an('object');
         return response;
       })
       .catch((err) => {
@@ -295,7 +295,7 @@ describe('Securities', function () {
       .Security()
       .actionTypeId(actionTypeId)
       .then((response) => {
-        response.should.be.an('object');
+        expect(response).to.be.an('object');
         return response;
       })
       .catch((err) => {
