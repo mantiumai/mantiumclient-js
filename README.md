@@ -18,8 +18,11 @@
   </span> 
 </div>
 
-[Sign up now](https://app.mantiumai.com/signup)
-
+<div style="padding:3rem 0">
+  <br/>
+  [Sign up now](https://app.mantiumai.com/signup)
+  <br/>
+</div>
 
 ### 📫 Connect with us:
 
@@ -32,6 +35,7 @@
 [<img align="left" alt="Mantium | discord" width="22px" src="https://cdn.iconscout.com/icon/free/png-256/discord-4054115-3353190.png" />][discord]
 
 
+<br/>
 
 ## Quickstart:
 
